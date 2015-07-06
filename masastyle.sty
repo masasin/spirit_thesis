@@ -18,8 +18,22 @@
 \usepackage{xltxtra}  % implements some odds-and-ends features
 \usepackage{verbatim}  % for multiple-line comments
 
-\usepackage[acronym]{glossaries}
+\usepackage[acronym, toc, xindy]{glossaries}
+\newglossary[nlg]{notation}{not}{ntn}{Notation}
+\setacronymstyle{long-sc-short}
+
+\usepackage{xparse}
+
+\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
+  \newglossaryentry{gls-#3}{
+    name={#5},
+    text={#5\glsadd{#3}},
+    description={#6},#1
+  }
+  \newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{#5\glsadd{gls-#3}}
+}
 \makeglossaries
+\input{glossary}
 
 \usepackage{lipsum}
 \newbox\one

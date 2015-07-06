@@ -70,6 +70,9 @@ acs-*.bib
 *.glg
 *.glo
 *.gls
+*.nlg
+*.not
+*.ntn
 
 # gnuplottex
 *-gnuplottex-*
