@@ -3,15 +3,27 @@
 \documentclass[xetex,xcolor=pdftex,dvipsnames,table,%
 	       10pt, a4paper, twoside, openany]{book}
 
-\includeonly{src/preamble, src/frontmatter}
+\usepackage{masastyle}
 
-\include{src/preamble}
+\includeonly{
+  tex/frontmatter,
+  tex/introduction,
+  %tex/mainmatter,
+  %tex/appendices,
+  %tex/backmatter,
+}
+
+\include{tex/preamble}
 
 \begin{document}
 \frontmatter
-\include{src/frontmatter}
+\include{tex/frontmatter}
 
 \mainmatter
+\include{tex/introduction}
+\include{tex/mainmatter}
+\include{tex/appendices}
 
 \backmatter
+\include{tex/backmatter}
 \end{document}
