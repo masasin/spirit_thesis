@@ -1,0 +1,52 @@
+% Title page
+\title{
+  {A Teleoperation System using Past Image Records for Unmanned Aerial Vehicles}\\
+  {\large Kyoto University}
+}
+\author{Jean Nassar}
+\date{6 July 2015}
+
+\maketitle
+
+% Dedication
+\thispagestyle{empty}
+  \null\vspace{\stretch{1}}
+    \begin{flushright}
+      \loremlines{1}
+    \end{flushright}
+  \vspace{\stretch{2}}\null
+
+% Abstract
+\newcommand\summaryname{Executive Summary}
+\newenvironment{summary}%
+  {\cleardoublepage\thispagestyle{empty}%
+    \null\vfill%
+    \begin{center}%
+      \bfseries \summaryname
+    \end{center}}%
+  \vfill\null
+  \begin{summary}
+    \lipsum[1-3]
+  \end{summary}
+\chapter*{Summary}
+\lipsum[1-3]
+
+% Acknowledgements
+\newcommand\ackname{Acknowledgements}
+\newenvironment{acknowledgements}%
+  {\cleardoublepage\thispagestyle{empty}%
+    \null\vfill%
+    \begin{center}%
+      \bfseries \ackname
+    \end{center}}%
+  \vfill\null
+  \begin{acknowledgements}
+    \lipsum[4-5]
+  \end{acknowledgements}
+
+% Table of contents etc
+\tableofcontents
+\listoffigures
+\listoftables
+
+% Preface

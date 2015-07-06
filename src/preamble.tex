@@ -1,0 +1,26 @@
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{img/}}
+\usepackage{topcapt,booktabs,multirow}
+
+\usepackage{fontspec}
+\setromanfont[Ligatures=TeX]{Linux Libertine O}
+\setromanfont[Ligatures=TeX]{Linux Biolinum O}
+\setmonofont{Inconsolata}
+
+\usepackage{dcolumn}  % for apsrtable outputs
+\usepackage{xunicode}  % extra support for unicode
+\usepackage{xltxtra}  % implements some odds-and-ends features
+\usepackage{verbatim}  % for multiple-line comments
+
+\usepackage[acronym]{glossaries}
+\makeglossaries
+
+\usepackage{lipsum}
+\newbox\one
+\newbox\two
+\long\def\loremlines#1{%
+  \setbox\one=\vbox {\lipsum}
+  \setbox\two=\vsplit\one to #1\baselineskip
+\unvbox\two}
