@@ -6,24 +6,24 @@
 \usepackage{masastyle}
 
 \includeonly{
-  tex/frontmatter,
-  tex/introduction,
-  %tex/mainmatter,
-  %tex/appendices,
-  %tex/backmatter,
+  frontmatter,
+  introduction,
+  %mainmatter,
+  %appendices,
+  %backmatter,
 }
 
-\include{tex/preamble}
+\include{preamble}
 
 \begin{document}
 \frontmatter
-\include{tex/frontmatter}
+\include{frontmatter}
 
 \mainmatter
-\include{tex/introduction}
-\include{tex/mainmatter}
-\include{tex/appendices}
+\include{introduction}
+\include{mainmatter}
+\include{appendices}
 
 \backmatter
-\include{tex/backmatter}
+\include{backmatter}
 \end{document}

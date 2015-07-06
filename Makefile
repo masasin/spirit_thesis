@@ -29,5 +29,4 @@ full:
 	make show
 
 clean:
-	rm -f {src/,}*.{aux,log,nav,out,snm,toc,gz}
-	#rm -f *.aux *.log *.nav *.out *.snm *.toc *.gz
+	rm -f *.{acn,acr,alg,aux,glg,glo,gls,ist,lof,lot,log,nav,out,snm,toc,gz}
