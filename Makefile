@@ -1,3 +1,5 @@
+# (C) 2016 Jean Nassar. Some Rights Reserved
+# Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 MASTER = mshtsy_thesis
 
 all:
@@ -27,4 +29,5 @@ full:
 	make show
 
 clean:
-	rm -f *.aux *.log *.nav *.out *.snm *.toc *.gz
+	rm -f {src/,}*.{aux,log,nav,out,snm,toc,gz}
+	#rm -f *.aux *.log *.nav *.out *.snm *.toc *.gz
