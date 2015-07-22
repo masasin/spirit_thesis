@@ -42,3 +42,11 @@
   \setbox\one=\vbox {\lipsum}
   \setbox\two=\vsplit\one to #1\baselineskip
 \unvbox\two}
+
+\usepackage[en-CA]{datetime2}
+
+\DTMnewdatestyle{stddate}{%
+  \renewcommand*{\DTMdisplaydate}[4]{##3 \DTMenglishmonthname{##2} ##1}%
+  \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
+}
+\DTMsetdatestyle{stddate}
