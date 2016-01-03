@@ -34,7 +34,7 @@ However, these features tend to require a larger, heavier \gls{uav}, which might
 
 Teleoperated \glspl{uav} usually use either line of sight, where the pilot has to be able to see the drone directly, or \gls{fpv}, where the pilot uses a video downlink from the drone to control it.
 The downlink can be displayed in video goggles or on a standard display.
-Some setups allow the camera on the drone to gimbal, which can provide an immersive experience when combined with head tracking.
+Some setups allow the camera on the drone to gimbal, while others have a zoomed-in fisheye lens, either of which can provide an immersive experience when combined with head tracking.
 
 \gls{fpv}, however, is normally \gls{not:2d}, and does not afford the user any depth perception.
 As a result, loss of situational (\emph{i.e.}, spatial) awareness can occur, and the boundaries of the vehicle with respect to the environment might not be known.
@@ -63,3 +63,25 @@ Ito \emph{et al.} decreased choppiness by proposing wider \glspl{fov}, and zoomi
 Murata \emph{et al.} extended the concept to \gls{not:3d} when they applied it to mobile manipulators.\cite{murata2014}
 They showed a significant decrease in position error in the vertical direction with a similar error in the longitudinal direction.
 
+\section{Problems with quadrotors}
+When a quadrotor flies forwards, the craft pitches down.
+For cameras which do not offer gimballing or a wide \gls{fov}, though, this means that the camera's \gls{fov} might no longer encompass the horizon.
+As a result, older video would need to be used, which would likely be from a longer distance.
+If the drone turns while going forward, there might be no usable images at all.
+
+One potential mitigating factor would be to set a maximum pitch angle, thereby limiting the speed of the drone.
+But since most drones need to have a relatively flat profile for aerodynamic reasons, they would not be able to use elevated cameras, and the operator would only be able to see the drone from behind.
+
+Another possible solution would be to tilt the camera upwards, which would limit the amount of ground it would see during a hover.
+However, that would cause the camera to be pointing at the sky while the drone is moving backwards, which would significantly reduce the amount of reference points available to the operator.
+
+Finally, localization can be difficult too.
+Even outdoors, GPS only tends to be accurate to within a few metres, which is much larger than the widths of most drones.
+While estimates of acceleration can be obtained by modelling the motor outputs and using built-in accelerometers and gyroscopes, there is drift from wind, as well as significant vibration even during hovering.
+Integrating acceleration twice to obtain position would cause exponentially increasing drift.
+
+External sources could be used to reduce the error, such as motion capture cameras if indoors, binocular cameras, or \gls{slam}.
+That might require the use of more additional tools, such as ultrasonic distance sensors or laser range finders.
+However, that is beyond the scope of this research.
+
+Some \gls{slam} algorithms, such as \gls{ptam} and \gls{rtslam}, are able to use monocular cameras, but they might not do well with rotation on the spot.
