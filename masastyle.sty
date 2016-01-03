@@ -22,17 +22,18 @@
 \newglossary[nlg]{notation}{not}{ntn}{Notation}
 \newglossary[slg]{symbols}{sym}{sbl}{Symbols}
 \setacronymstyle{long-short}
+\glossarystyle{altlist}
 
 \usepackage{xparse}
 
 \DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
   \newglossaryentry{gls-#3}{
-    name={#5},
+    name={\glslink{#3}{#5 (#4)}},
     text={#5},
     description={#6},
     nonumberlist,#1
   }
-  \newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{\glsadd{gls-#3}}
+  \newacronym[description=\glslink{gls-#3}{#5},#2]{#3}{#4}{#5\glsadd{gls-#3}}
 }
 \makeglossaries
 \input{glossary}
