@@ -4,10 +4,10 @@
 \chapter{Introduction}
 \label{ch:intro}
 This report is divided into five chapters.
-In Chapter \ref{ch:intro}, the background, purpose of study, previous research, and the proposed method are introduced.
+In Chapter \ref{ch:intro}, the background, purpose of study, previous research, and the proposed method are presented.
 In Chapter \ref{ch:spirit}, the new method is explained.
 In Chapter \ref{ch:experiments}, the experiments are described.
-Their results are presented in Chapter \ref{ch:results}.
+Their results are discussed in Chapter \ref{ch:results}.
 Finally, conclusions and proposals for future work are presented in \ref{ch:conclusion}.
 
 \section{Unmanned Aerial Vehicles}
@@ -33,13 +33,33 @@ More sophisiticated \glspl{uav} might have additional cameras, or sensors for al
 However, these features tend to require a larger, heavier \gls{uav}, which might cost more and be less maneuverable.
 
 Teleoperated \glspl{uav} usually use either line of sight, where the pilot has to be able to see the drone directly, or \gls{fpv}, where the pilot uses a video downlink from the drone to control it.
-The downlink can be displayed in video goggles or on an electronic screen.
+The downlink can be displayed in video goggles or on a standard display.
 Some setups allow the camera on the drone to gimbal, which can provide an immersive experience when combined with head tracking.
 
 \gls{fpv}, however, is normally \gls{not:2d}, and does not afford the user any depth perception.
 As a result, loss of situational (\emph{i.e.}, spatial) awareness can occur, and the boundaries of the vehicle with respect to the environment might not be known.
-This is known to have contributed to multiple crashes into the environment in the past, with powerlines damaged and people gravely injured.
-Incidents of \glspl{uav} flying dangerously close to airports have also been reported.
+This is known to have contributed to multiple crashes into the environment in the past, with powerlines damaged,\cite{latimes2015} and people gravely injured.\cite{seattletimes2015,bbcnews2015}
+Incidents of \glspl{uav} flying dangerously close to airports have also been reported.\cite{ctvnews2014}
 
 Moreover, \gls{dos} can occur when flying far, or in a confined environment, causing dropped frames and choppy video.
 This, in turn, can cause the operator to miss important cues and react too late, also causing an accident.
+
+\section{Research objective}
+The objective of this research is to increase the situational awareness of a \gls{uav} pilot using a single onboard monocular camera.
+The system should be capable of functioning in a low bandwidth situation, and provide increased position and velocity control compared to \gls{fpv}.
+Ideally, the system would also have a fast uptake speed, and would be independent of the controller used.
+
+\section{Previous research}
+Sugimoto \emph{et al.} introduced past-image view technology for mobile robots.\cite{sugimoto2005}
+This technology enabled the operator to see the position and orientation of the robot with respect to its environment from a third-person perspective.
+
+Images taken by a raised camera were saved in a buffer along with their position and time.
+An optimal image was then found using an evaluation function considering several constraints, including \gls{fov} and the relative positions of the camera and robot.
+
+If the bandwidth is low, old images can be reused, updated by an array of position data sent at a higher speed than the video.
+
+Ito \emph{et al.} decreased choppiness by proposing wider \glspl{fov}, and zooming into the background and model as the robot went further into the image plane.\cite{ito2008} They also experimented with adding trajectory forecasting with unmanned ground vehicles.
+
+Murata \emph{et al.} extended the concept to \gls{not:3d} when they applied it to mobile manipulators.\cite{murata2014}
+They showed a significant decrease in position error in the vertical direction with a similar error in the longitudinal direction.
+
