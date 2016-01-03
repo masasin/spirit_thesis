@@ -18,19 +18,21 @@
 \usepackage{xltxtra}  % implements some odds-and-ends features
 \usepackage{verbatim}  % for multiple-line comments
 
-\usepackage[acronym, toc, xindy]{glossaries}
+\usepackage[nopostdot, acronym, toc]{glossaries}
 \newglossary[nlg]{notation}{not}{ntn}{Notation}
-\setacronymstyle{long-sc-short}
+\newglossary[slg]{symbols}{sym}{sbl}{Symbols}
+\setacronymstyle{long-short}
 
 \usepackage{xparse}
 
 \DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
   \newglossaryentry{gls-#3}{
     name={#5},
-    text={#5\glsadd{#3}},
-    description={#6},#1
+    text={#5},
+    description={#6},
+    nonumberlist,#1
   }
-  \newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{#5\glsadd{gls-#3}}
+  \newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{\glsadd{gls-#3}}
 }
 \makeglossaries
 \input{glossary}
@@ -43,10 +45,10 @@
   \setbox\two=\vsplit\one to #1\baselineskip
 \unvbox\two}
 
-\usepackage[en-CA]{datetime2}
+% \usepackage[en-CA]{datetime2}
 
-\DTMnewdatestyle{stddate}{%
-  \renewcommand*{\DTMdisplaydate}[4]{##3 \DTMenglishmonthname{##2} ##1}%
-  \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
-}
-\DTMsetdatestyle{stddate}
+% \DTMnewdatestyle{stddate}{%
+  % \renewcommand*{\DTMdisplaydate}[4]{##3 \DTMenglishmonthname{##2} ##1}%
+  % \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
+% }
+% \DTMsetdatestyle{stddate}

@@ -1,14 +1,35 @@
-\newdualentry[longplural={unmanned aerial vehicles}][longplural={unmanned aerial vehicles}]{uav}{uav}{unmanned aerial vehicle}{A machine which flies in the air without carrying human passengers}
+\newglossaryentry{ardrone}{
+  name={AR.Drone},
+  text={AR.Drone},
+  description={A remote controlled flying quadcopter built by the French company Parrot.}
+}
 
-%\newglossaryentry{gls-uav} {name={Unmanned Aerial Vehicle}, description={A machine which flies in the air without carrying human passangers}}
+\newdualentry[longplural={unmanned aerial vehicles}]
+	     [longplural={unmanned aerial vehicles}]
+	     {uav}{UAV}{unmanned aerial vehicle} {
+  A machine which flies in the air without carrying human passengers.
+}
 
-%\newacronym[longplural={unmanned aerial vehicles}]{uav}{UAV}{unmanned aerial vehicle}
+\newdualentry{ros}{ROS}{Robot Operating System} {
+  An open-source collection of software frameworks for robot software development.
+}
 
-\newglossaryentry{not:pi}{type=notation, name={\ensuremath{\pi}}, description={ratio of circumference of circle to its diameter}, sort=pi}
+\newdualentry{spirit}{SPIRIT}{System of Past Image Records Implemented for Teleoperation} {
+  A method which enables operators to see a model of their robot with respect to its environment, in 3D.
+}
 
-\newglossaryentry{not:real number} {
+\newacronym{kyodai}{KU}{Kyoto University}
+
+\newglossaryentry{not:pi} {
   type=notation,
-  name={real number},
-  description={include both rational numbers, such as $42$ and $\frac{-23}{129}$, and irrational numbers, such as $\pi$ and the square root of two; or, a real number can be given by an infinite decimal representation, such as $2.4871773339\ldots$ where the digits continue in some way; or, the real numbers may be thought of as points on an infinitely long number line},
-  symbol={\ensuremath{\mathbb{R}}}
+  name={\ensuremath{\pi}},
+  description={ratio of circumference of circle to its diameter.},
+  sort=pi
+}
+
+\newglossaryentry{sym:theta} {
+  type=symbols,
+  name={\ensuremath{\theta}},
+  description={An angle.},
+  sort=theta
 }
