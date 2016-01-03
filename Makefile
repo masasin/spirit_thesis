@@ -14,6 +14,8 @@ show:
 refs:
 	make once
 	makeglossaries $(MASTER)
+	biber $(MASTER)
+	make once
 	make once
 
 quick:
