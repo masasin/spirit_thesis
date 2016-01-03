@@ -2,4 +2,36 @@
 % Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 % Introduction
 \chapter{Introduction}
-We use a \glspl{uav} and \gls{ros}! The \gls{uav} we use is the \gls{ardrone}. \gls{sym:theta} is a symbol.
+\section{Unmanned Aerial Vehicles}
+\Glspl{uav}, also known as drones, have been used since the mid-19th century for both military and private purposes.
+Recently, multirotor \glspl{uav} have become common, and are now used recreationally and professionally.
+Some of the applications of \glspl{uav} include:
+
+\begin{itemize}
+  \item capturing photos and videos
+  \item racing
+  \item site inspection
+  \item agriculture and land assessment
+  \item news gathering
+  \item police surveillance
+  \item exploration
+  \item search and rescue, and disaster relief
+\end{itemize}
+
+Many \glspl{uav} can be programmed, but they are also often flown manually.
+
+A modern \gls{uav}'s payload typically consists of at least one camera, an \gls{imu} with at least six \glspl{dof}, and an autopilot chip to aid with stability.
+More sophisiticated \glspl{uav} might have additional cameras, or sensors for altitude and distance, including sensors for \gls{not:3d} reconstruction of the environment.
+However, these features tend to require a larger, heavier \gls{uav}, which might cost more and be less maneuverable.
+
+Teleoperated \glspl{uav} usually use either line of sight, where the pilot has to be able to see the drone directly, or \gls{fpv}, where the pilot uses a video downlink from the drone to control it.
+The downlink can be displayed in video goggles or on an electronic screen.
+Some setups allow the camera on the drone to gimbal, which can provide an immersive experience when combined with head tracking.
+
+\gls{fpv}, however, is normally \gls{not:2d}, and does not afford the user any depth perception.
+As a result, loss of situational (\emph{i.e.}, spatial) awareness can occur, and the boundaries of the vehicle with respect to the environment might not be known.
+This is known to have contributed to multiple crashes into the environment in the past, with powerlines damaged and people gravely injured.
+Incidents of \glspl{uav} flying dangerously close to airports have also been reported.
+
+Moreover, \gls{dos} can occur when flying far, or in a confined environment, causing dropped frames and choppy video.
+This, in turn, can cause the operator to miss important cues and react too late, also causing an accident.
