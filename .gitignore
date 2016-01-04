@@ -144,3 +144,7 @@ sympy-plots-for-*.tex/
 # VIM
 *~
 *.swp
+
+# Figures
+*.pdf
+*.pgf
