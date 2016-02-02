@@ -1,6 +1,8 @@
 # (C) 2016 Jean Nassar. Some Rights Reserved
 # Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
-FILE = mshtsy_thesis
+MASTER = mshtsy_thesis
+FILES = appendices.tex frontmatter.tex introduction.tex mainmatter.tex 
+TEX = xelatex
 
 # target: all - Default target. Run XeLaTeX once, and display PDF.
 all: show
@@ -9,29 +11,23 @@ all: show
 help:
 	egrep "^# target:" [Mm]akefile
 
-# target: pdf - Run XeLaTeX once.
-pdf:
-	xelatex $(FILE)
+$(MASTER).pdf: $(MASTER).tex $(FILES)
+	$(TEX) $(MASTER)
 
-# target: show - Show the generated PDF.
-show: $(FILE).pdf
-	evince $(FILE).pdf
+show:: $(MASTER).pdf
+	evince $(MASTER).pdf
 
-# target: refs - Generate the glossaries, bibliography, and indices.
-refs: $(FILE).pdf
-	makeglossaries $(FILE)
-	biber $(FILE)
-	make pdf
-	make pdf
+refs:: glossary.tex $(MASTER).bib
+	makeglossaries $(MASTER)
+	biber $(MASTER)
+	$(TEX) $(MASTER)
+	$(TEX) $(MASTER)
 
-# target: remake - Remove generated files, then regenerate the references and PDF.
-remake: clean
+remake:: clean
 	make refs
 
-# target: full - Remake, then show the PDF.
-full: remake
+full:: remake
 	make show
 
-# target: clean - Remove all generated files except the PDF.
-clean:
+clean::
 	rm -f *.{acn,acr,alg,aux,glg,glo,gls,ist,lof,lot,log,nav,out,snm,toc,gz}
