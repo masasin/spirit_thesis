@@ -3,42 +3,33 @@
 MASTER = mshtsy_thesis
 
 # target: all - Default target. Run XeLaTeX once, and display PDF.
-all:
-	make quick
+all: show
 
 # target: help - Display callable targets.
 help:
 	egrep "^# target:" [Mm]akefile
 
-# target: once - Run XeLaTeX once.
-once:
+# target: pdf - Run XeLaTeX once.
+pdf:
 	xelatex $(MASTER)
 
 # target: show - Show the generated PDF.
-show:
+show: $(MASTER).pdf
 	evince $(MASTER).pdf
 
 # target: refs - Generate the glossaries, bibliography, and indices.
-refs:
-	make once
+refs: $(MASTER).pdf
 	makeglossaries $(MASTER)
 	biber $(MASTER)
-	make once
-	make once
+	make pdf
+	make pdf
 
-# target: quick - Run XeLaTeX once, and display PDF.
-quick:
-	make once
-	make show
-
-# target: rerun - Remove generated files, then regenerate the references and PDF.
-rerun:
-	make clean
+# target: remake - Remove generated files, then regenerate the references and PDF.
+remake: clean
 	make refs
 
-# target: full - Rerun, then show the PDF.
-full:
-	make rerun
+# target: full - Remake, then show the PDF.
+full: remake
 	make show
 
 # target: clean - Remove all generated files except the PDF.
