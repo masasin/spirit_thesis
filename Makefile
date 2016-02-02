@@ -1,6 +1,6 @@
 # (C) 2016 Jean Nassar. Some Rights Reserved
 # Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
-MASTER = mshtsy_thesis
+FILE = mshtsy_thesis
 
 # target: all - Default target. Run XeLaTeX once, and display PDF.
 all: show
@@ -11,16 +11,16 @@ help:
 
 # target: pdf - Run XeLaTeX once.
 pdf:
-	xelatex $(MASTER)
+	xelatex $(FILE)
 
 # target: show - Show the generated PDF.
-show: $(MASTER).pdf
-	evince $(MASTER).pdf
+show: $(FILE).pdf
+	evince $(FILE).pdf
 
 # target: refs - Generate the glossaries, bibliography, and indices.
-refs: $(MASTER).pdf
-	makeglossaries $(MASTER)
-	biber $(MASTER)
+refs: $(FILE).pdf
+	makeglossaries $(FILE)
+	biber $(FILE)
 	make pdf
 	make pdf
 
