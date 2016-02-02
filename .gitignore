@@ -148,3 +148,6 @@ sympy-plots-for-*.tex/
 # Figures
 *.pdf
 *.pgf
+
+# Makefile generation
+.refresh
