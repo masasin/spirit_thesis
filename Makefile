@@ -1,33 +1,37 @@
 # (C) 2016 Jean Nassar. Some Rights Reserved
 # Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 MASTER = mshtsy_thesis
-FILES = appendices.tex frontmatter.tex introduction.tex mainmatter.tex 
-TEX = xelatex
+COMPILER = xelatex
+
+ifneq (COMPILER, "pdflatex")
+TEX = latexmk -pdf -e "$$pdflatex=q/$(COMPILER) %O %S/"
+else
+TEX = latexmk
+endif
 
 # target: all - Default target. Run XeLaTeX once, and display PDF.
-all: show
+all:: show
 
 # target: help - Display callable targets.
-help:
+help::
 	egrep "^# target:" [Mm]akefile
 
-$(MASTER).pdf: $(MASTER).tex $(FILES)
+# target: pdf - Make the PDF.
+pdf::
 	$(TEX) $(MASTER)
 
-show:: $(MASTER).pdf
+# target: show - Show the final PDF.
+show:: pdf
 	evince $(MASTER).pdf
 
-refs:: glossary.tex $(MASTER).bib
-	makeglossaries $(MASTER)
-	biber $(MASTER)
-	$(TEX) $(MASTER)
-	$(TEX) $(MASTER)
-
+# target: remake - Clean, then remake PDF. Use when there is an error in the .aux file.
 remake:: clean
-	make refs
+	make pdf
 
+# target: full - Remake pdf and show.
 full:: remake
 	make show
 
+# target: clean - Remove generated files.
 clean::
 	rm -f *.{acn,acr,alg,aux,glg,glo,gls,ist,lof,lot,log,nav,out,snm,toc,gz}
