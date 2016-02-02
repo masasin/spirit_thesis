@@ -57,14 +57,14 @@ clean::
 	# Regular generated files.
 	rm -f *.aux *.lof *.lot *.out *.toc *.log *.gz
 	# Bibliography
-	rm -f $(MASTER)-blx.bib *.bbl *.xdy
+	rm -f $(MASTER)-blx.bib *.bbl *.xdy *.bcf *.blg
 	# Glossary
 	rm -f *.acn *.acr *.alg # Acronyms
 	rm -f *.glg *.glo *.gls # Glossaries
 	rm -f *.nlg *.not *.ntn # Notation
 	rm -f *.sbl *.slg *.sym # Symbols
 	# Other
-	rm -f *.ist *.nav *.xml $(MASTER).fdb_latexmk
+	rm -f *.ist *.nav *.xml $(MASTER).fdb_latexmk *.fls
 
 # target: cleanall - Remove generated and output files.
 cleanall:: clean
