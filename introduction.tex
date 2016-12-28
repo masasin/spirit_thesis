@@ -3,16 +3,23 @@
 % Introduction
 \chapter{Introduction}
 \label{ch:intro}
-This report is divided into five chapters.
-In Chapter \ref{ch:intro}, the background, purpose of study, previous research, and the proposed method are presented.
+This report is divided into six chapters.
+In Chapter \ref{ch:intro}, the field is introduced and the purpose of the research is stated.
+In Chapter \ref{ch:background}, the background of the problem, previous research, and the proposed method are presented.
 In Chapter \ref{ch:spirit}, the new method is explained.
 In Chapter \ref{ch:experiments}, the experiments are described.
 Their results are discussed in Chapter \ref{ch:results}.
-Finally, conclusions and proposals for future work are presented in \ref{ch:conclusion}.
+Finally, conclusions and proposals for future work are presented in Chapter \ref{ch:conclusion}.
 
 \section{Unmanned Aerial Vehicles}
-\Glspl{uav}, also known as drones, have been used since the mid-19th century for both military and civilian purposes.
-Recently, multirotor \glspl{uav} have become common, and are now used recreationally and professionally.
+\subsection{History}
+\Glspl{uav}, also known as drones if they have \gls{ai}, have been used since at least the mid-19th century, when the Austrian military bombarded the Italian city of Venice.\cite{monash2003}
+Later developments included aerial torpedoes, assualt drones, and target drones, controlled both autonomously or remotely.
+Reconnaissance drones were developed in the 1960s, and used heavily in Vietnam.
+The importance of battlefield \glspl{uav} was realized in 1982 with their successful utilization by the Israeli Air Force against the Syrian Air Force over Lebanon.\cite{draganfly2009}
+
+Modern drones have both military and civilian uses.
+Multirotor \glspl{uav} have recently become common with the public, and are now used recreationally and professionally.
 Some of the applications of \glspl{uav} include:
 
 \begin{itemize}
@@ -26,9 +33,8 @@ Some of the applications of \glspl{uav} include:
   \item search and rescue, and disaster relief
 \end{itemize}
 
-Many \glspl{uav} can be programmed, but they are also often flown manually.
-
-A modern \gls{uav}'s payload typically consists of at least one camera, an \gls{imu} with at least six \glspl{dof}, and an autopilot chip to aid with stability.
+\subsection{Issues with modern drones}
+A modern \gls{uav}'s payload typically consists of at least one camera, an \gls{imu} with at least six \glspl{dof}, and an autopilot to aid with stability.
 More sophisiticated \glspl{uav} might have additional cameras, or sensors for altitude and distance, including sensors for \gls{not:3d} reconstruction of the environment.
 However, these features tend to require a larger, heavier \gls{uav}, which might cost more and be less maneuverable.
 
@@ -36,53 +42,46 @@ Teleoperated \glspl{uav} usually use either line of sight, where the pilot has t
 The downlink can be displayed in video goggles or on a standard display.
 Some setups allow the camera on the drone to gimbal, while others have a zoomed-in fisheye lens, either of which can provide an immersive experience when combined with head tracking.
 
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{fpv_controller}
+    \caption{A transmitter.\cite{fpv_controller}}
+    \label{fig:fpv_controller}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{fpv_phone}
+    \caption{A phone.\cite{fpv_phone}}
+    \label{fig:fpv_phone}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{fpv_goggles}
+    \caption{\gls{fpv} goggles.\cite{fpv_goggles}}
+    \label{fig:fpv_goggles}
+  \end{subfigure}
+  \caption{Various methods of displaying a \gls{fpv} feed.}
+  \label{fig:fpv_various}
+\end{figure}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering
+  \includegraphics[width=0.48\textwidth]{ardrone_dos}
+  \caption{Signal strength of the Ar.Drone with respect to distance. Extracted from \cite{ardrone_dos}.}
+  \label{fig:ardrone_dos}
+\end{wrapfigure}
+
 \gls{fpv}, however, is normally \gls{not:2d}, and does not afford the user any depth perception.
 As a result, loss of situational (i.e.\ spatial) awareness can occur, and the boundaries of the vehicle with respect to the environment might not be known.
 This is known to have contributed to multiple crashes into the environment in the past, with powerlines damaged,\cite{latimes2015} and people gravely injured.\cite{seattletimes2015,bbcnews2015}
 Incidents of \glspl{uav} flying dangerously close to airports have also been reported.\cite{ctvnews2014}
 
-Moreover, \gls{dos} can occur when flying far, or in a confined environment, causing dropped frames and choppy video.
-This, in turn, can cause the operator to miss important cues and react too late, also causing an accident.
+Moreover, \gls{dos} can occur when flying far, or in an environment with bad reception, causing dropped frames and choppy video.
+The operator may then miss important cues and react too late, leading to an accident.
+The signal profile of the AR.Drone, which is used in this research, is shown in Figure \ref{fig:ardrone_dos}.
 
 \section{Research objective}
-The objective of this research is to increase the situational awareness of a \gls{uav} pilot using a single onboard monocular camera.
+The objective of this research is to increase the situational awareness of a \gls{uav} pilot using a single onboard monocular camera, reducing collisions in confined environments.
 The system should be capable of functioning in a low bandwidth situation, and provide increased position and velocity control compared to \gls{fpv}.
-Ideally, the system would also have a fast uptake speed, and would be independent of the controller used.
-
-\section{Previous research}
-Sugimoto et al. introduced past-image view technology for mobile robots.\cite{sugimoto2005}
-This technology enabled the operator to see the position and orientation of the robot with respect to its environment from a third-person perspective.
-
-Images taken by a raised camera were saved in a buffer along with their position and time.
-An optimal image was then found using an evaluation function considering several constraints, including \gls{fov} and the relative positions of the camera and robot.
-
-If the bandwidth is low, old images can be reused, updated by an array of position data sent at a higher speed than the video.
-
-Ito et al. decreased choppiness by proposing wider \glspl{fov}, and zooming into the background and model as the robot went further into the image plane.\cite{ito2008}
-They also experimented with adding trajectory forecasting with unmanned ground vehicles.
-
-Murata et al. extended the concept to \gls{not:3d} when they applied it to mobile manipulators.\cite{murata2014}
-They showed a significant decrease in position error in the vertical direction with a similar error in the longitudinal direction.
-
-\section{Problems with quadrotors}
-When a quadrotor flies forwards, the craft pitches down.
-For cameras which do not offer gimballing or a wide \gls{fov}, though, this means that the camera's \gls{fov} might no longer encompass the horizon.
-As a result, older video would need to be used, which would likely be from a longer distance.
-If the drone turns while going forward, there might be no usable images at all.
-
-One potential mitigating factor would be to set a maximum pitch angle, thereby limiting the speed of the drone.
-But since most drones need to have a relatively flat profile for aerodynamic reasons, they would not be able to use elevated cameras, and the operator would only be able to see the drone from behind.
-
-Another possible solution would be to tilt the camera upwards, which would limit the amount of ground it would see during a hover.
-However, that would cause the camera to be pointing at the sky while the drone is moving backwards, which would significantly reduce the amount of reference points available to the operator.
-
-Finally, localization can be difficult too.
-Even outdoors, GPS only tends to be accurate to within a few metres, which is much larger than the widths of most drones.
-While estimates of acceleration can be obtained by modelling the motor outputs and using built-in accelerometers and gyroscopes, there is drift from wind, as well as significant vibration even during hovering.
-Integrating acceleration twice to obtain position would cause exponentially increasing drift.
-
-External sources could be used to reduce the error, such as motion capture cameras if indoors, binocular cameras, or \gls{slam}.
-That might require the use of more additional tools, such as ultrasonic distance sensors or laser range finders.
-However, that is beyond the scope of this research.
-
-Some \gls{slam} algorithms, such as \gls{ptam} and \gls{rtslam}, are able to use monocular cameras, but they might not do well with rotation on the spot.
+Ideally, the system would also be intuitive, have a fast uptake speed, and would be independent of the controller used.
