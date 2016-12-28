@@ -1,0 +1,80 @@
+% (C) 2016 Jean Nassar. Some Rights Reserved
+% Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
+% SPIRIT
+\chapter{Implementation}
+\label{ch:implementation}
+
+\section{System overview}
+  There are six main parts to the project:
+
+  \begin{itemize}
+    \item An operator-controlled gamepad sends commands to the drone.
+    \item The pose, consisting of the position and orientation of the drone, is calculated by a motion capture system and relayed to the operating station.
+    \item The drone streams video at 30\,Hz, which is downsampled to 2\,Hz to simulate \gls{los} conditions.
+    \item The 2\,Hz video feed is shown to the operator without modification.
+    \item All received images are also stored in a chronological array.
+	  When a new pose is received, it is checked against frames in reverse order using an evaluation function.
+    \item The frame with the lowest score is selected, and has the current pose rendered onto it to show to the operator.
+  \end{itemize}
+
+  The past image selector and the visualization system are discussed in separate sections.
+
+  \subsection{Environment}
+    The operating station runs \gls{ros} Jade on Ubuntu 15.04.
+    A separate computer is connected to the lab's motion capture system.
+    Both computers are connected to each other via ethernet.
+
+    The drone connects to the operating station by acting as a Wifi access point.
+    Communication with the drone is achieved using the Simon Fraser University Autonomy Lab's \verb|ardrone_autonomy| package.
+
+  \subsection{Control}
+    The computer receives operator input from an off-the-shelf console gamepad, and forwards it to the drone.
+    A \gls{gui} was taken from the \verb|drone_gui| node of \verb|tum_ardrone|, written by the Computer Vision group at the Technische Universität München, and controller interaction used the \verb|joy| package.
+
+  \subsection{Video}
+    A live, 30\,Hz feed is received from the drone.
+    Every fifteenth frame is then selected in order to drop the frequency to 2\,Hz.
+    Both feeds are published for other nodes, and the slow video is displayed to the operator during tests.
+
+  \subsection{Pose}
+    Optitrack's \emph{Motive} software is used to collect data on the position and orientation of the drone.
+    Four infrared markers are set onto the top of the drone, and the Optitrack infrared cameras are connected to the motion capture computer.
+    The markers forming the drone are defined as a rigid body, and the resulting centre is adjusted to align with the camera.
+
+    The motion capture system sends the data to the operating station, where it is interpreted by the \verb|mocap_optitrack| package before being published to the rest of the system.
+    In the process, eulerian coordinates are changed into quaternions.
+
+    The pose data is followed to ascertain the status of the tracking.
+    If the motion capture system is unable to determine the pose of the drone, whether by occlusion of a marker or a venture outside of the field of view of the cameras, the values would stop updating.
+    In that case, a flag is set that can be used by other nodes.
+    Losing tracking also gives a visual and an aural warning to notify the operator, as the visualization system would not be showing the correct information.
+
+    One method, which was not used, was \verb|ardrone_autonomy|'s ability to obtain drone odometry from the bottom-facing camera, \gls{imu}, altimiter, and barometer.
+    The ground velocity is calculated using integration of acceleration as well as optical flow.
+    While the final result proved to be accurate, the calculations required were slow in a tight loop, so it was discarded in favour of the motion capture system.
+
+\section{The past image selector}
+  Each new image that arrives while the pose is being tracked is automatically packaged into a \texttt{Frame} object containing the time it was taken, as well as the position and orientation of the drone at that time.
+  These \texttt{Frame}s are then stored in a chronological list.
+
+  When a new valid pose arrives, it is checked against the frames in reverse order using an evaluation function.
+  The \texttt{Frame} with the lowest score is published for use by the visualization system.
+
+  However, while the pose was sampled at 30\,Hz (every 0.33\,s), each iteration of the some evaluation functions requires up to 0.3\,ms to run.
+  As a result, when about a hundred frames are collected, a substantial lag in image selection can be detected.
+  For those algorithms, only one hundred frames were selected by skipping a certain number each time, while still keeping a good representation of the entire course of the drone's flight.
+  This allows each loop to run its course before the next pose is received.
+
+  \subsection{Chronological list}
+
+  \subsection{Evaluation functions}
+    The simplest evaluation function for past image view is one with constant time delay.
+    One can quickly find a frame with a specific age by doing a binary search on a chronologically-ordered array.
+    However, it has this and that problem...
+     % \subsubsection{Simple evaluation functions}
+     % \subsubsection{Final evaluation function}
+
+
+\section{Rendering}
+  \subsection{OpenGL}
+
