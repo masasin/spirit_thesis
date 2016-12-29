@@ -5,8 +5,8 @@
 \label{ch:intro}
 This report is divided into six chapters.
 In Chapter \ref{ch:intro}, the field is introduced and the purpose of the research is stated.
-In Chapter \ref{ch:background}, the background of the problem, previous research, and the proposed method are presented.
-In Chapter \ref{ch:implementation}, the new method's implementation is explained in detail.
+In Chapter \ref{ch:background}, the background of the problem and previous research are presented.
+In Chapter \ref{ch:implementation}, the proposal is shown and the new method's implementation is explained in detail.
 In Chapter \ref{ch:experiments}, the experiments are described.
 Their results are discussed in Chapter \ref{ch:results}.
 Finally, conclusions and proposals for future work are presented in Chapter \ref{ch:conclusion}.
@@ -35,7 +35,7 @@ Some of the applications of \glspl{uav} include:
 
 \subsection{Issues with modern drones}
 A modern \gls{uav}'s payload typically consists of at least one camera, an \gls{imu} with at least six \glspl{dof}, and an autopilot to aid with stability.
-More sophisiticated \glspl{uav} might have additional cameras, or sensors for altitude and distance, including sensors for \gls{not:3d} reconstruction of the environment.
+More sophisiticated \glspl{uav} might have additional cameras, or sensors for altitude and distance, including sensors for \gls{3d} reconstruction of the environment.
 However, these features tend to require a larger, heavier \gls{uav}, which might cost more and be less maneuverable.
 
 Teleoperated \glspl{uav} usually use either line of sight, where the pilot has to be able to see the drone directly, or \gls{fpv}, where the pilot uses a video downlink from the drone to control it.
@@ -72,7 +72,7 @@ Some setups allow the camera on the drone to gimbal, while others have a zoomed-
   \label{fig:ardrone_dos}
 \end{wrapfigure}
 
-\gls{fpv}, however, is normally \gls{not:2d}, and does not afford the user any depth perception.
+\gls{fpv}, however, is normally \gls{2d}, and does not afford the user any depth perception.
 As a result, loss of situational (i.e.\ spatial) awareness can occur, and the boundaries of the vehicle with respect to the environment might not be known.
 This is known to have contributed to multiple crashes into the environment in the past, with powerlines damaged,\cite{latimes2015} and people gravely injured.\cite{seattletimes2015,bbcnews2015}
 Incidents of \glspl{uav} flying dangerously close to airports have also been reported.\cite{ctvnews2014}

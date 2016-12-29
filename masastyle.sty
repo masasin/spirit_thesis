@@ -2,14 +2,18 @@
 % Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 \ProvidesPackage{masastyle}
 
+\newcommand\mytitle{Developing a System of Superimposed Past Image Records Implemented for Teleoperation of an Unmanned Multirotor}
+
 \usepackage{siunitx}
 \usepackage[hidelinks]{hyperref}
 \hypersetup{
-  pdftitle={Developing a System of Superimposed Past Image Records Implemented for Teleoperation of an Unmanned Multirotor},
+  pdftitle={\mytitle},
   pdfsubject={Robotics Interfaces},
   pdfauthor={Jean Nassar},
   pdfkeywords={SPIR, SPIRIT, ergonomics, interfaces, robotics, teleoperation, augmented reality, virtual reality}
 }
+
+\usepackage{amsmath}
 
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -33,20 +37,35 @@
 \usepackage{xltxtra}  % implements some odds-and-ends features
 \usepackage{verbatim}  % for multiple-line comments
 
-\usepackage[nopostdot, acronym, toc]{glossaries}
+\usepackage[acronym, symbols, toc]{glossaries}
 \newglossary[nlg]{notation}{not}{ntn}{Notation}
-\newglossary[slg]{symbols}{sym}{sbl}{Symbols}
+% \newglossary[slg]{symbols}{sym}{sbl}{Symbols}
 \setacronymstyle{long-short}
-\glossarystyle{altlist}
+\glossarystyle{altlong4col}
+
+\usepackage{relsize}
+\newcommand\cpp{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}}
 
 \usepackage{xparse}
 
+\newcommand{\sym}[1]{\glssymbol{sym:#1}}
+
+\DeclareDocumentCommand{\newsymbol}{m m m m} {
+  \newglossaryentry{sym:#1} {
+    type=symbols,
+    name={#3},
+    description={#4},
+    symbol={\ensuremath{#2}}
+  }
+}
+
 \DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
   \newglossaryentry{gls-#3}{
-    name={\glslink{#3}{#5 (#4)}},
+    name={\glslink{#3}{#4}},
     text={#5},
     description={#6},
-    nonumberlist,#1
+    nonumberlist,
+    #1
   }
   \newacronym[description=\glslink{gls-#3}{#5},#2]{#3}{#4}{#5\glsadd{gls-#3}}
 }

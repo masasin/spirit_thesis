@@ -62,7 +62,7 @@ clean::
 	rm -f *.acn *.acr *.alg # Acronyms
 	rm -f *.glg *.glo *.gls # Glossaries
 	rm -f *.nlg *.not *.ntn # Notation
-	rm -f *.sbl *.slg *.sym # Symbols
+	rm -f *.sym *.slg *.slo *.sls # Symbols
 	# Other
 	rm -f *.ist *.nav *.xml $(MASTER).fdb_latexmk *.fls
 

@@ -4,77 +4,344 @@
 \chapter{Implementation}
 \label{ch:implementation}
 
+\section{Proposal}
+\label{sec:proposal}
+  The proposal was to upgrade \gls{spir} to allow it to work better with quadrotors.
+  Operator workload should decrease in positioning and orientation tasks.
+
+  A framework should be built which would allow the modular implementation of the core functions of \gls{spir}:
+
+  \begin{enumerate}
+    \item Obtain the robot position by the best method for each robot.
+    \item Save images obtained by the camera, and the pose and time at which they were taken.
+    \item Select the best frame according to an evaluation function.
+          That robot should ideally be seen from a good position and orientation with respect to the rest of the environment.
+    \item Generate and display the rendering of the current robot position onto the selected frame.
+  \end{enumerate}
+
+  The system was built in \gls{ros} for interoperability and future expansion, as well as its ease of modularization.
+
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+      \includegraphics[width=\textwidth]{drone_sim_fpv}
+      \caption{First-person View.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+      \includegraphics[width=\textwidth]{drone_sim_chase}
+      \caption{External view.}
+    \end{subfigure}
+    \caption[Difference between FPV and external views]{The difference between \gls{fpv} and an external view. These screenshots are taken from the QuatcopterFX Simulator app on Android.}
+    \label{fig:fpv_vs_chase}
+  \end{figure}
+
+  The actual implementation is discussed below.
+
 \section{System overview}
+  The system overview for \gls{spirit} is shown in Fgiure \ref{fig:spirit_flowchart}.
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{spirit_flowchart}
+    \caption[SPIRIT system overview]{\gls{spirit} system overview.}
+    \label{fig:spirit_flowchart}
+  \end{figure}
+
   There are six main parts to the project:
 
   \begin{itemize}
-    \item An operator-controlled gamepad sends commands to the drone.
-    \item The pose, consisting of the position and orientation of the drone, is calculated by a motion capture system and relayed to the operating station.
+    \item An operator-controlled gamepad sends commands to the \gls{ardrone}.
+    \item The pose, consisting of the position and orientation of the drone, is calculated by a commercial motion capture system and relayed to the operating station.
     \item The drone streams video at 30\,Hz, which is downsampled to 2\,Hz to simulate \gls{los} conditions.
     \item The 2\,Hz video feed is shown to the operator without modification.
     \item All received images are also stored in a chronological array.
-	  When a new pose is received, it is checked against frames in reverse order using an evaluation function.
+	  When a new pose is received, it is checked against all frames using an evaluation function.
     \item The frame with the lowest score is selected, and has the current pose rendered onto it to show to the operator.
   \end{itemize}
 
-  The past image selector and the visualization system are discussed in separate sections.
-
+\section{General components}
   \subsection{Environment}
-    The operating station runs \gls{ros} Jade on Ubuntu 15.04.
-    A separate computer is connected to the lab's motion capture system.
-    Both computers are connected to each other via ethernet.
+    The operating station runs in a single docker container on a Linux laptop.
+    The primary components of the docker image are:
 
-    The drone connects to the operating station by acting as a Wifi access point.
-    Communication with the drone is achieved using the Simon Fraser University Autonomy Lab's \verb|ardrone_autonomy| package.
+    \begin{itemize}
+      \item \gls{ros}
+      \item Python 2.7
+      \item Virtualenv
+      \item OpenGL
+      \item Nvidia drivers
+      \item Necessary \gls{ros} and Python packages
+    \end{itemize}
+
+    A separate Windows laptop has separate ethernet connections to the lab's motion capture system and to the operating station.
+    The \gls{ardrone} connects to the operating station by acting as a Wifi access point.
+    Communication with the drone is achieved using the Simon Fraser University Autonomy Lab's \texttt{\detokenize{ardrone_autonomy}} package.
+
+    The research code was written entirely in Python.
+    Taking advantage of \gls{ros}'s modularity, each function is completely encapsulated in one or more nodes.
+    As a result, implementing a new algorithm or introducing a new method to obtain data simply involves writing new code which publishes to the correct nodes.
+    Any supported programming languages can be used.
+    For instance, the speed of \cpp can be leveraged where necessary.
+    
+    In addition, launch files are generated on the fly from \texttt{xacro} files, with configuration data stored in various \gls{yaml} files.
+    Selecting and changing coefficients of the various evaluation functions, for example, is in the \texttt{\detokenize{launch_config.yaml}} file.
+    The configuration generator inspects the source code to ensure that the evaluation function class exists and that each component is indeed a runnable method.
+    The generator also sets the default values of various parameters, such as the \gls{ardrone}'s \gls{ip} address or the device file for the controller.
+    Identifying the controllers and selecting the correct mapping has also been demonstrated, but is not implemented in the final setup.
+    % TODO: Has it been implemented yet?
+
+    The \gls{ros} graph is shown in Figure \ref{fig:rqt_graph}.
+    % TODO: Add rqt_graph.
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=\textwidth]{rqt_graph}
+      \caption[ROS Graph]{The \gls{ros} graph for the system.}
+      \label{fig:rqt_graph}
+    \end{figure}
 
   \subsection{Control}
-    The computer receives operator input from an off-the-shelf console gamepad, and forwards it to the drone.
-    A \gls{gui} was taken from the \verb|drone_gui| node of \verb|tum_ardrone|, written by the Computer Vision group at the Technische Universität München, and controller interaction used the \verb|joy| package.
+    The operating station receives operator input from an off-the-shelf \gls{ps3} console gamepad, and forwards it to the drone.
+    After the setup of the button and axis mappings was complete, the controller publishes directly to the relevant \texttt{\detokenize{/ardrone}} nodes set up by \texttt{\detokenize{ardrone_autonomy}}.
+
+    There is no automation in flying the \gls{ardrone} apart from the built-in \gls{ai}.
+    The default control system implemented by Parrot is used.
 
   \subsection{Video}
-    A live, 30\,Hz feed is received from the drone.
-    Every fifteenth frame is then selected in order to drop the frequency to 2\,Hz.
-    Both feeds are published for other nodes, and the slow video is displayed to the operator during tests.
+    A live 30\,Hz feed is received from the drone.
+    In order to simulate \gls{los} conditions, the feed frequency was dropped to 2\,Hz by only selecting every fifteenth frame.
 
-  \subsection{Pose}
-    Optitrack's \emph{Motive} software is used to collect data on the position and orientation of the drone.
-    Four infrared markers are set onto the top of the drone, and the Optitrack infrared cameras are connected to the motion capture computer.
-    The markers forming the drone are defined as a rigid body, and the resulting centre is adjusted to align with the camera.
+    The slower feed is republished for other nodes.
+    Specifically, its frames are the ones stored in the buffer used in selecting past images, and the video was also displayed to the user for increased situational awareness.
 
-    The motion capture system sends the data to the operating station, where it is interpreted by the \verb|mocap_optitrack| package before being published to the rest of the system.
-    In the process, eulerian coordinates are changed into quaternions.
+  \subsection{Abstractions}
+    \gls{ros}'s \texttt{PoseStamped} messages are wrapped as a \texttt{Pose} object, which exposes the position and orientation of the message as numpy arrays.
+    This class also allows the calculation of relative Euler angles and distances with other \texttt{Pose}s.
 
-    The pose data is followed to ascertain the status of the tracking.
-    If the motion capture system is unable to determine the pose of the drone, whether by occlusion of a marker or a venture outside of the field of view of the cameras, the values would stop updating.
-    In that case, a flag is set that can be used by other nodes.
-    Losing tracking also gives a visual and an aural warning to notify the operator, as the visualization system would not be showing the correct information.
+    New \texttt{Image}s (from \texttt{\detokenize{sensor_msgs.msg}}) and the latest available \texttt{Pose} are stored in a \texttt{Frame} object.
+    A \texttt{Frame} also allows easy calculation the relative position with another \texttt{Pose} in the local reference frame.
+    Since the same calculation is run multiple times per frame, the result was memoized, causing a significant speedup.
+  
 
-    One method, which was not used, was \verb|ardrone_autonomy|'s ability to obtain drone odometry from the bottom-facing camera, \gls{imu}, altimiter, and barometer.
-    The ground velocity is calculated using integration of acceleration as well as optical flow.
-    While the final result proved to be accurate, the calculations required were slow in a tight loop, so it was discarded in favour of the motion capture system.
+\section{Poses}
+\label{sec:poses}
+  \subsection{Terminology}
+    Roll (\sym{roll}), pitch (\sym{pitch}), and yaw (\sym{yaw}) refer to rotations about the respective axes (\sym{rollaxis}, \sym{pitchaxis}, \sym{yawaxis}), as shown in Figure \ref{fig:drone_rpy}.
+    The convention used in this report are with respect to the body frame of reference. The positive direction is determined by the right-hand rule.
 
-\section{The past image selector}
-  Each new image that arrives while the pose is being tracked is automatically packaged into a \texttt{Frame} object containing the time it was taken, as well as the position and orientation of the drone at that time.
-  These \texttt{Frame}s are then stored in a chronological list.
+    \begin{figure}[h]
+      \centering
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{drone_rpy}
+	\caption{Roll, pitch, and yaw.}
+	\label{fig:drone_rpy}
+      \end{subfigure}
+      \hfill
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{drones_ref}
+	\caption{Pose variables.}
+	\label{fig:drones_ref}
+      \end{subfigure}
+      \caption[Pose parameter definitions]{Figure \ref{fig:drone_rpy} shows the definitions of roll, pitch, and yaw with respect to an aircraft in the body frame of reference. Figure \ref{fig:drones_ref} shows the pose variables, and the relative positions of the current drone position and the frame being processed.}
+    \end{figure}
 
-  When a new valid pose arrives, it is checked against the frames in reverse order using an evaluation function.
-  The \texttt{Frame} with the lowest score is published for use by the visualization system.
+    The position of the drone is represented by \sym{pos}, and defined as:
 
-  However, while the pose was sampled at 30\,Hz (every 0.33\,s), each iteration of the some evaluation functions requires up to 0.3\,ms to run.
-  As a result, when about a hundred frames are collected, a substantial lag in image selection can be detected.
-  For those algorithms, only one hundred frames were selected by skipping a certain number each time, while still keeping a good representation of the entire course of the drone's flight.
-  This allows each loop to run its course before the next pose is received.
+    \begin{equation}
+      \sym{pos} = \begin{bmatrix}
+	\sym{posx} \\
+	\sym{posy} \\
+	\sym{posz} \\
+      \end{bmatrix}
+    \end{equation}
 
-  \subsection{Chronological list}
+    where \sym{posx}, \sym{posy}, and \sym{posz} are the $x$, $y$, and $z$ components.
+
+    The orientation of the drone is represented by a quaternion, \sym{quat}, and defined as:
+
+    \begin{equation}
+      \sym{quat} = \begin{bmatrix}
+	\sym{quatx} \\
+	\sym{quaty} \\
+	\sym{quatz} \\
+	\sym{quatw} \\
+      \end{bmatrix}
+    \end{equation}
+
+    such that the quaternion can also be represented as $\sym{quatw} + \sym{quatx}\mathbf{i} + \sym{quaty}\mathbf{j} + \sym{quatz}\mathbf{k}$.
+    $\mathbf{i}$, $\mathbf{j}$, and $\mathbf{k}$ are the basis elements of the quaternion, and they are related by:
+
+    \begin{equation}
+      \mathbf{i}^2 = \mathbf{j}^2 = \mathbf{k}^2 = \mathbf{ijk} = -1
+    \end{equation}
+
+    The state vector is $\sym{state} = \left[\sym{pos}\sym{quat}\right]^T$.
+    
+    The rotation matrix \sym{rotmat}, based on quaternions, is defined as:\cite{wiki_rotmat}
+
+    \begin{equation}
+      \sym{rotmat} = \begin{bmatrix}
+	1 - 2\sym{quaty}^2 - 2\sym{quatz}^2 & 2\sym{quatx}\sym{quaty} - 2\sym{quatz}\sym{quatw} & 2\sym{quatx}\sym{quatz} + 2\sym{quaty}\sym{quatw} \\
+	2\sym{quatx}\sym{quaty} + 2\sym{quatz}\sym{quatw} & 1 - 2\sym{quatx}^2 - 2\sym{quatz}^2 & 2\sym{quaty}\sym{quatz} - 2\sym{quatx}\sym{quatw} \\
+	2\sym{quatx}\sym{quatz} - 2\sym{quaty}\sym{quatw} & 2\sym{quaty}\sym{quatz} + 2\sym{quatx}\sym{quatw} & 1 - 2\sym{quatx}^2 - 2\sym{quaty}^2
+      \end{bmatrix}
+    \end{equation}
+
+    Finally, \sym{rfcurrent}, \sym{rfdrone}, \sym{rfprocessed}, and \sym{rfglobal} are the reference frames of the currently displayed frame, the drone, the frame being processed, and the global coordinate system respectively.
+
+  \subsection{Relative poses}
+    \subsubsection{Relative position}
+    In order to find the relative position of the drone with respect to the frame being processed, the orientation of the frame must first be cancelled out by the rotation matrix.
+    
+    \begin{equation}
+      ^{\sym{rfprocessed}}_{\sym{rfdrone}}\Delta\sym{pos} = 
+      ^{\sym{rfglobal}}_{\sym{rfprocessed}}\sym{rotmat}\left(\sym{pos}_{\sym{rfdrone}} - \sym{pos}_{\sym{rfprocessed}}\right) = 
+      \begin{bmatrix}
+	\Delta\sym{posx} \\
+        \Delta\sym{posy} \\
+        \Delta\sym{posz}
+      \end{bmatrix}_{\sym{rfprocessed}\sym{rfdrone}}
+    \end{equation}
+
+    \subsubsection{Relative orientation}
+    In order to find the relative orientation of the drone with respect to the frame being processed, we need to find the quaternion product.
+
+    \begin{equation}
+      ^{\sym{rfprocessed}}_{\sym{rfdrone}}\Delta\sym{quat} = \hat{\sym{quat}}_{\sym{rfprocessed}}\hat{\sym{quat}}_{\sym{rfdrone}}
+    \end{equation}
+
+    First, set the imaginary components of the quaternion to \sym{quatim} such that:
+
+    \begin{equation}
+      \sym{quatim} = \begin{bmatrix}\sym{quatx} \\ \sym{quaty} \\ \sym{quatz}\end{bmatrix}
+    \end{equation}
+
+    The solution is:
+
+    \begin{equation}
+      ^{\sym{rfprocessed}}_{\sym{rfdrone}}\Delta\sym{quat} = \begin{bmatrix}
+	\sym{quatw}_{\sym{rfprocessed}}\sym{quatim}_{\sym{rfdrone}} + \sym{quatw}_{\sym{rfdrone}}\sym{quatim}_{\sym{rfprocessed}} + \sym{quatim}_{\sym{rfprocessed}}\times\sym{quatim}_{\sym{rfdrone}} \\
+	\sym{quatw}_{\sym{rfprocessed}}\sym{quatw}_{\sym{rfdrone}} - \sym{quatim}_{\sym{rfprocessed}}\cdot\sym{quatim}_{\sym{rfdrone}}
+      \end{bmatrix}
+    \end{equation}
+    
+
+  \subsection{Motion capture}
+    Optitrack's \emph{Motive} software is used to collect \gls{mocap} data on the position and orientation of the drone.
+    Four infrared markers are set onto the top of the drone, and the Optitrack infrared cameras are connected to the \gls{mocap} computer.
+    The markers forming the drone are defined as a rigid body, allowing the pose information to be calculated for the entire drone at once.
+
+    The \gls{mocap} system then streams the data, including the rigid body information, via multicast.
+    The data is received by the operating station, interpreted by \gls{ros}'s \texttt{\detokenize{mocap_optitrack}} package, and republished to \texttt{ardrone}'s the \texttt{\detokenize{ground_pose}} and \texttt{\detokenize{pose}} nodes.
+    The latter uses quaternions instead of the Eulerian coordinates which \emph{Motive} displays.
+
+    The motion capture setup was good for prototyping without needing to turn on the drone, and it had good accuracy compared to, say, \gls{gps}.
+    However, depending on it led to an extremely limited usage area, since the drone had to be within range of multiple \gls{mocap} cameras.
+
+    If the \gls{mocap} system is unable to determine the pose of the drone, whether by marker occlusion or lack of information, \emph{Motive} sends the last known position instead of raising an error.
+    In that case, the visualization system would be using out-of-date pose data, which could cause problems.
+    As a result, the pose is tracked over time, and the boolean status is published to \texttt{\detokenize{/ardrone/tracked}} and can be used by other nodes.
+    For instance, if tracking is lost, an audible horn sounds, accompanied by a visual warning for the operator, as shown in Figure \ref{fig:spirit_interface_lost}.
+
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=\textwidth]{spirit_interface_lost}
+      \caption[Interface with tracking lost]{A screenshot of the \gls{spirit} interface when tracking has been lost. Notice the red text in the upper-right corner. The operator can still see the 2\,Hz live feed.}
+      \label{fig:spirit_interface_lost}
+    \end{figure}
+
+  \subsection{Other methods}
+    One method of obtaining the pose, which is not used in the final setup, is the ability of \texttt{\detokenize{ardrone_autonomy}} to obtain drone odometry from the bottom-facing camera, \gls{imu}, altimiter, and barometer.
+    The ground velocity is calculated using integration of the acceleration as well as optical flow.
+    While the final result proved to be accurate, the calculations required were too slow in a tight loop when running on the operating station.
+    Therefore, it was discarded in favour of the motion capture system.
+
+\section{Selection of past images}
+  \subsection{Overview}
+    Each new image that arrives while the pose is being tracked is automatically packaged into a \texttt{Frame} object containing the time it was taken, as well as the position and orientation of the drone at that time.
+    These \texttt{Frame}s are then stored in a chronological list, which is implemented as a deque.
+
+    When a new valid pose arrives, it is checked against the frames using an evaluation function.
+    The \texttt{Frame} with the lowest score is published for use by the visualization system.
+
+    However, while the pose was sampled at 200\,Hz (every 5\,ms), each iteration of some of the evaluation functions requires up to 0.3\,ms to run.
+    As a result, when about twenty frames are collected, a substantial lag in image selection can be detected.
+    To mitigate this, when a new frame is still in the process of being selected, the visualizer displays the new pose on the currently shown frame.
+
+    The maximum queue length can be set in the launch parameter configuration file.
+    The final setup used a maximum of 60\,frames, or 30\,s of video.
+    This allows each loop to run its course before the next pose is received.
 
   \subsection{Evaluation functions}
-    The simplest evaluation function for past image view is one with constant time delay.
-    One can quickly find a frame with a specific age by doing a binary search on a chronologically-ordered array.
-    However, it has this and that problem...
-     % \subsubsection{Simple evaluation functions}
-     % \subsubsection{Final evaluation function}
+    In this section, all $\Delta$ differences are from the drone with respect to the frame being processed, unless otherwise specified.
+    In addition, $_{ref}$ indicates a reference, or ideal value, which can be set by the operator.
+    Figure \ref{fig:drones_view} shows the relative positions. For more information on the notation, please see Section \ref{sec:poses}.
 
+    \begin{figure}[h]
+      \centering
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{drones_view_side}
+	\caption{From the side.}
+      \end{subfigure}
+      \hfill
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{drones_view_front}
+	\caption{From the front.}
+      \end{subfigure}
+      \caption[Relative positions]{The relative position of the drone with respect to the frame being processed, in terms of camera positioning.}
+      \label{fig:drones_view}
+    \end{figure}
 
-\section{Rendering}
+    \subsubsection{Naïve evaluation functions}
+      The simplest evaluation function for past image view is one with constant time delay, as suggested by Shiroma et al.\cite{shiroma2004}
+      One can quickly find a frame with a specific age by doing a binary search in the chronologically-ordered array.
+      However, while it works well for robots moving at a relatively constant velocity with minimal direction change, it does not track sudden movements, accelerations, or stoppages.
+
+      On the other hand, Shiroma et al.'s constant distance evaluation function\cite{shiroma2004} maintains the distance effectively, and works well with robots which change their orientation gradually.
+      With a drone, though, the operator can move in any direction at any time, including backwards, and the selected frame might not contain the drone's current position at all.
+
+      Note that both these evaluation functions have also been implemented, and are accessible by setting the appropriate value in the \texttt{\detokenize{launch_config.yaml}} file.
+
+    \subsubsection{Murata evaluation function}
+      Murata et al.'s evaluation function was designed for \gls{3d} environments,\cite{murata2014} and an attempt was made at using it.
+
+      The evaluation function is as follows:
+
+      \begin{align}
+	E &= a_1\left(\frac{\Delta\sym{posz} - \Delta\sym{posz}_{ref}}{\Delta\sym{posz}_{ref}}\right)^2  % relative height
+	  + a_2\left(\frac{2\Delta\sym{yaw}}{\pi}\right)^2  % pointing in the same direction
+	  + a_3\left(\frac{\arctan\left(\frac{\sqrt{\Delta\sym{posx}^2 + \Delta\sym{posz}^2}}{\Delta\sym{posy}}\right)}{\sym{aovv}}\right)^2 \\  % tilt angle
+	  &+ a_4\left(\frac{\left\|\Delta\sym{pos}\right\| - \left\|\Delta\sym{pos}\right\|_{ref}}{\left\|\Delta\sym{pos}\right\|_{ref}}\right)^2 
+	  + a_5\left(\frac{\left\|\sym{state}_{\sym{rfprocessed}} - \sym{state}_{\sym{rfcurrent}}\right\|}{\sym{state}_{\sym{rfcurrent}}}\right)^2
+      \end{align}
+
+      where \sym{aovv} is the vertical angle of view such that:
+
+      \begin{equation}
+	\sym{aovv} = 2\arctan\left(\sym{aovr}\tan\frac{\sym{aovh}}{2}\right)
+      \end{equation}
+
+      and \sym{aovr} is the aspect ratio of the display and \sym{aovh} is the horizontal angle of view.
+
+      The five components are as follows:
+
+      \begin{itemize}
+	\item $a_1$ represents the height of the viewpoint.
+	      We want to see the drone from slightly above.
+	\item $a_2$ represents the azimuth angle of the viewpoint.
+	      We want to see the drone from behind.
+	\item $a_3$ represents the tilt angle of the viewpoint.
+	      The closer it is to zero, the closer to the centre of the image the drone is.
+	\item $a_4$ represents the distance to the drone.
+	      We wanted to be at a specific distance.
+	\item $a_5$ represents the movement of the viewpoint if the frame being processed is selected.
+	      The smaller it is, the smoother the transition.
+      \end{itemize}
+
+      Murata et al.'s function performed better than the naïve ones.
+
+    \subsubsection{SPIRIT evaluation function}
+      The SPIRIT evaluation function is derived 
+
+\section{Visualization}
   \subsection{OpenGL}
-

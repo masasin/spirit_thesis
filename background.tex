@@ -5,12 +5,22 @@
 \label{ch:background}
 
 \section{Prior work}
+
+  \begin{wrapfigure}{r}{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.48\textwidth]{hing_chase_view}
+    \caption[Hing et al. chase view]{Hing et al.'s chase view.\cite{hing2009}}
+    \label{fig:hing_chase_view}
+  \end{wrapfigure}
+
   Several methods to show a robotic avatar in a virtual environment were proposed.
 
-  Nielsen et al. presented an interface in which a \gls{not:3d} model of the robot, a video stream from a mounted camera, a map, and pose information, were combined in a mixed-reality display.\cite{nielsen2007}
+  Nielsen et al. presented an interface in which a \gls{3d} model of the robot, a video stream from a mounted camera, a map, and pose information, were combined in a mixed-reality display.\cite{nielsen2007}
   Kelly et al. extended the concept to an outdoor environment, and succeeded in making their system work in various low-throughput situations.\cite{kelly2011}
+  However, most methods require many sensors, such as \glspl{lrf}, which add expense and weight to the vehicle.
 
-  However, most methods require many sensors, which add expense and weight to the vehicle.
+  Hing et al. succeeded in making a chase view for a fixed-wing \gls{uav} which showed the orientation of the drone with respect to the environment, overlaid onto a rotated onboard camera view.\cite{hing2009}
+  They were successful in improving flying, and even people who were not able to complete the course using the onboard view alone were able to complete it with the chase view.
 
 \section{Teleoperation System Using Past Image Records}
   Shiroma et al. introduced \gls{spir}, a past-image view technique for mobile robots.\cite{shiroma2004}
@@ -104,7 +114,7 @@
       \label{fig:zoom_results}
     \end{figure}
 
-    Murata et al. extended the concept to \gls{not:3d} when they applied it to mobile manipulators.\cite{murata2014}
+    Murata et al. extended the concept to \gls{3d} when they applied it to mobile manipulators.\cite{murata2014}
     They showed a significant decrease in operators' position error in the vertical direction with a similar error in the longitudinal direction.
 
     \begin{figure}[h]
@@ -112,6 +122,7 @@
       \begin{subfigure}[b]{0.45\textwidth}
 	\includegraphics[width=\textwidth]{manip_overview}
 	\caption{Geometric relationships.}
+	\label{fig:manip_overview_background}
       \end{subfigure}
       \hfill
       \begin{subfigure}[b]{0.45\textwidth}
@@ -147,18 +158,3 @@
 
   Some \gls{slam} algorithms, such as \gls{ptam} and \gls{rtslam}, are able to use monocular cameras, but rotation on the spot often causes them to lose keypoints, making them a bad choice for drones.
 
-\section{Proposal}
-  The proposal was to upgrade \gls{spir} to allow it to work better with quadrotors.
-  Operator workload should decrease in positioning and orientation tasks.
-
-  A framework should be built which would allow the modular implementation of the core functions of \gls{spir}:
-
-  \begin{enumerate}
-    \item Obtain the robot position by the best method for each robot.
-    \item Save images obtained by the camera, and the pose and time at which they were taken.
-    \item Select the best frame according to an evaluation function.
-          That robot should ideally be seen from a good position and orientation with respect to the rest of the environment.
-    \item Generate and display the rendering of the current robot position onto the selected frame.
-  \end{enumerate}
-
-  The system was built in \gls{ros} for interoperability and future expansion, as well as its ease of modularization.

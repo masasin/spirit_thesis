@@ -1,7 +1,7 @@
 \newglossaryentry{ardrone}{
   name={AR.Drone},
   text={AR.Drone},
-  description={A remote controlled flying quadcopter built by the French company Parrot.}
+  description={A remote controlled flying quadcopter built by the French company Parrot}
 }
 
 \newdualentry[longplural={unmanned aerial vehicles}]
@@ -25,11 +25,15 @@
 }
 
 \newdualentry[see={spir}]{spirit}{SPIRIT}{Superimposed Past Image Records Implemented for Teleoperation} {
-  A method which enables operators to see a model of their robot with respect to its environment, in \gls{not:3d}.
+  A method which enables operators to see a model of their robot with respect to its environment, in \gls{3d}.
 }
 
+\newacronym{ip}{IP}{Internet Protocol}
+\newacronym{yaml}{YAML}{Yet Another Markup Language}
+\newacronym{mocap}{mocap}{motion capture}
 \newacronym{spir}{SPIR}{Teleoperation System Using Past Image Records}
 \newacronym{kyodai}{KU}{Kyoto University}
+\newacronym{ps3}{PS3}{PlayStation 3}
 \newacronym[plural=DOF,longplural={degrees of freedom}]{dof}{DOF}{degree of freedom}
 \newacronym{lrf}{LRF}{laser rangefinder}
 \newacronym{ai}{AI}{artificial intelligence}
@@ -44,14 +48,47 @@
 \newacronym[plural=DOSes, longplural={degradations of signal}]{dos}{DOS}{degradation of signal}
 \newacronym[plural=LOSes, longplural={losses of signal}]{los}{LOS}{loss of signal}
 
-\newglossaryentry{not:2d} {
-  type=notation,
+\newglossaryentry{2d} {
   name={2D},
-  description={Two dimensional space.},
+  description={Two dimensional space},
 }
 
-\newglossaryentry{not:3d} {
-  type=notation,
+\newglossaryentry{3d} {
   name={3D},
-  description={Three dimensional space.},
+  description={Three dimensional space},
 }
+
+
+\newsymbol{rollaxis}{x_b}{rollaxis}{Axis positive out of nose of the aircraft in the plane of symmetry of the aircraft}
+\newsymbol{pitchaxis}{z_b}{pitch axis}{Axis perpendicular to the \gls{sym:rollaxis}, in the plane of symmetry of the aircraft, positive below the aircraft}
+\newsymbol{yawaxis}{y_b}{yaw axis}{Axis perpendicular to the \glssymbol{sym:rollaxis}\glssymbol{sym:pitchaxis}-plane, positive out the right wing}
+
+\newsymbol{roll}{\phi}{roll angle}{Rotation around the \gls{sym:rollaxis}}
+\newsymbol{pitch}{\theta}{pitch angle}{Rotation around the \gls{sym:pitchaxis}}
+\newsymbol{yaw}{\psi}{yaw angle}{Rotation around the \gls{sym:yawaxis}}
+
+\newsymbol{pos}{\mathbf{x}}{position}{A position vector in \gls{3d}}
+\newsymbol{posx}{x}{$x$-position}{The $x$-component of the position}
+\newsymbol{posy}{y}{$y$-position}{The $y$-component of the position}
+\newsymbol{posz}{z}{$z$-position}{The $z$-component of the position}
+
+\newsymbol{quat}{\mathbf{q}}{quaternion}{A quaternion in \gls{3d}}
+\newsymbol{quatim}{\mathbf{I}}{imaginary}{The imaginary components of a quaternion}
+\newsymbol{quatx}{b}{$b$}{The $b$-component of $\glssymbol{sym:quat} = \glssymbol{sym:quatw} + \glssymbol{sym:quatx}\mathbf{i} + \glssymbol{sym:quaty}\mathbf{j} + \glssymbol{sym:quatz}\mathbf{k}$}
+\newsymbol{quaty}{c}{$c$}{The $c$-component of $\glssymbol{sym:quat} = \glssymbol{sym:quatw} + \glssymbol{sym:quatx}\mathbf{i} + \glssymbol{sym:quaty}\mathbf{j} + \glssymbol{sym:quatz}\mathbf{k}$}
+\newsymbol{quatz}{d}{$d$}{The $d$-component of $\glssymbol{sym:quat} = \glssymbol{sym:quatw} + \glssymbol{sym:quatx}\mathbf{i} + \glssymbol{sym:quaty}\mathbf{j} + \glssymbol{sym:quatz}\mathbf{k}$}
+\newsymbol{quatw}{a}{$a$}{The $a$-component of $\glssymbol{sym:quat} = \glssymbol{sym:quatw} + \glssymbol{sym:quatx}\mathbf{i} + \glssymbol{sym:quaty}\mathbf{j} + \glssymbol{sym:quatz}\mathbf{k}$}
+
+    
+\newsymbol{state}{\mathbf{a}}{state vector}{A pose state vector containing the position and orientation}
+\newsymbol{rotmat}{\mathbf{R}}{rotation matrix}{A rotation matrix}
+
+\newsymbol{rfcurrent}{C}{current reference frame}{The reference frame of the currently displayed frame}
+\newsymbol{rfdrone}{D}{drone reference frame}{The reference frame of the drone}
+\newsymbol{rfprocessed}{F}{processing reference frame}{The reference frame of the frame being processed}
+\newsymbol{rfglobal}{G}{global reference frame}{The reference frame of the global coordinate system}
+
+\newsymbol{aov}{\alpha}{angle of view}{The angular extent of a given scene that is imaged by a camera}
+\newsymbol{aovv}{\alpha_v}{angle of view}{The angle of view ini the vertical direction}
+\newsymbol{aovh}{\alpha_h}{angle of view}{The angle of view in the horizontal direction}
+\newsymbol{aovr}{\gamma}{aspect ratio}{The aspect ratio of a camera}
