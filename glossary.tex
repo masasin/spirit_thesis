@@ -4,6 +4,54 @@
   description={A remote controlled flying quadcopter built by the French company Parrot}
 }
 
+\newglossaryentry{pygame}{
+  name={Pygame},
+  text={Pygame},
+  description={A cross-platform set of Python modules designed for writing video games}
+}
+
+\newglossaryentry{pyopengl}{
+  name={PyOpenGL},
+  text={PyOpenGL},
+  description={A Python wrapper for \gls{opengl}}
+}
+
+\newglossaryentry{opengl}{
+  name={OpenGL},
+  text={OpenGL},
+  description={A cross-language, cross-platform \gls{api} for rendering 2D and 3D vector graphics}
+}
+
+\newglossaryentry{navlight}{
+  name={navigation light},
+  text={navigation light},
+  description={Also known as a running light; coloured source of illumination on various vehicles which signal the craft's heading and status}
+}
+
+\newglossaryentry{docker}{
+  name={Docker},
+  text={Docker},
+  description={An open-source software project which automates the deployment of Linux applications inside software containers}
+}
+
+\newglossaryentry{qt}{
+  name={Qt},
+  text={Qt},
+  description={(pronounced ``cute'') A cross-platform application framework for developing application software}
+}
+
+\newglossaryentry{pyqt5}{
+  name={PyQt5},
+  text={PyQt5},
+  description={A set of Python bindings for \gls{qt}}
+}
+
+\newglossaryentry{rviz}{
+  name={rviz},
+  text={rviz},
+  description={A \gls{3d} visualization tool for \gls{ros}}
+}
+
 \newdualentry[longplural={unmanned aerial vehicles}]
 	     [longplural={unmanned aerial vehicles}]
 	     {uav}{UAV}{unmanned aerial vehicle} {
@@ -18,33 +66,31 @@
   Constructing or updating a map of an unknown environment while simultaneously keeping track of an agent's location within it.
 }
 
-\newdualentry[longplural={fields of view}]
-	     [longplural={fields of view}]
-	     {fov}{FOV}{field of view} {
-  The extent of the world that is visible at any given moment.
-}
-
 \newdualentry[see={spir}]{spirit}{SPIRIT}{Superimposed Past Image Records Implemented for Teleoperation} {
   A method which enables operators to see a model of their robot with respect to its environment, in \gls{3d}.
 }
 
 \newacronym{ip}{IP}{Internet Protocol}
+\newacronym{api}{API}{Application Programming Interface}
+\newacronym[longplural={fields of view}]{fov}{FOV}{field of view}
 \newacronym{yaml}{YAML}{Yet Another Markup Language}
 \newacronym{mocap}{mocap}{motion capture}
 \newacronym{spir}{SPIR}{Teleoperation System Using Past Image Records}
 \newacronym{kyodai}{KU}{Kyoto University}
 \newacronym{ps3}{PS3}{PlayStation 3}
-\newacronym[plural=DOF,longplural={degrees of freedom}]{dof}{DOF}{degree of freedom}
+\newacronym[longplural={degrees of freedom}]{dof}{DOF}{degree of freedom}
 \newacronym{lrf}{LRF}{laser rangefinder}
 \newacronym{ai}{AI}{artificial intelligence}
 \newacronym{imu}{IMU}{inertial measurement unit}
 \newacronym{fpv}{FPV}{first person view}
+\newacronym{aov}{AOV}{angle of view}
 \newacronym{gui}{GUI}{graphical user interface}
 \newacronym{ugv}{UGV}{unmanned ground vehicle}
 \newacronym{ptam}{PTAM}{Parallel Tracking and Mapping}
 \newacronym[see={slam}]{rtslam}{RT-SLAM}{Real Time SLAM}
 \newacronym{ekf}{EKF}{Extended Kalman Filter}
 \newacronym{gps}{GPS}{Global Positioning System}
+\newacronym{rf}{RF}{reference frame}
 \newacronym[plural=DOSes, longplural={degradations of signal}]{dos}{DOS}{degradation of signal}
 \newacronym[plural=LOSes, longplural={losses of signal}]{los}{LOS}{loss of signal}
 
@@ -59,7 +105,7 @@
 }
 
 
-\newsymbol{rollaxis}{x_b}{rollaxis}{Axis positive out of nose of the aircraft in the plane of symmetry of the aircraft}
+\newsymbol{rollaxis}{x_b}{roll axis}{Axis positive out of nose of the aircraft in the plane of symmetry of the aircraft}
 \newsymbol{pitchaxis}{z_b}{pitch axis}{Axis perpendicular to the \gls{sym:rollaxis}, in the plane of symmetry of the aircraft, positive below the aircraft}
 \newsymbol{yawaxis}{y_b}{yaw axis}{Axis perpendicular to the \glssymbol{sym:rollaxis}\glssymbol{sym:pitchaxis}-plane, positive out the right wing}
 
@@ -83,12 +129,21 @@
 \newsymbol{state}{\mathbf{a}}{state vector}{A pose state vector containing the position and orientation}
 \newsymbol{rotmat}{\mathbf{R}}{rotation matrix}{A rotation matrix}
 
-\newsymbol{rfcurrent}{C}{current reference frame}{The reference frame of the currently displayed frame}
-\newsymbol{rfdrone}{D}{drone reference frame}{The reference frame of the drone}
-\newsymbol{rfprocessed}{F}{processing reference frame}{The reference frame of the frame being processed}
-\newsymbol{rfglobal}{G}{global reference frame}{The reference frame of the global coordinate system}
+\newsymbol{rfcurrent}{C}{current \acrshort{rf}}{The reference frame of the currently displayed frame}
+\newsymbol{rfdrone}{D}{drone \acrshort{rf}}{The reference frame of the drone}
+\newsymbol{rfprocessed}{F}{processing \acrshort{rf}}{The reference frame of the frame being processed}
+\newsymbol{rfglobal}{G}{global \acrshort{rf}}{The reference frame of the global coordinate system}
 
 \newsymbol{aov}{\alpha}{angle of view}{The angular extent of a given scene that is imaged by a camera}
-\newsymbol{aovv}{\alpha_v}{angle of view}{The angle of view ini the vertical direction}
-\newsymbol{aovh}{\alpha_h}{angle of view}{The angle of view in the horizontal direction}
+\newsymbol{aovv}{\sym{aov}_v}{vertical \acrshort{aov}}{The angle of view in the vertical direction}
+\newsymbol{aovh}{\sym{aov}_h}{horizontal \acrshort{aov}}{The angle of view in the horizontal direction}
 \newsymbol{aovr}{\gamma}{aspect ratio}{The aspect ratio of a camera}
+
+\newsymbol{evalfn}{E}{evaluation function}{An evaluation function, where $\sym{evalfn} = \Sigma\sym{coeff}_{\sym{elemidx}}\sym{elem}_{\sym{elemidx}}$}
+\newsymbol{coeff}{k}{coefficient}{The coefficient of an element in an evaluation function}
+\newsymbol{elem}{f}{element}{An element in an evaluation function}
+\newsymbol{nelems}{n}{number of elements}{The number of elements in an evaluation function}
+\newsymbol{elemidx}{i}{element index}{The index of an element in an evaluation function}
+
+\newsymbol{rotang}{\theta}{rotation angle}{The angle by which an axis in the axis-angle representation is rotated}
+\newsymbol{uvec}{\mathbf{e}}{rotation vector}{The vector around which the rotation happens in the axis-angle representation, in \gls{3d}}

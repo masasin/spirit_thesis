@@ -62,14 +62,14 @@
 
 \section{General components}
   \subsection{Environment}
-    The operating station runs in a single docker container on a Linux laptop.
-    The primary components of the docker image are:
+    The operating station runs in a single \gls{docker} container on a Linux laptop.
+    The primary components of the \gls{docker} image are:
 
     \begin{itemize}
       \item \gls{ros}
       \item Python 2.7
       \item Virtualenv
-      \item OpenGL
+      \item \gls{opengl}
       \item Nvidia drivers
       \item Necessary \gls{ros} and Python packages
     \end{itemize}
@@ -175,7 +175,7 @@
       \mathbf{i}^2 = \mathbf{j}^2 = \mathbf{k}^2 = \mathbf{ijk} = -1
     \end{equation}
 
-    The state vector is $\sym{state} = \left[\sym{pos}\sym{quat}\right]^T$.
+    The state vector is $\sym{state} = \begin{bmatrix}\sym{pos} & \sym{quat}\end{bmatrix}^\top$.
     
     The rotation matrix \sym{rotmat}, based on quaternions, is defined as:\cite{wiki_rotmat}
 
@@ -216,7 +216,7 @@
       \sym{quatim} = \begin{bmatrix}\sym{quatx} \\ \sym{quaty} \\ \sym{quatz}\end{bmatrix}
     \end{equation}
 
-    The solution is:
+    and $\sym{quat} = \begin{bmatrix}\sym{quatim} & \sym{quatw}\end{bmatrix}^\top$. The solution is:
 
     \begin{equation}
       ^{\sym{rfprocessed}}_{\sym{rfdrone}}\Delta\sym{quat} = \begin{bmatrix}
@@ -230,6 +230,8 @@
     Optitrack's \emph{Motive} software is used to collect \gls{mocap} data on the position and orientation of the drone.
     Four infrared markers are set onto the top of the drone, and the Optitrack infrared cameras are connected to the \gls{mocap} computer.
     The markers forming the drone are defined as a rigid body, allowing the pose information to be calculated for the entire drone at once.
+
+    % TODO: Mocap screenshots.
 
     The \gls{mocap} system then streams the data, including the rigid body information, via multicast.
     The data is received by the operating station, interpreted by \gls{ros}'s \texttt{\detokenize{mocap_optitrack}} package, and republished to \texttt{ardrone}'s the \texttt{\detokenize{ground_pose}} and \texttt{\detokenize{pose}} nodes.
@@ -292,6 +294,15 @@
       \label{fig:drones_view}
     \end{figure}
 
+    Evaluation functions are defined as:
+
+    \begin{equation}
+      \sym{evalfn} = \sum_{\sym{elemidx}=1}^{\sym{nelems}}{\sym{coeff}_{\sym{elemidx}}\sym{elem}_{\sym{elemidx}}}
+    \end{equation}
+    
+    where $\sym{nelems}$ is the number of elements in the evaluation function, $\sym{elem}_{\sym{elemidx}}$ is an element, and $\sym{coeff}_{\sym{elemidx}}$ is its corresponding coefficient.
+    After evaluation, the frame with the lowest score is selected, and its contents are streamed to the \texttt{/ardrone} namespace's \texttt{\detokenize{past_image}} and \texttt{\detokenize{past_pose}} nodes.
+
     \subsubsection{Naïve evaluation functions}
       The simplest evaluation function for past image view is one with constant time delay, as suggested by Shiroma et al.\cite{shiroma2004}
       One can quickly find a frame with a specific age by doing a binary search in the chronologically-ordered array.
@@ -305,15 +316,18 @@
     \subsubsection{Murata evaluation function}
       Murata et al.'s evaluation function was designed for \gls{3d} environments,\cite{murata2014} and an attempt was made at using it.
 
-      The evaluation function is as follows:
+      The evaluation function is:
 
-      \begin{align}
-	E &= a_1\left(\frac{\Delta\sym{posz} - \Delta\sym{posz}_{ref}}{\Delta\sym{posz}_{ref}}\right)^2  % relative height
-	  + a_2\left(\frac{2\Delta\sym{yaw}}{\pi}\right)^2  % pointing in the same direction
-	  + a_3\left(\frac{\arctan\left(\frac{\sqrt{\Delta\sym{posx}^2 + \Delta\sym{posz}^2}}{\Delta\sym{posy}}\right)}{\sym{aovv}}\right)^2 \\  % tilt angle
-	  &+ a_4\left(\frac{\left\|\Delta\sym{pos}\right\| - \left\|\Delta\sym{pos}\right\|_{ref}}{\left\|\Delta\sym{pos}\right\|_{ref}}\right)^2 
-	  + a_5\left(\frac{\left\|\sym{state}_{\sym{rfprocessed}} - \sym{state}_{\sym{rfcurrent}}\right\|}{\sym{state}_{\sym{rfcurrent}}}\right)^2
-      \end{align}
+      \begin{equation}
+	\begin{split}
+	  \sym{evalfn}_{\mathrm{Murata}}
+	               &= \sym{coeff}_1\left(\frac{\Delta\sym{posz} - \Delta\sym{posz}_{ref}}{\Delta\sym{posz}_{ref}}\right)^2  % relative height
+		        + \sym{coeff}_2\left(\frac{2\Delta\sym{yaw}}{\pi}\right)^2  % pointing in the same direction
+	                + \sym{coeff}_3\left(\frac{\arctan\left(\frac{\sqrt{\Delta\sym{posx}^2 + \Delta\sym{posz}^2}}{\Delta\sym{posy}}\right)}{\sym{aovv}}\right)^2 \\  % tilt angle
+	               &+ \sym{coeff}_4\left(\frac{\left\|\Delta\sym{pos}\right\| - \left\|\Delta\sym{pos}\right\|_{ref}}{\left\|\Delta\sym{pos}\right\|_{ref}}\right)^2   % distance
+	                + \sym{coeff}_5\left(\frac{\left\|\sym{state}_{\sym{rfprocessed}} - \sym{state}_{\sym{rfcurrent}}\right\|}{\sym{state}_{\sym{rfcurrent}}}\right)^2  % minimize change
+	\end{split}
+      \end{equation}
 
       where \sym{aovv} is the vertical angle of view such that:
 
@@ -321,27 +335,171 @@
 	\sym{aovv} = 2\arctan\left(\sym{aovr}\tan\frac{\sym{aovh}}{2}\right)
       \end{equation}
 
-      and \sym{aovr} is the aspect ratio of the display and \sym{aovh} is the horizontal angle of view.
+      where \sym{aovr} is the aspect ratio of the display and \sym{aovh} is the horizontal angle of view.
 
       The five components are as follows:
 
       \begin{itemize}
-	\item $a_1$ represents the height of the viewpoint.
+	\item $\sym{elem}_1$ represents the height of the viewpoint.
 	      We want to see the drone from slightly above.
-	\item $a_2$ represents the azimuth angle of the viewpoint.
+	\item $\sym{elem}_2$ represents the azimuth angle of the viewpoint.
 	      We want to see the drone from behind.
-	\item $a_3$ represents the tilt angle of the viewpoint.
+	\item $\sym{elem}_3$ represents the tilt angle of the viewpoint.
 	      The closer it is to zero, the closer to the centre of the image the drone is.
-	\item $a_4$ represents the distance to the drone.
-	      We wanted to be at a specific distance.
-	\item $a_5$ represents the movement of the viewpoint if the frame being processed is selected.
+	\item $\sym{elem}_4$ represents the distance to the drone.
+	      We want to be as close as possible to an ideal distance away, such that the drone is neither too big nor too small.
+	\item $\sym{elem}_5$ represents the movement of the viewpoint if the frame being processed is selected.
 	      The smaller it is, the smoother the transition.
       \end{itemize}
 
-      Murata et al.'s function performed better than the naïve ones.
+      Murata et al.'s function performed much better than the naïve ones.
 
     \subsubsection{SPIRIT evaluation function}
-      The SPIRIT evaluation function is derived 
+      The final version of the \gls{spirit} evaluation function is:
+
+      \begin{equation}
+	\begin{split}
+	  \sym{evalfn}_{\mathrm{\gls{spirit}}}
+	               &= \sym{coeff}_1\frac{\sqrt{\Delta\sym{posx}^2 + \Delta\sym{posz}^2}}{\left\|\Delta\sym{pos}\right\|_{ref}}  % centrality
+			+ \sym{coeff}_2\Delta\sym{yaw}^2  % relative yaw
+	                + \sym{coeff}_3\left(\frac{\left\|\Delta\sym{pos}\right\| - \left\|\Delta\sym{pos}\right\|_{ref}}{\left\|\Delta\sym{pos}\right\|_{ref}}\right)^2 \\  % distance
+		       &+ \sym{coeff}_4{}^{\sym{rfcurrent}}_{\sym{rfprocessed}}\Delta\sym{yaw}^2  % frame direction
+			+ \sym{coeff}_5\frac{\left\|^{\sym{rfcurrent}}_{\sym{rfprocessed}}\Delta\sym{pos}\right\|}{\left\|\Delta\sym{pos}\right\|_{ref}}  % frame distance
+	\end{split}
+      \end{equation}
+
+      The five components are as follows:
+
+      \begin{itemize}
+	\item $\sym{elem}_1$ represents the centrality, or how close the drone is to the centre of the frame.
+	\item $\sym{elem}_2$ represents the difference in yaw between the drone and the frame.
+	      We would like to see the drone directly from behind, and face in the same direction as it.
+	\item $\sym{elem}_3$ represents the distance to the drone.
+	      We want to be as close as possible to an ideal distance away, such that the drone is neither too big nor too small.
+	\item $\sym{elem}_4$ represents the difference in yaw between the currently displayed frame and the frame being processed.
+	      The smaller it is, the smaller the angular difference is if the frame is selected.
+	\item $\sym{elem}_5$ represents the difference in distance between the currently displayed frame and the frame being processed.
+	      The smaller it is, the closer the two frames are and the smoother the transition.
+      \end{itemize}
+
+      A previous version of $\sym{elem}_1$, centrality, was:
+
+      \begin{equation}
+	\sym{elem}_{1,\mathrm{old}} = \frac{\Delta\sym{posx}^2 + \Delta\sym{posz}^2}{\Delta\sym{posy}^2}
+      \end{equation}
+
+      However, it was not used in the final setup because $\sym{elem}_1$ was more effective.  % TODO: Was it?
+
+      The values of the coefficients as used in the experiments are:
+
+      \begin{align*}
+	\sym{coeff}_1 &= 2 \\
+	\sym{coeff}_2 &= 0.3 \\
+	\sym{coeff}_3 &= 4 \\
+	\sym{coeff}_4 &= 0.5 \\
+	\sym{coeff}_5 &= 1
+      \end{align*}
+
+      % TODO: Update final values.
 
 \section{Visualization}
-  \subsection{OpenGL}
+  Visualization in \gls{ros} is usually done with \gls{rviz}.
+  However, due to a lack of good documentation during the early implementation phase, as well as various problems in displaying the background correctly with respect to the drone avatar, it was abandoned for a custom solution.
+  The most advanced state with \gls{rviz} is shown in Figure \ref{fig:rviz_display}.
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{rviz_display}
+    \caption[rviz maximum progress]{Maximum progress with \gls{rviz}.}
+    \label{fig:rviz_display}
+  \end{figure}
+
+  \subsection{Components}
+    Visualization in this project uses three different libraries: \gls{pyopengl}, \gls{pygame}, and \gls{pyqt5}.
+
+    \subsubsection{PyOpenGL}
+    \gls{pyopengl} is used to render the avatar of the \gls{ardrone} in the scene.
+    The current drone pose information is in the \texttt{/ardrone/pose} node, while the frame information is obtained from the \texttt{\detokenize{past_image}} and \texttt{\detokenize{past_pose}} nodes of the same namespace.
+
+    Context managers for commonly-used \gls{pyopengl} functionality were written to ease development.
+    
+    \subsubsection{Pygame}
+    \gls{pygame} is used to produce the horn sounds if tracking is lost or reacquired.
+    It is also used to host the \gls{pyopengl} scene which is rendered.
+    However, simple tasks require a roundabout way of doing things, so future iterations may not use \gls{pygame} at all.
+
+    \subsubsection{PyQt5}
+    \gls{pyqt5} is used to create a window for streaming video feeds.
+    When the \gls{ardrone} is connected, its remaining battery percentage and flight status are displayed in the status bar at the bottom of the window.
+    % TODO: show PyQT5 window screenshot.
+
+    \gls{pyqt5} could also be used to replace \gls{pygame} for producing the horn sound when tracking is lost or reconnected, as well as hosting the \gls{pyopengl} scene.
+    At the time of writing, this is yet to be done.
+
+  \subsection{Rendering}
+    The visualizer is run as a multithreaded application in order to maximize responsiveness.
+    After obtaining the relevant data, the relative positions and orientations of the drone and the frame are calculated.
+    A new texture is automatically loaded whenever a new \texttt{\detokenize{past_image}} is published, and is used as the frame when the scene is rendered.
+
+    \gls{opengl} uses an axis-angle representation, so the relative orientation is converted from quaternion to axis angle using the following formula:
+
+    \begin{align}
+      \sym{rotang} &= 2\arccos\sym{quatw} \\
+      \sym{uvec} &= 
+      \begin{dcases}
+	\begin{bmatrix}1 & 0 & 0\end{bmatrix},& \text{if } \sym{rotang} = 0 \\
+	\begin{bmatrix}\sym{quatx} & \sym{quaty} & \sym{quatz}\end{bmatrix},& \text{if } \sym{rotang} \bmod 180 = 0 \\
+      \frac{\begin{bmatrix}\sym{quatx} & \sym{quaty} & \sym{quatz}\end{bmatrix}}{\sqrt{1 - \sym{quatw}^2}} & \text{otherwise}
+      \end{dcases}
+    \end{align}
+
+    where \sym{rotang} is the rotation angle.
+
+    The scene is re-rendered whenever a new \texttt{pose} is published.
+    First, the relative position is calculated as $\Delta\sym{pos} = \sym{pos}_{\sym{rfprocessed}} - \sym{pos}_{\sym{rfdrone}}$, and the orientations of the frame and the drone are converted into an \gls{opengl} quaternion using the following mapping:
+
+    \begin{equation}
+      \begin{bmatrix}\sym{quatx} & \sym{quaty} & \sym{quatz} & \sym{quatw}\end{bmatrix} \mapsto
+      \begin{bmatrix}-\sym{quatx} & \sym{quatz} & \sym{quaty} & \sym{quatw}\end{bmatrix}
+    \end{equation}
+
+    In a new matrix, the perspective is rotated by the same amount the frame is.
+    Since the \sym{quatz} axis is with respect to the origin, not the camera, that component is first multiplied by $-1$.
+    Next, the relative positions are converted to the \gls{opengl} coordinate frame using the following mapping:
+
+    \begin{equation}
+      \begin{bmatrix}\Delta\sym{posx} & \Delta\sym{posy} & \Delta\sym{posz}\end{bmatrix} \mapsto
+      \begin{bmatrix}\Delta\sym{posx} & -\Delta\sym{posz} & -\Delta\sym{posy}\end{bmatrix}
+    \end{equation}
+
+    The scene translates by that amount.
+    The current texture is then drawn as a \gls{2d} orthographic projection covering the entire scene.
+
+    After that, the drone is drawn at the origin.
+    The model of the drone is shown as a blank parallelipiped using \gls{opengl} primitives, with the same dimensions as the edges of the actual drone.
+    A surface in the shape of an arrow is added to the top side, and coloured using the standard \gls{navlight} colouration.
+    Specifically, the left side of the drone is shown in red, while its right side is in green.
+    To draw it, a new matrix is pushed, and the scene is rotated by the relative orientation, after which the individual components are added.
+
+    Finally, text can be superimposed using orthographic projection, if it is necessary.
+    This is used, for instance, when warning the operator that there is no data yet, or when tracking is lost.
+
+    The final interface is shown in Figure \ref{fig:spirit_interface_tracked}.
+
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=\textwidth]{spirit_interface_tracked}
+      \caption[SPIRIT final interface]{Final interface for \gls{spirit}, with the \gls{ardrone} tracked. Here, the operator is attempting to land it on a chair.}
+      \label{fig:spirit_interface_tracked}
+    \end{figure}
+    
+    An offline testing mode, with an optional web camera feed, was added to the past-image visualizer for debugging purposes.
+
+    % TODO: Full screnshot of UI.
+
+  \subsection{Suggested improvements}
+    The user experience may be improved if zoom functionality is added.
+    That way, the size of the drone model would remain relatively constant, while the background changes, even with the same image as its base.
+    
+    Similarly, it might be useful to always keep the horizon horizontal and tilt the image by the amount the drone was tilted when the frame was captured.
+    Extending it to all three Eulerian axes would allow, for instance, the pitch to be used.

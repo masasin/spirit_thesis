@@ -2,7 +2,8 @@
 % Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 \ProvidesPackage{masastyle}
 
-\newcommand\mytitle{Developing a System of Superimposed Past Image Records Implemented for Teleoperation of an Unmanned Multirotor}
+%\newcommand\mytitle{Developing a System of Superimposed Past Image Records Implemented for Teleoperation of an Unmanned Rotorcraft}
+\newcommand\mytitle{Generation of Third Person Perspective in 3D Environments using Superimposed Past Image Records}
 
 \usepackage{siunitx}
 \usepackage[hidelinks]{hyperref}
@@ -13,7 +14,7 @@
   pdfkeywords={SPIR, SPIRIT, ergonomics, interfaces, robotics, teleoperation, augmented reality, virtual reality}
 }
 
-\usepackage{amsmath}
+\usepackage{mathtools}
 
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -38,10 +39,10 @@
 \usepackage{verbatim}  % for multiple-line comments
 
 \usepackage[acronym, symbols, toc]{glossaries}
-\newglossary[nlg]{notation}{not}{ntn}{Notation}
+% \newglossary[nlg]{notation}{not}{ntn}{Notation}
 % \newglossary[slg]{symbols}{sym}{sbl}{Symbols}
 \setacronymstyle{long-short}
-\glossarystyle{altlong4col}
+\setglossarystyle{altlong4col}
 
 \usepackage{relsize}
 \newcommand\cpp{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}}
@@ -80,7 +81,7 @@
   \setbox\two=\vsplit\one to #1\baselineskip
 \unvbox\two}
 
-\usepackage[backend=biber, natbib=true, firstinits=true, sorting=none]{biblatex}
+\usepackage[backend=biber, natbib=true, firstinits=true, sorting=none, urldate=iso8601, date=iso8601]{biblatex}
 \addbibresource{mshtsy_thesis.bib}
 % \usepackage[en-CA]{datetime2}
 

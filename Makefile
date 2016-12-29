@@ -77,6 +77,7 @@ refs:: debug
 	biber $(MASTER)
 	make debug
 	make debug
+	make debug
 
 # target: debug - Run the latex engine once.
 debug::
