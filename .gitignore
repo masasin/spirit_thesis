@@ -222,6 +222,7 @@ acs-*.bib
 *.ntn
 *.sbl
 *.slg
+*.sls
 *.sym
 
 # gnuplottex
