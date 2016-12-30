@@ -65,6 +65,13 @@ Some setups allow the camera on the drone to gimbal, while others have a zoomed-
   \label{fig:fpv_various}
 \end{figure}
 
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering
+  \includegraphics[width=0.48\textwidth]{ardrone_dos}
+  \caption[AR.Drone signal profile]{Signal strength of the \gls{ardrone} with respect to distance. Extracted from \cite{ardrone_dos}.}
+  \label{fig:ardrone_dos}
+\end{wrapfigure}
+
 \gls{fpv}, however, is normally \gls{2d}, and does not afford the user any depth perception.
 As a result, loss of situational (i.e.\ spatial) awareness can occur, and the boundaries of the vehicle with respect to the environment might not be known.
 This is known to have contributed to multiple crashes into the environment in the past, with powerlines damaged,\cite{latimes2015} and people gravely injured.\cite{seattletimes2015,bbcnews2015}
@@ -73,14 +80,6 @@ Incidents of \glspl{uav} flying dangerously close to airports have also been rep
 Moreover, \gls{dos} can occur when flying far, or in an environment with bad reception, causing dropped frames and choppy video.
 The operator may then miss important cues and react too late, leading to an accident.
 The signal profile of the \gls{ardrone}, used in this research, is shown in Figure \ref{fig:ardrone_dos}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.6\textwidth]{ardrone_dos}
-  \caption[AR.Drone signal profile]{Signal strength of the \gls{ardrone} with respect to distance. Extracted from \cite{ardrone_dos}.}
-  \label{fig:ardrone_dos}
-\end{figure}
-
 
 \section{Research objective}
 The objective of this research is to increase the situational awareness of a \gls{uav} pilot using a single onboard monocular camera, reducing collisions in confined environments.
