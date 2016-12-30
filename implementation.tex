@@ -76,7 +76,7 @@
 
     A separate Windows laptop has separate ethernet connections to the lab's motion capture system and to the operating station.
     The \gls{ardrone} connects to the operating station by acting as a Wifi access point.
-    Communication with the drone is achieved using the Simon Fraser University Autonomy Lab's \texttt{\detokenize{ardrone_autonomy}} package.
+    Communication with the drone is achieved using the \texttt{\detokenize{ardrone_autonomy}} package from Simon Fraser University's Autonomy Laboratory.
 
     The research code was written entirely in Python.
     Taking advantage of \gls{ros}'s modularity, each function is completely encapsulated in one or more nodes.
@@ -234,7 +234,7 @@
     % TODO: Mocap screenshots.
 
     The \gls{mocap} system then streams the data, including the rigid body information, via multicast.
-    The data is received by the operating station, interpreted by \gls{ros}'s \texttt{\detokenize{mocap_optitrack}} package, and republished to \texttt{ardrone}'s the \texttt{\detokenize{ground_pose}} and \texttt{\detokenize{pose}} nodes.
+    The data is received by the operating station, interpreted by \gls{ros}'s \texttt{\detokenize{mocap_optitrack}} package, and republished to \texttt{ardrone}'s the \texttt{\detokenize{pose}} and \texttt{\detokenize{ground_pose}} nodes.
     The latter uses quaternions instead of the Eulerian coordinates which \emph{Motive} displays.
 
     The motion capture setup was good for prototyping without needing to turn on the drone, and it had good accuracy compared to, say, \gls{gps}.
