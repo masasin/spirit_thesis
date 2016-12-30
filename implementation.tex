@@ -40,7 +40,7 @@
   The actual implementation is discussed below.
 
 \chapter{System overview}
-  The system overview for \gls{spirit} is shown in Fgiure \ref{fig:spirit_flowchart}.
+  The system overview for \gls{spirit} is shown in \fref{fig:spirit_flowchart}.
 
   \begin{figure}[h]
     \centering
@@ -92,7 +92,7 @@
     Identifying the controllers and selecting the correct mapping has also been demonstrated, but is not implemented in the final setup.
     % TODO: Has it been implemented yet?
 
-    The \gls{ros} graph is shown in Figure \ref{fig:rqt_graph}.
+    The \gls{ros} graph is shown in \fref{fig:rqt_graph}.
     % TODO: Add rqt_graph.
     \begin{figure}[h]
       \centering
@@ -127,7 +127,7 @@
 \chapter{Poses}
 \label{sec:poses}
   \section{Terminology}
-    Roll (\sym{roll}), pitch (\sym{pitch}), and yaw (\sym{yaw}) refer to rotations about the respective axes (\sym{rollaxis}, \sym{pitchaxis}, \sym{yawaxis}), as shown in Figure \ref{fig:drone_rpy}.
+    Roll (\sym{roll}), pitch (\sym{pitch}), and yaw (\sym{yaw}) refer to rotations about the respective axes (\sym{rollaxis}, \sym{pitchaxis}, \sym{yawaxis}), as shown in \fref{fig:drone_rpy}.
     The convention used in this report are with respect to the body frame of reference. The positive direction is determined by the right-hand rule.
 
     \begin{figure}[h]
@@ -143,7 +143,7 @@
 	\caption{Pose variables.}
 	\label{fig:drones_ref}
       \end{subfigure}
-      \caption[Pose parameter definitions]{Figure \ref{fig:drone_rpy} shows the definitions of roll, pitch, and yaw with respect to an aircraft in the body frame of reference. Figure \ref{fig:drones_ref} shows the pose variables, and the relative positions of the current drone position and the frame being processed.}
+      \caption[Pose parameter definitions]{\fref{fig:drone_rpy} shows the definitions of roll, pitch, and yaw with respect to an aircraft in the body frame of reference. \fref{fig:drones_ref} shows the pose variables, and the relative positions of the current drone position and the frame being processed.}
     \end{figure}
 
     The position of the drone is represented by \sym{pos}, and defined as:
@@ -244,7 +244,7 @@
     If the \gls{mocap} system is unable to determine the pose of the drone, whether by marker occlusion or lack of information, \emph{Motive} sends the last known position instead of raising an error.
     In that case, the visualization system would be using out-of-date pose data, which could cause problems.
     As a result, the pose is tracked over time, and the boolean status is published to \texttt{\detokenize{/ardrone/tracked}} and can be used by other nodes.
-    For instance, if tracking is lost, an audible horn sounds, accompanied by a visual warning for the operator, as shown in Figure \ref{fig:spirit_interface_lost}.
+    For instance, if tracking is lost, an audible horn sounds, accompanied by a visual warning for the operator, as shown in \fref{fig:spirit_interface_lost}.
 
     \begin{figure}[h]
       \centering
@@ -277,7 +277,7 @@
   \section{Evaluation functions}
     In this section, all $\Delta$ differences are from the drone with respect to the frame being processed, unless otherwise specified.
     In addition, $_{ref}$ indicates a reference, or ideal value, which can be set by the operator.
-    Figure \ref{fig:drones_view} shows the relative positions. For more information on the notation, please see Section \ref{sec:poses}.
+    \fref{fig:drones_view} shows the relative positions. For more information on the notation, please see Section \ref{sec:poses}.
 
     \begin{figure}[h]
       \centering
@@ -405,7 +405,7 @@
 \chapter{Visualization}
   Visualization in \gls{ros} is usually done with \gls{rviz}.
   However, due to a lack of good documentation during the early implementation phase, as well as various problems in displaying the background correctly with respect to the drone avatar, it was abandoned for a custom solution.
-  The most advanced state with \gls{rviz} is shown in Figure \ref{fig:rviz_display}.
+  The most advanced state with \gls{rviz} is shown in \fref{fig:rviz_display}.
 
   \begin{figure}[h]
     \centering
@@ -484,7 +484,7 @@
     Finally, text can be superimposed using orthographic projection, if it is necessary.
     This is used, for instance, when warning the operator that there is no data yet, or when tracking is lost.
 
-    The final interface is shown in Figure \ref{fig:spirit_interface_tracked}.
+    The final interface is shown in \fref{fig:spirit_interface_tracked}.
 
     \begin{figure}[h]
       \centering
