@@ -456,7 +456,7 @@
     where \sym{rotang} is the rotation angle.
 
     The scene is re-rendered whenever a new \texttt{pose} is published.
-    First, the relative position is calculated as $\Delta\sym{pos} = \sym{pos}_{\sym{rfprocessed}} - \sym{pos}_{\sym{rfdrone}}$, and the orientations of the frame and the drone are converted into an \gls{opengl} quaternion using the following mapping:
+    First, the relative position is calculated as $^{\sym{rfdrone}}_{\sym{rfprocessed}}\Delta\sym{pos} = \sym{pos}_{\sym{rfprocessed}} - \sym{pos}_{\sym{rfdrone}}$, and the orientations of the frame and the drone are converted into an \gls{opengl} quaternion using the following mapping:
 
     \begin{equation}
       \begin{bmatrix}\sym{quatx} & \sym{quaty} & \sym{quatz} & \sym{quatw}\end{bmatrix} \mapsto
