@@ -4,6 +4,8 @@
 	       10pt, a4paper, twoside, openany]{book}
 
 \usepackage{masastyle}
+\usepackage{fancyhdr}
+\renewcommand{\chaptername}{Section}
 
 \includeonly{
   frontmatter,
@@ -32,8 +34,9 @@
 \part{Experiments}
 \label{pt:experiments}
 \include{experiments}
+\part{Results and Conclusions}
+\label{pt:results}
 \include{results}
-\part{Conclusions}
 \label{pt:conclusions}
 \include{conclusions}
 \part{Appendices}
