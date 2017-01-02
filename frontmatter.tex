@@ -27,16 +27,16 @@
   \vfill\vfill
 }
 \renewcommand{\maketitlehookc}{
-  \vfill
+  %\vfill
 }
-\renewcommand{\maketitlehookd}{
-  \begin{center}
-    \begin{figure}[h]
-      \centering
-      \includegraphics{by-sa-big}
-    \end{figure}
-  \end{center}
-}
+%\renewcommand{\maketitlehookd}{
+  %\begin{center}
+    %\begin{figure}[h]
+      %\centering
+      %\includegraphics{by-sa-big}
+    %\end{figure}
+  %\end{center}
+%}
 
 \title{\mytitle}
 % \author{Jean \textsc{Nassar}\thanks{Supervisor: Dr.~Fumitoshi Matsuno}}
@@ -45,21 +45,60 @@
 
 \begin{titlingpage}
 \maketitle
+\thispagestyle{empty}
+
+% Copyright page
+\clearpage
+\null\vfill
+\noindent \emph{\mytitle}
+
+\noindent \emph{\mytitlejp}
+\vspace{1em}
+
+\noindent All the source code for this project is accessible at the author's public Github profile (\url{https://github.com/masasin}).
+The source code for the \acrshort{spirit} system software, the experimental data analysis, and the thesis itself are available in the \href{https://github.com/masasin/spirit}{\textsf{spirit}}, \href{https://github.com/masasin/spirit_analysis}{\textsf{\detokenize{spirit_analysis}}}, and \href{https://github.com/masasin/spirit_thesis}{\textsf{\detokenize{spirit_thesis}}} repositories respectively.
+\vspace{1em}
+
+\noindent This document was typeset using the \XeTeX\ typesetting system created by the Non-Roman Script Initiative and the \textsf{memoir} class created by Peter Wilson.
+The text is set in \mytextsize\ in Linux~Libertine~O.
+The other fonts used include \textsf{Linux~Biolinum~O}, \texttt{Deja~Vu~Sans~Mono}, and IPA~Mincho~(明朝).
+\vspace{1em}
+
+\noindent \includegraphics{by-sa-big}
+
+\noindent
+% \includegraphics{by-sa}
+Copyright \copyright 2017 by Jean Nassar.
+
+\noindent This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
+To view a copy of this license, visit:\\
+\url{http://creativecommons.org/licenses/by-sa/4.0/}
+
+\noindent The accompanying software is licensed under the Berkeley Software Distribution 3-Clause License, except where otherwise noted.
 \end{titlingpage}
+
 
 % Dedication
 %\clearpage
 \thispagestyle{empty}
-  \null\vspace{\stretch{1}}
-    \noindent
-    because [\ldots] if you don't know where you are, then you don't know where you're going.
-    And if you don't know where you're going, you're probably going wrong.
+\setlength{\epigraphwidth}{0.7\textwidth}
+\null\vfill
+\epigraph{
+  because [\ldots] if you don't know where you are, then you don't know where you're going.
+  And if you don't know where you're going, you're probably going wrong.}
+  {\emph{I Shall Wear Midnight}\\
+   Terry \textsc{Pratchett}}
+\vfill\vfill\null
+  %\null\vspace{\stretch{1}}
+    %\noindent
+    %because [\ldots] if you don't know where you are, then you don't know where you're going.
+    %And if you don't know where you're going, you're probably going wrong.
 
-    \begin{flushright}
-      \emph{I Shall Wear Midnight}\\
-      \textsc{Terry Pratchett}
-    \end{flushright}
-  \vspace{\stretch{2}}\null
+    %\begin{flushright}
+      %\emph{I Shall Wear Midnight}\\
+      %\textsc{Terry Pratchett}
+    %\end{flushright}
+  %\vspace{\stretch{2}}\null
 
 % Abstract
 \clearpage
@@ -76,7 +115,7 @@
 
   Using the proposed interface, the operator's situational awareness can be significantly increased.
 \end{abstract}
-\vfill\null
+\vfill\vfill\null
 
 
 % Acknowledgements
@@ -87,7 +126,7 @@
 \begin{abstract}
   I would like to thank everyone who supported and assisted me, directly and indirectly.
 \end{abstract}
-\vfill\null
+\vfill\vfill\null
 
 
 % Table of contents etc

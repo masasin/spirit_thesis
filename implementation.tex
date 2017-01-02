@@ -3,10 +3,10 @@
 % SPIRIT
 \chapter{Proposal}
 \label{sec:proposal}
-\setlength{\epigraphwidth}{0.43\textwidth}
-\epigraphhead{\epigraph{
-  If you don't know where you are, then you don't know where you're going.
-}{\emph{I Shall Wear Midnight}\\\textsc{Terry Pratchett}}}
+% \setlength{\epigraphwidth}{0.43\textwidth}
+%\epigraphhead{\epigraph{
+  %If you don't know where you are, then you don't know where you're going.
+%}{\emph{I Shall Wear Midnight}\\\textsc{Terry Pratchett}}}
   The proposal was to upgrade \gls{spir} to allow it to work better with quadrotors.
   Operator workload should decrease in positioning and orientation tasks.
 
@@ -44,7 +44,7 @@
 
   \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{spirit_flowchart}
+    \includegraphics[width=0.9\textwidth]{spirit_flowchart}
     \caption[SPIRIT system overview]{\gls{spirit} system overview.}
     \label{fig:spirit_flowchart}
   \end{figure}
@@ -77,16 +77,16 @@
 
     A separate Windows laptop has separate ethernet connections to the lab's motion capture system and to the operating station.
     The \gls{ardrone} connects to the operating station by acting as a Wifi access point.
-    Communication with the drone is achieved using the \texttt{\detokenize{ardrone_autonomy}} package from Simon Fraser University's Autonomy Laboratory.
+    Communication with the drone is achieved using the \textsf{\detokenize{ardrone_autonomy}} package from Simon Fraser University's Autonomy Laboratory.
 
     The research code was written entirely in Python.
     Taking advantage of \gls{ros}'s modularity, each function is completely encapsulated in one or more nodes.
     As a result, implementing a new algorithm or introducing a new method to obtain data simply involves writing new code which publishes to the correct nodes.
     Any supported programming languages can be used.
-    For instance, the speed of \cpp can be leveraged where necessary.
+    For instance, the speed of \cpp\ can be leveraged where necessary.
     
-    In addition, launch files are generated on the fly from \texttt{xacro} files, with configuration data stored in various \gls{yaml} files.
-    Selecting and changing coefficients of the various evaluation functions, for example, is in the \texttt{\detokenize{launch_config.yaml}} file.
+    In addition, launch files are generated on the fly from \textsf{xacro} files, with configuration data stored in various \gls{yaml} files.
+    Selecting and changing coefficients of the various evaluation functions, for example, is in the \textsf{\detokenize{launch_config.yaml}} file.
     The configuration generator inspects the source code to ensure that the evaluation function class exists and that each component is indeed a runnable method.
     The generator also sets the default values of various parameters, such as the \gls{ardrone}'s \gls{ip} address or the device file for the controller.
     Identifying the controllers and selecting the correct mapping has also been demonstrated, but is not implemented in the final setup.
@@ -103,7 +103,7 @@
 
   \section{Control}
     The operating station receives operator input from an off-the-shelf \gls{ps3} console gamepad, and forwards it to the drone.
-    After the setup of the button and axis mappings was complete, the controller publishes directly to the relevant \texttt{\detokenize{/ardrone}} nodes set up by \texttt{\detokenize{ardrone_autonomy}}.
+    After the setup of the button and axis mappings was complete, the controller publishes directly to the relevant \texttt{\detokenize{/ardrone}} nodes set up by \textsf{\detokenize{ardrone_autonomy}}.
 
     There is no automation in flying the \gls{ardrone} apart from the built-in \gls{ai}.
     The default control system implemented by Parrot is used.
@@ -119,7 +119,7 @@
     \gls{ros}'s \texttt{PoseStamped} messages are wrapped as a \texttt{Pose} object, which exposes the position and orientation of the message as numpy arrays.
     This class also allows the calculation of relative Euler angles and distances with other \texttt{Pose}s.
 
-    New \texttt{Image}s (from \texttt{\detokenize{sensor_msgs.msg}}) and the latest available \texttt{Pose} are stored in a \texttt{Frame} object.
+    New \texttt{Image}s (from \textsf{\detokenize{sensor_msgs.msg}}) and the latest available \texttt{Pose} are stored in a \texttt{Frame} object.
     A \texttt{Frame} also allows easy calculation the relative position with another \texttt{Pose} in the local reference frame.
     Since the same calculation is run multiple times per frame, the result was memoized, causing a significant speedup.
   
@@ -235,7 +235,7 @@
     % TODO: Mocap screenshots.
 
     The \gls{mocap} system then streams the data, including the rigid body information, via multicast.
-    The data is received by the operating station, interpreted by \gls{ros}'s \texttt{\detokenize{mocap_optitrack}} package, and republished to \texttt{ardrone}'s the \texttt{\detokenize{pose}} and \texttt{\detokenize{ground_pose}} nodes.
+    The data is received by the operating station, interpreted by \gls{ros}'s \textsf{\detokenize{mocap_optitrack}} package, and republished to \texttt{/ardrone}'s \texttt{\detokenize{pose}} and \texttt{\detokenize{ground_pose}} nodes.
     The latter uses quaternions instead of the Eulerian coordinates which \emph{Motive} displays.
 
     The motion capture setup was good for prototyping without needing to turn on the drone, and it had good accuracy compared to, say, \gls{gps}.
@@ -254,7 +254,7 @@
     \end{figure}
 
   \section{Other methods}
-    One method of obtaining the pose, which is not used in the final setup, is the ability of \texttt{\detokenize{ardrone_autonomy}} to obtain drone odometry from the bottom-facing camera, \gls{imu}, altimiter, and barometer.
+    One method of obtaining the pose, which is not used in the final setup, is the ability of \textsf{\detokenize{ardrone_autonomy}} to obtain drone odometry from the bottom-facing camera, \gls{imu}, altimiter, and barometer.
     The ground velocity is calculated using integration of the acceleration as well as optical flow.
     While the final result proved to be accurate, the calculations required were too slow in a tight loop when running on the operating station.
     Therefore, it was discarded in favour of the motion capture system.

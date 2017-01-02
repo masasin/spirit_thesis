@@ -8,6 +8,7 @@
 
 \renewcommand{\chaptername}{Section}
 
+\chapterstyle{hangnum}
 \pagestyle{ruled}
 \makeoddfoot{plain}{}{}{\thepage}
 \makeevenfoot{plain}{\thepage}{}{}
@@ -33,12 +34,12 @@
 \usepackage{topcapt,booktabs,multirow}
 
 \usepackage{fontspec}
-\setromanfont[Ligatures=TeX]{Linux Libertine O}
-\setromanfont[Ligatures=TeX]{Linux Biolinum O}
-\setmonofont{Inconsolata}
+\setmainfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Libertine O}
+\setsansfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Biolinum O}
+\setmonofont[Scale=MatchLowercase]{DejaVu Sans Mono}
 
 \usepackage{xeCJK}
-\setCJKmainfont{IPAMincho}
+\setCJKmainfont[AutoFakeSlant=0.1]{IPAMincho}
 \setCJKsansfont{IPAGothic}
 
 \usepackage{dcolumn}  % for apsrtable outputs
