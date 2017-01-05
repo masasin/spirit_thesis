@@ -1,7 +1,7 @@
 % (C) 2016 Jean Nassar. Some Rights Reserved
 % Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
-\documentclass[xetex,xcolor=pdftex,dvipsnames,table,%
-	       10pt, a4paper, twoside, openany]{book}
+\newcommand{\mytextsize}{10pt}
+\documentclass[\mytextsize, a4paper, twoside, openany]{memoir}
 
 \usepackage{masastyle}
 
@@ -22,14 +22,30 @@
 \include{frontmatter}
 
 \mainmatter
+\part{Overview}
+\label{pt:overview}
 \include{introduction}
 \include{background}
+
+\part{Implementation}
+\label{pt:implementation}
 \include{implementation}
+
+\part{Experiment Design}
+\label{pt:experiments}
 \include{experiments}
+
+\part{Results and Conclusions}
+\label{pt:results}
 \include{results}
 \include{conclusions}
+
+\part{Appendices}
+\label{pt:appendices}
 \include{appendices}
 
+\part{Glossaries and References}
+\label{pt:backmatter}
 \backmatter
 \include{backmatter}
 \end{document}

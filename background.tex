@@ -1,7 +1,7 @@
 % (C) 2016 Jean Nassar. Some Rights Reserved
 % Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 % Background
-\chapter{Background and Proposal}
+\chapter{Background}
 \label{ch:background}
 
 \section{Prior work}
@@ -15,15 +15,15 @@
 
   Several methods to show a robotic avatar in a virtual environment were proposed.
 
-  Nielsen et al. presented an interface in which a \gls{3d} model of the robot, a video stream from a mounted camera, a map, and pose information, were combined in a mixed-reality display.\cite{nielsen2007}
-  Kelly et al. extended the concept to an outdoor environment, and succeeded in making their system work in various low-throughput situations.\cite{kelly2011}
+  \textcite{nielsen2007} presented an interface in which a \gls{3d} model of the robot, a video stream from a mounted camera, a map, and pose information, were combined in a mixed-reality display.
+  \textcite{kelly2011} extended the concept to an outdoor environment, and succeeded in making their system work in various low-throughput situations.
   However, most methods require many sensors, such as \glspl{lrf}, which add expense and weight to the vehicle.
 
-  Hing et al. succeeded in making a chase view for a fixed-wing \gls{uav} which showed the orientation of the drone with respect to the environment, overlaid onto a rotated onboard camera view.\cite{hing2009}
+  \textcite{hing2009} succeeded in making a chase view for a fixed-wing \gls{uav} which showed the orientation of the drone with respect to the environment, overlaid onto a rotated onboard camera view.
   They were successful in improving flying, and even people who were not able to complete the course using the onboard view alone were able to complete it with the chase view.
 
 \section{Teleoperation System Using Past Image Records}
-  Shiroma et al. introduced \gls{spir}, a past-image view technique for mobile robots.\cite{shiroma2004}
+  \textcite{shiroma2004} introduced a \gls{spir}, a past-image view technique for mobile robots.
   This technology enabled the operator to ascertain the position and orientation of the robot with respect to its environment from a third-person (bird's-eye view) perspective using only the camera and position and pose information.
 
   \begin{figure}[h]
@@ -97,8 +97,8 @@
   If the bandwidth is low, old images can be reused, updated by an array of position data sent at a higher speed than the video.
 
   \subsection{Further development}
-    Sugimoto et al. demonstrated the effectiveness of \gls{spir} with user experiments.\cite{sugimoto2005}
-    Ito et al. decreased choppiness by proposing wider \glspl{fov}, and zooming into the background and model as the robot went further into the image plane.\cite{ito2008}
+    \textcite{sugimoto2005} demonstrated the effectiveness of \gls{spir} with user experiments.
+    \textcite{ito2008} decreased choppiness by proposing wider \glspl{fov}, and zooming into the background and model as the robot went further into the image plane.
     They also experimented with adding trajectory forecasting with unmanned ground vehicles.
 
     \begin{figure}[h]
@@ -114,7 +114,7 @@
       \label{fig:zoom_results}
     \end{figure}
 
-    Murata et al. extended the concept to \gls{3d} when they applied it to mobile manipulators.\cite{murata2014}
+    \textcite{murata2014} extended the concept to \gls{3d} when they applied it to mobile manipulators.
     They showed a significant decrease in operators' position error in the vertical direction with a similar error in the longitudinal direction.
 
     \begin{figure}[h]

@@ -2,8 +2,17 @@
 % Except where otherwise noted, this work is licensed under the Creative Commons Attribution-ShareAlike License, version 4
 \ProvidesPackage{masastyle}
 
-\newcommand\mytitle{UAV Teleoperation System Using Subimposed Past Image Records}
+\newcommand\mytitle{A UAV Teleoperation System Using Subimposed Past Image Records}
+%\newcommand\mytitle{A UAV Teleoperation System Using Subimposed Past Image Records}
 \newcommand\mytitlejp{過去画像を用いた飛行ロボットの遠隔操作手法}
+
+\renewcommand{\chaptername}{Section}
+
+\chapterstyle{hangnum}
+\pagestyle{ruled}
+\makeoddfoot{plain}{}{}{\thepage}
+\makeevenfoot{plain}{\thepage}{}{}
+\nouppercaseheads
 
 \usepackage{siunitx}
 \usepackage[hidelinks]{hyperref}
@@ -25,12 +34,12 @@
 \usepackage{topcapt,booktabs,multirow}
 
 \usepackage{fontspec}
-\setromanfont[Ligatures=TeX]{Linux Libertine O}
-\setromanfont[Ligatures=TeX]{Linux Biolinum O}
-\setmonofont{Inconsolata}
+\setmainfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Libertine O}
+\setsansfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Biolinum O}
+\setmonofont[Scale=MatchLowercase]{DejaVu Sans Mono}
 
 \usepackage{xeCJK}
-\setCJKmainfont{IPAMincho}
+\setCJKmainfont[AutoFakeSlant=0.1]{IPAMincho}
 \setCJKsansfont{IPAGothic}
 
 \usepackage{dcolumn}  % for apsrtable outputs
