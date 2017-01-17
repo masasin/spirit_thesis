@@ -353,6 +353,29 @@
       \end{itemize}
 
       Murata et al.'s function performed much better than the naïve ones.
+      However, actual usage indicated that there was a bad performance in high speed environments and in tight turns.
+
+      The values of the coefficients as used while evaluating the Murata et al. function are shown in Table \ref{tab:murata_coeffs}.
+
+      % TODO: Update final values.
+      \begin{table}[h]
+	\centering
+	\caption[Murata coefficient values]{The values of the coefficients used for Murata et al.'s function.}
+	\begin{tabular}{ll}
+	  \toprule
+	  Coefficient & Value \\
+	  \midrule
+	  $\sym{coeff}_1$ & 2 \\
+	  $\sym{coeff}_2$ & 0.4 \\
+	  $\sym{coeff}_3$ & 0.8 \\
+	  $\sym{coeff}_4$ & 4 \\
+	  $\sym{coeff}_5$ & 0 \\
+	  \bottomrule
+	\end{tabular}
+	\label{tab:coeffs}
+      \end{table}
+
+      The reference height and distance were set to 0.3 and 1.5\,m respectively.
 
     \subsection{SPIRIT evaluation function}
       The final version of the \gls{spirit} evaluation function is:
@@ -390,17 +413,32 @@
 
       However, it was not used in the final setup because $\sym{elem}_1$ was more effective.  % TODO: Was it?
 
-      The values of the coefficients as used in the experiments are:
+      % TODO: Talk about problems with some coefficients?
+      Brute-forcing was used to find a range of relative stability for the coefficients, where quick changes of the displayed past image were minimized.
+      After that, experimentation was used to select ones which provided a good experience.  
 
-      \begin{align*}
-	\sym{coeff}_1 &= 2 \\
-	\sym{coeff}_2 &= 0.3 \\
-	\sym{coeff}_3 &= 4 \\
-	\sym{coeff}_4 &= 0.5 \\
-	\sym{coeff}_5 &= 1
-      \end{align*}
+      The values of the coefficients as used in the experiments are shown in Table \ref{tab:coeffs} below.
 
       % TODO: Update final values.
+      \begin{table}[h]
+	\centering
+	\caption[Final coefficient values]{The values of the coefficients used in the user experiments.}
+	\begin{tabular}{ll}
+	  \toprule
+	  Coefficient & Value \\
+	  \midrule
+	  $\sym{coeff}_1$ & 8 \\
+	  $\sym{coeff}_2$ & 4 \\
+	  $\sym{coeff}_3$ & 8 \\
+	  $\sym{coeff}_4$ & 1 \\
+	  $\sym{coeff}_5$ & 2 \\
+	  \bottomrule
+	\end{tabular}
+	\label{tab:coeffs}
+      \end{table}
+
+      In addition, the reference distance was set to 3\,m.
+      The thresholds for distance and yaw, below which a new frame is not selected, were set to 10\,cm and 5 degrees respectively.
 
 \chapter{Visualization}
   Visualization in \gls{ros} is usually done with \gls{rviz}.
@@ -501,5 +539,5 @@
     The user experience may be improved if zoom functionality is added.
     That way, the size of the drone model would remain relatively constant, while the background changes, even with the same image as its base.
     
-    Similarly, it might be useful to always keep the horizon horizontal and tilt the image by the amount the drone was tilted when the frame was captured.
+    Similarly, it might be useful to always keep the horizon horizontal and tilt the image by the amount the drone was tilted when the frame was captured, as was implemented by Hing et al.\cite{hing2009}
     Extending it to all three Eulerian axes would allow, for instance, the pitch to be used.
