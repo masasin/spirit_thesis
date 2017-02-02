@@ -4,10 +4,27 @@
 \chapter{Conclusions}
 \label{ch:conclusion}
 \chapter{Future work}
-\begin{itemize}
-  \item Missing data
-  \item Zooming
-  \item Tilting
-  \item Expand buffer using n-tree for quick selection
-  \item Completely replace Pygame with PyQt5.
-\end{itemize}
+Several suggestions for improving the functionality of \gls{spirit} are presented here.
+They have been drawn from personal experience as well as user suggestions.
+
+The user experience may be improved if zoom functionality is added.
+That way, the size of the drone model would remain relatively constant, while the background changes, even with the same image as its base.
+This was present in the version of \gls{spir} shown in \ref{ito2008}.
+
+Similarly, it might be useful to always keep the horizon horizontal and tilt the image by the amount the drone was tilted when the frame was captured, as was implemented by Hing et al.\cite{hing2009}
+Extending it to all three Eulerian axes would allow, for instance, the pitch to be used more effectively.
+This would be useful with modern drones, which often use gimbals.
+
+It was found that depth perception was difficult when using \gls{spirit}.
+It might be possible to improve this by showing a shadow where the ground should be.
+If distance estimation is used, it could be used in a wide variety of environments.
+Another potential solution is to use binocular cameras and have the user wear a head-mounted display.
+In this case, movement around fixed obstacles should also be feasible.
+
+Performance can be improved by replacing \gls{pygame} with \gls{pyqt5}.
+This might also solve the problem with the sound system not being able to initialize, which had previously necessitated restarts.
+
+Finally, using an $n$-tree (an octree, or, its extension, a hextree), to prune the search space might enable a bigger buffer.
+A hextree would be implemented using \sym{posx}, \sym{posy}, and \sym{posz} positions, as well as yaw.
+Higher dimensions for gimballed platforms would also include pitch and roll.
+Instead of evaluating the entire buffer, only the frames in which the drone would have been visible in the first place can be checked, thereby significantly reducing processing time.
