@@ -4,7 +4,7 @@ MASTER = mshtsy_thesis
 SOURCES = $(MASTER).tex $(wildcard *.tex *.sty *.py) Makefile
 FIGURES = $(shell find img/* -type f)
 
-VIEWER = evince
+VIEWER = okular
 
 LATEX = xelatex
 LATEXOPT = --shell-escape
