@@ -303,7 +303,7 @@
     where $\sym{nelems}$ is the number of elements in the evaluation function, $\sym{elem}_{\sym{elemidx}}$ is an element, and $\sym{coeff}_{\sym{elemidx}}$ is its corresponding coefficient.
     After evaluation, the frame with the lowest score is selected, and its contents are streamed to the \texttt{/ardrone} namespace's \texttt{\detokenize{past_image}} and \texttt{\detokenize{past_pose}} nodes.
 
-    \subsection{Naïve evaluation functions}
+    \subsection{Evaluation functions in previous works}
       The simplest evaluation function for past image view is one with constant time delay, as suggested by Shiroma et al.\cite{shiroma2004}
       One can quickly find a frame with a specific age by doing a binary search in the chronologically-ordered array.
       However, while it works well for robots moving at a relatively constant velocity with minimal direction change, it does not track sudden movements, accelerations, or stoppages.
@@ -311,71 +311,9 @@
       On the other hand, Shiroma et al.'s constant distance evaluation function\cite{shiroma2004} maintains the distance effectively, and works well with robots which change their orientation gradually.
       With a drone, though, the operator can move in any direction at any time, including backwards, and the selected frame might not contain the drone's current position at all.
 
-      Note that both these evaluation functions have also been implemented, and are accessible by setting the appropriate value in the \texttt{\detokenize{launch_config.yaml}} file.
+      Murata et al.'s evaluation function was designed for \gls{3d} environments,\cite{murata2014} and considered the height above the viewpoint as well as the azimuth and tilt angles.
 
-    \subsection{Murata evaluation function}
-      Murata et al.'s evaluation function was designed for \gls{3d} environments,\cite{murata2014} and an attempt was made at using it.
-
-      The evaluation function is:
-
-      \begin{equation}
-	\begin{split}
-	  \sym{evalfn}_{\mathrm{Murata}}
-	               &= \sym{coeff}_1\left(\frac{\Delta\sym{posz} - \Delta\sym{posz}_{ref}}{\Delta\sym{posz}_{ref}}\right)^2  % relative height
-		        + \sym{coeff}_2\left(\frac{2\Delta\sym{yaw}}{\pi}\right)^2  % pointing in the same direction
-	                + \sym{coeff}_3\left(\frac{\arctan\left(\frac{\sqrt{\Delta\sym{posx}^2 + \Delta\sym{posz}^2}}{\Delta\sym{posy}}\right)}{\sym{aovv}}\right)^2 \\  % tilt angle
-	               &+ \sym{coeff}_4\left(\frac{\left\|\Delta\sym{pos}\right\| - \left\|\Delta\sym{pos}\right\|_{ref}}{\left\|\Delta\sym{pos}\right\|_{ref}}\right)^2   % distance
-	                + \sym{coeff}_5\left(\frac{\left\|\sym{state}_{\sym{rfprocessed}} - \sym{state}_{\sym{rfcurrent}}\right\|}{\sym{state}_{\sym{rfcurrent}}}\right)^2  % minimize change
-	\end{split}
-      \end{equation}
-
-      where \sym{aovv} is the vertical angle of view such that:
-
-      \begin{equation}
-	\sym{aovv} = 2\arctan\left(\sym{aovr}\tan\frac{\sym{aovh}}{2}\right)
-      \end{equation}
-
-      where \sym{aovr} is the aspect ratio of the display and \sym{aovh} is the horizontal angle of view.
-
-      The five components are as follows:
-
-      \begin{itemize}
-	\item $\sym{elem}_1$ represents the height of the viewpoint.
-	      We want to see the drone from slightly above.
-	\item $\sym{elem}_2$ represents the azimuth angle of the viewpoint.
-	      We want to see the drone from behind.
-	\item $\sym{elem}_3$ represents the tilt angle of the viewpoint.
-	      The closer it is to zero, the closer to the centre of the image the drone is.
-	\item $\sym{elem}_4$ represents the distance to the drone.
-	      We want to be as close as possible to an ideal distance away, such that the drone is neither too big nor too small.
-	\item $\sym{elem}_5$ represents the movement of the viewpoint if the frame being processed is selected.
-	      The smaller it is, the smoother the transition.
-      \end{itemize}
-
-      Murata et al.'s function performed much better than the naïve ones.
-      However, actual usage indicated that there was a bad performance in high speed environments and in tight turns.
-
-      The values of the coefficients as used while evaluating the Murata et al. function are shown in Table \ref{tab:murata_coeffs}.
-
-      % TODO: Update final values.
-      \begin{table}[h]
-	\centering
-	\caption[Murata coefficient values]{The values of the coefficients used for Murata et al.'s function.}
-	\begin{tabular}{ll}
-	  \toprule
-	  Coefficient & Value \\
-	  \midrule
-	  $\sym{coeff}_1$ & 2 \\
-	  $\sym{coeff}_2$ & 0.4 \\
-	  $\sym{coeff}_3$ & 0.8 \\
-	  $\sym{coeff}_4$ & 4 \\
-	  $\sym{coeff}_5$ & 0 \\
-	  \bottomrule
-	\end{tabular}
-	\label{tab:murata_coeffs}
-      \end{table}
-
-      The reference height and distance were set to 0.3 and 1.5\,m respectively.
+      Note that all three evaluation functions have also been implemented, and are accessible by setting the appropriate value in the \texttt{\detokenize{launch_config.yaml}} file.
 
     \subsection{SPIRIT evaluation function}
       The final version of the \gls{spirit} evaluation function is:
