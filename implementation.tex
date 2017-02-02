@@ -271,7 +271,7 @@
     To mitigate this, when a new frame is still in the process of being selected, the visualizer displays the new pose on the currently shown frame.
 
     The maximum queue length can be set in the launch parameter configuration file.
-    The final setup used a maximum of 60\,frames, or 30\,s of video.
+    The final setup used a maximum of 30\,frames, or 15\,s of video.
     This allows each loop to run its course before the next pose is received.
 
   \section{Evaluation functions}
@@ -427,8 +427,8 @@
 	  \toprule
 	  Coefficient & Value \\
 	  \midrule
-	  $\sym{coeff}_1$ & 8 \\
-	  $\sym{coeff}_2$ & 4 \\
+	  $\sym{coeff}_1$ & 4 \\
+	  $\sym{coeff}_2$ & 2 \\
 	  $\sym{coeff}_3$ & 8 \\
 	  $\sym{coeff}_4$ & 1 \\
 	  $\sym{coeff}_5$ & 2 \\
@@ -437,8 +437,8 @@
 	\label{tab:coeffs}
       \end{table}
 
-      In addition, the reference distance was set to 3\,m.
-      The thresholds for distance and yaw, below which a new frame is not selected, were set to 10\,cm and 5 degrees respectively.
+      In addition, the reference distance was set to 2.5\,m.
+      The thresholds for distance and yaw, below which a new frame is not added to the buffer, were set to 25\,cm and 10 degrees respectively.
 
 \chapter{Visualization}
   Visualization in \gls{ros} is usually done with \gls{rviz}.
