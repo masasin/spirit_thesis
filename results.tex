@@ -15,8 +15,14 @@
 \chapter{Analysis}
 \begin{figure}[h]
   \centering
-  \input{img/binomial_factor_posterior.pgf}
+  \ifdraft{}{\input{img/paths_overview.pgf}}
   \caption[Overall result curve]{Analysis of binomial distribution. A Jeffreys noninformative prior ($\alpha = \beta = 0.5$) is used. The posterior distribution considers twenty successes out of thirty trials.}
-  \label{fig:binom}
+  \label{fig:paths_overview}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \ifdraft{}{\input{img/paths_detailed.pgf}}
+  \caption[Overall result curve]{Analysis of binomial distribution. A Jeffreys noninformative prior ($\alpha = \beta = 0.5$) is used. The posterior distribution considers twenty successes out of thirty trials.}
+  \label{fig:paths_detailed.pgf}
 \end{figure}
 \chapter{Discussion}
