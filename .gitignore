@@ -299,3 +299,6 @@ sympy-plots-for-*.tex/
 
 # Makefile generation
 .refresh
+
+# Dolphin
+.directory
