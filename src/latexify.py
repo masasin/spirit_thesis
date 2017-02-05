@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pathlib import Path
 import sys
 
@@ -87,9 +88,18 @@ def fig_size(fig_width_tw=None, fig_height=None, n_columns=1, doc_width_pt=345):
 
 
 def savefig(filename, folder="../img"):
+    print(f"Saving {filename}...")
     plt.tight_layout(0)
     for ext in ("pgf", "pdf"):
         plt.savefig(str(Path(folder).joinpath(f"{filename}.{ext}")))
+
+
+@contextmanager
+def figure(filename, folder="../img/plots", figsize=fig_size()):
+    plt.figure(figsize=figsize)
+    yield
+    savefig(filename, folder=folder)
+    plt.close()
 
 
 if __name__ == "__main__":
@@ -97,10 +107,9 @@ if __name__ == "__main__":
     x = np.linspace(-np.pi, np.pi)
     y = np.sin(x)
     y2 = np.cos(x)
-    plt.figure(figsize=fig_size())
-    plt.plot(x, y, label=r"$\sin(\theta)$")
-    plt.plot(x, y2, label=r'$\cos(\theta)$')
-    plt.legend()
-    plt.xlabel(r"$\theta$")
-    plt.ylabel("Magnitude")
-    savefig("latexify")
+    with figure("latexify"):
+        plt.plot(x, y, label=r"$\sin(\theta)$")
+        plt.plot(x, y2, label=r'$\cos(\theta)$')
+        plt.legend()
+        plt.xlabel(r"$\theta$")
+        plt.ylabel("Magnitude")
