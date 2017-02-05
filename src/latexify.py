@@ -78,10 +78,8 @@ def fig_size(fig_width_tw=None, fig_height=None, n_columns=1, doc_width_pt=345):
         fig_height = fig_width * golden_mean # height in inches
 
     if fig_height > MAX_HEIGHT_INCHES:
-        print("WARNING: fig_height too large at {fig_height} inches, so will "
-              "reduce to {MAX_HEIGHT_INCHES} inches."
-              .format(fig_height=fig_height,
-                      MAX_HEIGHT_INCHES=MAX_HEIGHT_INCHES),
+        print(f"WARNING: fig_height too large at {fig_height} inches, so will "
+              "reduce to {MAX_HEIGHT_INCHES} inches.",
               file=sys.stderr
               )
         fig_height = MAX_HEIGHT_INCHES
@@ -91,14 +89,14 @@ def fig_size(fig_width_tw=None, fig_height=None, n_columns=1, doc_width_pt=345):
 def savefig(filename, folder="../img"):
     plt.tight_layout(0)
     for ext in ("pgf", "pdf"):
-        plt.savefig(str(Path(folder).joinpath("{}.{}".format(filename, ext))))
+        plt.savefig(str(Path(folder).joinpath(f"{filename}.{ext}")))
 
 
 if __name__ == "__main__":
+    latexify()
     x = np.linspace(-np.pi, np.pi)
     y = np.sin(x)
     y2 = np.cos(x)
-    latexify()
     plt.figure(figsize=fig_size())
     plt.plot(x, y, label=r"$\sin(\theta)$")
     plt.plot(x, y2, label=r'$\cos(\theta)$')
