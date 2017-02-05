@@ -198,6 +198,6 @@ if __name__ == "__main__":
 
     # do_surveys()
 
-    # WARNING: Takes a long time.
-    do_differences()
+    # WARNING: Takes a long time with recalculate.
+    # do_differences()
 
