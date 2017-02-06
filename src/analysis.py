@@ -108,8 +108,7 @@ def plot_distribution(df, experiment_type, color="C0", title=None,
     df_arr = df_ex[df_ex.arrived == 1]
     if title is None:
         title = df_ex.experiment.iloc[0]
-    g = sns.jointplot(df_arr.xn, df_arr.yn, kind="kde", size=7, space=0,
-                      color=color)
+    g = sns.jointplot(df_arr.xn, df_arr.yn, kind="kde", space=0, color=color)
     g.plot_marginals(sns.rugplot, height=0.1, color=color)
     g.ax_joint.get_children()[0].set_zorder(-1)
     for child in g.ax_joint.get_children()[1:]:
