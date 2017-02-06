@@ -58,7 +58,7 @@ def do_distributions():
 
 def do_durations():
     with figure("duration", figsize=fig_size(0.44, 1)):
-        sns.boxplot(x="experiment", y="duration", data=analyses)
+        sns.factorplot(x="experiment", y="duration", data=analyses, kind="box")
         sns.swarmplot(x="experiment", y="duration", split=True, data=analyses,
                       palette=cmap_complement)
         plt.ylim(0, plt.ylim()[1])
@@ -116,7 +116,7 @@ def do_errors():
 
 def do_surveys():
     with figure("tlx_results", figsize=fig_size(0.44, 1)):
-        sns.boxplot(x="experiment", y="tlx", data=tlx)
+        sns.factorplot(x="experiment", y="tlx", data=tlx, kind="box")
         sns.swarmplot(x="experiment", y=r"tlx",
                       data=tlx, palette=cmap_complement, split=True)
         plt.ylim(0, plt.ylim()[1])
