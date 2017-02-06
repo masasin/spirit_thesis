@@ -216,11 +216,12 @@ def do_surveys():
                          var_name="component", value_name="score")
         g = sns.barplot(x=r"component", y="score", hue="experiment",
                         data=molten)
-        sns.swarmplot(x="component", y=r"score", data=molten, hue="experiment",
-                      split=True, palette=cmap_complement)
-        handles, labels = g.get_legend_handles_labels()
-        plt.legend(handles[2:], labels[2:])
-        plt.ylabel("NASA-TLX component score")
+
+        plt.gca().set_xticklabels(
+                ["MD", "PD", "TD", "P", "E", "F"])
+
+        plt.xlabel("NASA-TLX component")
+        plt.ylabel("score")
 
     with figure("survey_overview", figsize=fig_size(0.9, 0.5)):
         molten = pd.melt(surveys, id_vars=["user", "experiment", "order"],
@@ -233,13 +234,14 @@ def do_surveys():
                          var_name="question", value_name="rating")
         g = sns.barplot(x=r"rating", y=r"question", hue="experiment",
                         data=molten)
-        plt.gca().set_yticklabels(
-                ["orientation understanding", "orientation control",
-                 "absolute position understanding", "absolute positional control",
-                 "relative position understanding", "relative position control"])
-        
         sns.swarmplot(x="rating", y=r"question", data=molten, hue="experiment",
                       split=True, palette=cmap_complement)
+
+        plt.gca().set_yticklabels(
+                ["angle aware", "angle control",
+                 "position aware", "position control",
+                 "rel. pos. aware", "rel. pos. control"])
+
         handles, labels = g.get_legend_handles_labels()
         plt.legend(handles[2:], labels[2:])
         plt.xlabel("rating")
