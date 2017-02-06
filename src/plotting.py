@@ -29,14 +29,14 @@ plt.rcParams["axes.prop_cycle"] = colorblind_cyclers[cmap_main]
 
 
 def do_paths():
-    with figure("paths_overview"):
+    with figure("paths_overview", figsize=fig_size(0.44, 1.2)):
         ax1 = plt.subplot("121")
         plot_overview(results, ExperimentType.Onboard, color="C0")
         ax2 = plt.subplot("122", sharex=ax1, sharey=ax1)
         plot_overview(results, ExperimentType.Spirit, color="C1", ylabel="")
         plt.setp(ax2.get_yticklabels(), visible=False)
 
-    with figure("paths_detailed"):
+    with figure("paths_detailed", figsize=fig_size(0.44, 1.2)):
         ax1 = plt.subplot("121")
         plot_detailed(results, ExperimentType.Onboard, color="C0",
                       crosshair=True)
@@ -47,24 +47,24 @@ def do_paths():
 
 
 def do_distributions():
-    with figure("distribution_onboard"):
+    with figure("distribution_onboard", figsize=fig_size(0.44, 1)):
         plot_distribution(results, ExperimentType.Onboard, color="C0",
                           crosshair=True)
 
-    with figure("distribution_spirit"):
+    with figure("distribution_spirit", figsize=fig_size(0.44, 1)):
         plot_distribution(results, ExperimentType.Spirit, color="C1",
                           crosshair=True)
 
 
 def do_durations():
-    with figure("duration"):
+    with figure("duration", figsize=fig_size(0.44, 1)):
         sns.boxplot(x="experiment", y="duration", data=analyses)
         sns.swarmplot(x="experiment", y="duration", split=True, data=analyses,
                       palette=cmap_complement)
         plt.ylim(0, plt.ylim()[1])
         plt.ylabel("duration (s)")
 
-    with figure("duration_runs"):
+    with figure("duration_runs", figsize=fig_size(0.44, 1)):
         sns.factorplot(x="order", y="duration", hue="experiment", data=analyses,
                        capsize=0.2)
         plt.ylim(0, plt.ylim()[1])
@@ -73,7 +73,7 @@ def do_durations():
 
 
 def do_errors():
-    with figure("rms"):
+    with figure("rms", figsize=fig_size(0.9, 0.4)):
         g = sns.factorplot(x="experiment", y="value", col="variable",
                            data=pd.melt(analyses, id_vars=["user", "experiment",
                                                            "order", "group"],
@@ -84,7 +84,7 @@ def do_errors():
         g.fig.axes[2].set_title("RMS Error in $y$")
         g.fig.axes[0].set_ylabel("error (m)")
 
-    with figure("rms_runs"):
+    with figure("rms_runs", figsize=fig_size(0.9, 0.4)):
         g = sns.factorplot(x="order", y="value", hue="experiment",
                            col="variable",
                            data=pd.melt(analyses, id_vars=["user","experiment",
@@ -99,7 +99,7 @@ def do_errors():
         g.fig.axes[1].set_xlabel("run")
         g.fig.axes[2].set_xlabel("run")
 
-    with figure("distance"):
+    with figure("distance", figsize=fig_size(0.9, 0.4)):
         g = sns.factorplot(x="experiment", y="value", col="variable",
                            data=pd.melt(analyses, id_vars=["user", "experiment",
                                                            "order", "group"],
@@ -115,14 +115,14 @@ def do_errors():
 
 
 def do_surveys():
-    with figure("tlx_results"):
+    with figure("tlx_results", figsize=fig_size(0.44, 1)):
         sns.boxplot(x="experiment", y="tlx", data=tlx)
         sns.swarmplot(x="experiment", y=r"tlx",
                       data=tlx, palette=cmap_complement, split=True)
         plt.ylim(0, plt.ylim()[1])
         plt.ylabel("NASA-TLX weighted score")
 
-    with figure("tlx_components"):
+    with figure("tlx_components", figsize=fig_size(0.44, 1)):
         molten = pd.melt(tlx, id_vars=["user", "experiment", "order"],
                          value_vars=["mental", "physical", "temporal",
                                      "performance", "effort", "frustration"],
@@ -135,7 +135,7 @@ def do_surveys():
         plt.legend(handles[2:], labels[2:])
         plt.ylabel("NASA-TLX component score")
 
-    with figure("survey_overview"):
+    with figure("survey_overview", figsize=fig_size(0.9, 0.5)):
         molten = pd.melt(surveys, id_vars=["user", "experiment", "order"],
                          value_vars=[r"orientation_understanding",
                                      r"orientation_control",
