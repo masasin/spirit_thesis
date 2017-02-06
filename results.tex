@@ -6,23 +6,157 @@
 %\epigraphhead{\epigraph{
 %Usability answers the question, ``Can the user accomplish their goal?''}{\textsc{Joyce Lee}}}
 \section{Results}
-  \subsection{Time}
-  \subsection{Speed}
-  \subsection{Stoppage}
-  \subsection{Error rate}
+  \subsection{Accuracy}
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/paths_overview.pgf}}
+      \label{fig:paths_overview}
+      \caption{Overview of the paths}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/paths_detailed.pgf}}
+      \label{fig:paths_detailed}
+      \caption{Detail of the paths}
+    \end{subfigure}
+    \label{fig:paths}
+    \caption{The paths}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/distribution_onboard.pgf}}
+      \label{fig:distribution_onboard}
+      \caption{Arrival distribution for onboard view}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/distribution_spirit.pgf}}
+      \label{fig:distribution_spirit}
+      \caption{Arrival distribution for SPIRIT view}
+    \end{subfigure}
+    \label{fig:distribution}
+    \caption{Arrival distribution}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/distance.pgf}}
+    \label{fig:distance}
+    \caption{Distance from target, including in \sym{posx} and \sym{posy}}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/rms.pgf}}
+    \label{fig:rms}
+    \caption{RMSE in distance from target, including in \sym{posx} and \sym{posy}}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/rms_runs.pgf}}
+    \label{fig:rms_runs}
+    \caption{RMSE change over various runs}
+  \end{figure}
+
+  \subsection{Path length}
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/movement.pgf}}
+    \label{fig:movement}
+    \caption{Path length, including total movement in \sym{posx} and \sym{posy}}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/movement_runs.pgf}}
+    \label{fig:movement_runs}
+    \caption{Path length change across runs}
+  \end{figure}
+
+  \subsection{Duration}
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/duration.pgf}}
+      \label{fig:duration_result}
+      \caption{Duration of experiment}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/duration_runs.pgf}}
+      \label{fig:duration_runs}
+      \caption{Change in duration across runs}
+    \end{subfigure}
+    \label{fig:duration}
+    \caption{Duration}
+  \end{figure}
+
   \subsection{Workload}
-  \subsection{Interview}
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/tlx_results.pgf}}
+      \label{fig:results}
+      \caption{NASA-TLX results}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+      \ifdraft{}{\input{img/plots/tlx_components.pgf}}
+      \label{fig:tlx_components}
+      \caption{NASA-TLX component analysis}
+    \end{subfigure}
+    \label{fig:tlx}
+    \caption{NASA-TLX}
+  \end{figure}
+
+  % Show TLX by person?
+
+  \subsection{Survey}
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/survey_overview.pgf}}
+    \label{fig:survey}
+    \caption{Survey results}
+  \end{figure}
+
+  % Jerky motion in onboard
+
 \chapter{Analysis}
-\begin{figure}[h]
+
+\begin{table}[h]
   \centering
-  \ifdraft{}{\input{img/paths_overview.pgf}}
-  \caption[Overall result curve]{Analysis of binomial distribution. A Jeffreys noninformative prior ($\alpha = \beta = 0.5$) is used. The posterior distribution considers twenty successes out of thirty trials.}
-  \label{fig:paths_overview}
-\end{figure}
-\begin{figure}[h]
+  \caption[Means and standard deviations]{Means and standard deviations}
+  \begin{tabular}{lllll}
+    \toprule
+    Component & $\mu$ - onboard & $\sigma$ - onboard & $\mu$ - \gls{spirit} & $\sigma$ - \gls{spirit} \\
+    \midrule
+    Distance (m) & 0.666 (0.504, 0.852) & 0.284 (0.147, 0.448) & 0.401 (0.241, 0.557) & 0.238 (0.115, 0.388)\\
+    \sym{posx}-position (m) & 0.038 (-0.219, 0.304) & 0.43 (0.241, 0.66) & 0.136 (0.033, 0.237) & 0.171 (0.091, 0.264)\\
+    \sym{posy}-position (m) & 0.474 (-0.747, -0.209) & 0.447 (0.245, 0.681) & 0.067 (-0.287, 0.141) & 0.366 (0.197, 0.562)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[h]
   \centering
-  \ifdraft{}{\input{img/paths_detailed.pgf}}
-  \caption[Overall result curve]{Analysis of binomial distribution. A Jeffreys noninformative prior ($\alpha = \beta = 0.5$) is used. The posterior distribution considers twenty successes out of thirty trials.}
-  \label{fig:paths_detailed.pgf}
-\end{figure}
-\chapter{Discussion}
+  \caption[Difference of means]{Difference of means, 95\% creditibility interval, effect size.}
+  \begin{tabular}{lll}
+    \toprule
+    Component & Mean & Effect size \\
+    \midrule
+    Distance (m) & 0.266 (0.004, 0.486) & 1.053 (-0.029, 2.143)\\
+    \sym{posx}-position (m) & -0.096 (-0.35, 0.206) & -0.323 (-1.266, 0.56)\\
+    \sym{posy}-position (m) & -0.41 (-0.749, -0.054) & -1.026 (-1.937, -0.072)\\
+    RMSE$_{\sym{posx}}$ (m) & 0.143 (0.018, 0.287) & 0.924 (-0.029, 1.845)\\
+    RMSE$_{\sym{posy}}$ (m) & 0.182 (-0.038, 0.41) & 0.731 (-0.252, 1.638)\\
+    Duration (s) & -5.041 (-16.303, 6.742) & -0.304 (-1.005, 0.384) \\
+    Path length (m) & -1.03, (-2.923, 0.0837) & -0.391 (-1.114, 0.299)\\
+    Movement in $\sym{posx}$ (m) & -0.105 (-0.856, 0.699) & -0.102 (-0.822, 0.707)\\
+    Movement in $\sym{posy}$ (m) & -0.223 (-0.67, 0.23) & -0.359 (-1.125, 0.313)\\
+    \bottomrule
+  \end{tabular}
+\end{table}
