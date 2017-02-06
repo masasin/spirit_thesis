@@ -105,8 +105,8 @@ def savefig(filename, folder="../img"):
 
 @contextmanager
 def figure(filename, folder="../img/plots", figsize=fig_size()):
-    plt.figure(figsize=figsize)
     yield
+    plt.gcf().set_size_inches(*figsize)
     savefig(filename, folder=folder)
     plt.close()
 
