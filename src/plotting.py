@@ -272,8 +272,8 @@ def do_differences(recalculate=False):
 if __name__ == "__main__":
     latexify()
 
-    results, analyses = analyze_data()
-    print("Loaded files")
+    # results, analyses = analyze_data()
+    # print("Loaded files")
 
     # do_paths()
     # do_distributions()
