@@ -211,12 +211,15 @@ def analyze_data():
     analyses = pd.DataFrame(columns="user experiment_type run "
                                     "dist_err x_err y_err "
                                     "dist_std x_std y_std "
-                                    "rms rms_x rms_y duration".split())
+                                    "rms rms_x rms_y "
+                                    "idx_start idx_end t_start t_end duration "
+                                    "path_length "
+                                    "move_l move_r move_x "
+                                    "move_b move_f move_y".split())
     
     records = []
     
     for i, filename in enumerate(usable_filenames()):
-        print(filename)
         df = pd.read_csv(filename, parse_dates=["time"])
         data = extract_run_data(filename)
         df.xn *= -1
@@ -246,17 +249,41 @@ def analyze_data():
         rms_x = np.sqrt(np.mean((dx)**2))
         rms_y = np.sqrt(np.mean((dy)**2))
         
-        duration = (found.time.iloc[0] - df[df.z > 0.25].time.iloc[0])
+        t_start = df[df.z > 0.25].time.iloc[0]
+        t_end = found.time.iloc[0]
+        duration = (t_end - t_start).total_seconds()
+
+        idx_start = df[df.time==t_start].index[0]
+        idx_end = df[df.time==t_end].index[0]
+
+        df_running = df[["xn", "yn"]].iloc[idx_start:idx_end+1]
+        points = np.array(df_running)
+        lengths = np.sqrt(np.sum(np.diff(points, axis=0)**2, axis=1))
+        path = lengths.sum()
+
+        diff_x = np.diff(points[:, 0])
+        move_l = np.abs(np.sum(diff_x[diff_x > 0]))
+        move_r = np.abs(np.sum(diff_x[diff_x < 0]))
+        move_x = move_l + move_r
+
+        diff_y = np.diff(points[:, 1])
+        move_b = np.abs(np.sum(diff_y[diff_y > 0]))
+        move_f = np.abs(np.sum(diff_y[diff_y < 0]))
+        move_y = move_b + move_f
 
         analyses.loc[i] = [
             data.user, data.experiment, data.run,
             dist_err, x_err, y_err,
             dist_std, x_std, y_std,
-            rms, rms_x, rms_y, duration.total_seconds()
+            rms, rms_x, rms_y,
+            idx_start, idx_end, t_start, t_end, duration,
+            path,
+            move_x, move_l, move_r,
+            move_y, move_b, move_f,
         ]
         
     results = pd.concat(records, ignore_index=True)
-    
+
     analyses["group"] = (analyses.user % 2).astype(int)
     analyses["start"] = [ExperimentType(e % 2 + 1) for e in analyses.user]
     analyses["experiment_int"] = [e.value for e in analyses.experiment_type]
@@ -276,7 +303,7 @@ def analyze_data():
         | (results.experiment_int.diff(1) != 0)
         | (results.user.diff(1) != 0)
     ).astype('int').cumsum() - 1
-    
+
     for user in set(analyses.user):
         df = analyses[analyses.user == user].sort_values(
             by="experiment_int", ascending=np.all(analyses[analyses.user==user]
@@ -286,7 +313,7 @@ def analyze_data():
             analyses.loc[idx, "order"] = int(df.loc[idx, "order"])
             results.loc[results.total_ordering==idx,
                         "order"] = int(df.loc[idx, "order"])
-            
+
     for col in ["user", "run", "group", "order"]:
         analyses[col] = analyses[col].astype(int)
     for col in ["arrived", "order"]:
