@@ -72,6 +72,93 @@ def do_durations():
         plt.xlabel("run")
 
 
+def do_movement():
+    with figure("movement", figsize=fig_size(0.9, 0.4)):
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["path_length", "move_x", "move_y"])
+        g = sns.factorplot(x="experiment", y="value", col="variable",
+                           data=molten, kind="box")
+        g.fig.axes[0].set_title("Path length")
+        g.fig.axes[1].set_title("Movement in $x$")
+        g.fig.axes[2].set_title("Movement in $y$")
+        g.fig.axes[0].set_ylabel("distance (m)")
+        plt.ylim(0, plt.ylim()[1])
+
+    with figure("movement_x"):
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["move_l", "move_r", "move_x"])
+        g = sns.factorplot(x="experiment", y="value", col="variable",
+                           data=molten, kind="box")
+        g.fig.axes[0].set_title("Movement left")
+        g.fig.axes[1].set_title("Movement right")
+        g.fig.axes[2].set_title("Movement in $x$")
+        g.fig.axes[0].set_ylabel("distance (m)")
+        plt.ylim(0, plt.ylim()[1])
+
+    with figure("movement_y"):
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["move_b", "move_f", "move_y"])
+        g = sns.factorplot(x="experiment", y="value", col="variable",
+                           data=molten, kind="box")
+        g.fig.axes[0].set_title("Movement backwards")
+        g.fig.axes[1].set_title("Movement forwards")
+        g.fig.axes[2].set_title("Movement in $y$")
+        g.fig.axes[0].set_ylabel("distance (m)")
+        plt.ylim(0, plt.ylim()[1])
+
+    with figure("movement_back"):
+        sns.factorplot(x="experiment", y="move_b", data=analyses, kind="box")
+        sns.swarmplot(x="experiment", y="move_b", split=True, data=analyses,
+                      palette=cmap_complement)
+        plt.ylabel("distance (m)")
+        plt.title("Movement backwards")
+
+    with figure("movement_runs", figsize=fig_size(0.9, 0.4)):
+        molten = pd.melt(analyses, id_vars=["user", "experiment", "order", "group"],
+                                        value_vars=["path_length", "move_x", "move_y"])
+        g = sns.factorplot(x="order", y="value", col="variable",
+                           data=molten, hue="experiment", capsize=0.2)
+        g.fig.axes[0].set_title("Path length")
+        g.fig.axes[1].set_title("Movement in $x$")
+        g.fig.axes[2].set_title("Movement in $y$")
+        g.fig.axes[0].set_ylabel("distance (m)")
+        g.fig.axes[0].set_xlabel("run")
+        g.fig.axes[1].set_xlabel("run")
+        g.fig.axes[2].set_xlabel("run")
+        plt.ylim(0, plt.ylim()[1])
+
+    with figure("movement_x_runs"):
+        molten = pd.melt(analyses, id_vars=["user", "experiment", "order", "group"],
+                                        value_vars=["move_l", "move_r", "move_x"])
+        g = sns.factorplot(x="order", y="value", col="variable",
+                           data=molten, hue="experiment")
+        g.fig.axes[0].set_title("Movement left")
+        g.fig.axes[1].set_title("Movement right")
+        g.fig.axes[2].set_title("Movement in $x$")
+        g.fig.axes[0].set_ylabel("distance (m)")
+        g.fig.axes[0].set_xlabel("run")
+        g.fig.axes[1].set_xlabel("run")
+        g.fig.axes[2].set_xlabel("run")
+        plt.ylim(0, plt.ylim()[1])
+
+    with figure("movement_y_runs"):
+        molten = pd.melt(analyses, id_vars=["user", "experiment", "order", "group"],
+                                        value_vars=["move_b", "move_f", "move_y"])
+        g = sns.factorplot(x="order", y="value", col="variable",
+                           data=molten, hue="experiment")
+        g.fig.axes[0].set_title("Movement backwards")
+        g.fig.axes[1].set_title("Movement forwards")
+        g.fig.axes[2].set_title("Movement in $y$")
+        g.fig.axes[0].set_ylabel("distance (m)")
+        g.fig.axes[0].set_xlabel("run")
+        g.fig.axes[1].set_xlabel("run")
+        g.fig.axes[2].set_xlabel("run")
+        plt.ylim(0, plt.ylim()[1])
+
+
 def do_errors():
     with figure("rms", figsize=fig_size(0.9, 0.4)):
         g = sns.factorplot(x="experiment", y="value", col="variable",
@@ -191,6 +278,7 @@ if __name__ == "__main__":
     # do_paths()
     # do_distributions()
     # do_durations()
+    # do_movement()
     # do_errors()
 
     # users, tlx, surveys = load_surveys()
