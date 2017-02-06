@@ -41,7 +41,8 @@ def latexify():
     mpl.rcParams.update(params)
 
 
-def fig_size(fig_width_tw=None, fig_height=None, n_columns=1, doc_width_pt=345):
+def fig_size(fig_width_tw=None, fig_ratio=None, fig_height=None, n_columns=1,
+             doc_width_pt=345):
     r"""
     Get the necessary figure size.
 
@@ -50,6 +51,9 @@ def fig_size(fig_width_tw=None, fig_height=None, n_columns=1, doc_width_pt=345):
     fig_width_tw : Optional[float]
         The width of the figure, as a proportion of the text width. Should be
         between 0 and 1. Default is 0.9.
+    fig_ratio: Optional[float]
+        The ratio of the figure height to figure width. Default is the golden
+        ratio.
     fig_height : Optional[float]
         The height of the figure in inches. Default is the golden ratio with
         the figure width.
@@ -74,9 +78,14 @@ def fig_size(fig_width_tw=None, fig_height=None, n_columns=1, doc_width_pt=345):
     else:
         fig_width = fig_width_in * fig_width_tw
 
-    if fig_height is None:
-        golden_mean = (np.sqrt(5)-1.0)/2.0    # Aesthetic ratio
-        fig_height = fig_width * golden_mean # height in inches
+    if fig_ratio is None:
+        if fig_height is None:
+            golden_mean = (np.sqrt(5)-1.0)/2.0    # Aesthetic ratio
+            fig_ratio = golden_mean
+        else:
+            fig_ratio = fig_height / fig_width
+
+    fig_height = fig_width * fig_ratio # height in inches
 
     if fig_height > MAX_HEIGHT_INCHES:
         print(f"WARNING: fig_height too large at {fig_height} inches, so will "
