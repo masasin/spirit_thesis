@@ -45,7 +45,7 @@ def change_color(color, saturation=0, value=0):
 
 
 def plot_overview(df, experiment_type, color="C0", title=None, target=TARGET,
-                  alpha_path=0.2, zorder_path=0, 
+                  alpha_path=0.2, width_path=0.5, zorder_path=0,
                   alpha_point=1, size_point=1, zorder_point=1,
                   xlabel="$x$ (m)", ylabel="$y$ (m)"):
     df_ex = df[df.experiment_type == experiment_type]
@@ -135,7 +135,9 @@ def plot_distribution(df, experiment_type, color="C0", title=None,
         xsize = ysize
 
     plt.gca().add_patch(mpl.patches.Rectangle(
-        (xmin, ymin), xsize, ysize, 
+        (min(xmin, ymin) - abs(min(xmin, ymin)),
+         min(xmin, ymin) - abs(min(xmin, ymin))),
+        max(xsize, ysize)*5, max(xsize, ysize)*5,
         color=change_color(color, saturation=background_shade),
         zorder=-1))
     g.fig.suptitle(title)
@@ -165,11 +167,11 @@ def plot_targets(p_init=Coords(0, 0), p_final=Coords(0, 0),
             plt.axhline(coord.y,
                         color=change_color(target_color,
                                            value=background_shade/2),
-                        zorder=zorder)
+                        zorder=zorder, lw=0.5)
             plt.axvline(coord.x,
                         color=change_color(target_color,
                                            value=background_shade/2),
-                        zorder=zorder)
+                        zorder=zorder, lw=0.5)
         ax.add_patch(mpl.patches.Rectangle(
             (coord.x * (-1 if invert_x else 1) - target_size.x / 2,
              coord.y * (-1 if invert_y else 1) - target_size.y / 2),

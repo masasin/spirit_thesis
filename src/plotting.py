@@ -39,7 +39,7 @@ def do_drone_dos():
         fig, ax1 = plt.subplots()
         ax1.step(distances, powers, lw=0.5)
         ax1.set_xlabel("distance (m)")
-        ax1.set_ylabel(r"Q (\%)")
+        ax1.set_ylabel(r"signal (\%)")
         ax1.set_ylim(0, 100)
 
         x_range = np.arange(80)
@@ -48,7 +48,7 @@ def do_drone_dos():
         ax2 = ax1.twinx()
         ax2.plot(x_range, best_fit, c="C1", lw=0.5)
         ax2.set_ylim(-100, -50)
-        ax2.set_ylabel(r"Q (dB\,m)")
+        ax2.yaxis.set_tick_params(which="both", labelright=False, right=False)
 
         plt.legend([ax.get_children()[0] for ax in (ax1, ax2)], ["data", "fit"])
 
@@ -58,7 +58,8 @@ def do_paths():
         ax1 = plt.subplot("121")
         plot_overview(results, ExperimentType.Onboard, color="C0", size_point=2)
         ax2 = plt.subplot("122", sharex=ax1, sharey=ax1)
-        plot_overview(results, ExperimentType.Spirit, color="C1", size_point=2, ylabel="")
+        plot_overview(results, ExperimentType.Spirit, color="C1", size_point=2,
+                      ylabel="")
         plt.setp(ax2.get_yticklabels(), visible=False)
 
     with figure("paths_detailed", figsize=fig_size(0.44, 1.2)):
@@ -142,8 +143,9 @@ def do_movement():
         plt.title("Movement backwards")
 
     with figure("movement_runs", figsize=fig_size(0.9, 0.4)):
-        molten = pd.melt(analyses, id_vars=["user", "experiment", "order", "group"],
-                                        value_vars=["path_length", "move_x", "move_y"])
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["path_length", "move_x", "move_y"])
         g = sns.factorplot(x="order", y="value", col="variable",
                            data=molten, hue="experiment", capsize=0.2)
         g.fig.axes[0].set_title("Path length")
@@ -156,8 +158,9 @@ def do_movement():
         plt.ylim(0, plt.ylim()[1])
 
     with figure("movement_x_runs"):
-        molten = pd.melt(analyses, id_vars=["user", "experiment", "order", "group"],
-                                        value_vars=["move_l", "move_r", "move_x"])
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["move_l", "move_r", "move_x"])
         g = sns.factorplot(x="order", y="value", col="variable",
                            data=molten, hue="experiment")
         g.fig.axes[0].set_title("Movement left")
@@ -170,8 +173,9 @@ def do_movement():
         plt.ylim(0, plt.ylim()[1])
 
     with figure("movement_y_runs"):
-        molten = pd.melt(analyses, id_vars=["user", "experiment", "order", "group"],
-                                        value_vars=["move_b", "move_f", "move_y"])
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["move_b", "move_f", "move_y"])
         g = sns.factorplot(x="order", y="value", col="variable",
                            data=molten, hue="experiment")
         g.fig.axes[0].set_title("Movement backwards")
@@ -186,23 +190,22 @@ def do_movement():
 
 def do_errors():
     with figure("rms", figsize=fig_size(0.9, 0.4)):
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=["rms", "rms_x", "rms_y"])
         g = sns.factorplot(x="experiment", y="value", col="variable",
-                           data=pd.melt(analyses, id_vars=["user", "experiment",
-                                                           "order", "group"],
-                                        value_vars=["rms", "rms_x", "rms_y"]),
-                                        kind="box")
+                           data=molten, kind="box")
         g.fig.axes[0].set_title("RMS Error")
         g.fig.axes[1].set_title("RMS Error in $x$")
         g.fig.axes[2].set_title("RMS Error in $y$")
         g.fig.axes[0].set_ylabel("error (m)")
 
     with figure("rms_runs", figsize=fig_size(0.9, 0.4)):
+        molten = pd.melt(analyses,
+                         id_vars=["user","experiment", "order", "group"],
+                         value_vars=["rms", "rms_x", "rms_y"]),
         g = sns.factorplot(x="order", y="value", hue="experiment",
-                           col="variable",
-                           data=pd.melt(analyses, id_vars=["user","experiment",
-                                                           "order", "group"],
-                                        value_vars=["rms", "rms_x", "rms_y"]),
-                                        capsize=0.2)
+                           col="variable", data=molten, capsize=0.2)
         g.fig.axes[0].set_title("RMS Error")
         g.fig.axes[1].set_title("RMS Error in $x$")
         g.fig.axes[2].set_title("RMS Error in $y$")
@@ -212,11 +215,11 @@ def do_errors():
         g.fig.axes[2].set_xlabel("run")
 
     with figure("distance", figsize=fig_size(0.9, 0.4)):
+        molten = pd.melt(analyses,
+                         id_vars=["user", "experiment", "order", "group"],
+                         value_vars=[r"dist_err", r"x_err", r"y_err"])
         g = sns.factorplot(x="experiment", y="value", col="variable",
-                           data=pd.melt(analyses, id_vars=["user", "experiment",
-                                                           "order", "group"],
-                                        value_vars=[r"dist_err", r"x_err",
-                                                    r"y_err"]), kind="box")
+                           data=molten, kind="box")
         g.fig.axes[0].set_title("Distance from target")
         g.fig.axes[1].set_title("Distance from target in $x$")
         g.fig.axes[2].set_title("Distance from target in $y$")
