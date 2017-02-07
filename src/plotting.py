@@ -1,6 +1,7 @@
 from latexify import latexify, figure, fig_size, savefig
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import pymc3 as pm
 import seaborn.apionly as sns
@@ -26,6 +27,30 @@ colorblind_cyclers = {cmap: plt.cycler("color", plt.cm.get_cmap(cmap).colors)
                       for cmap in colorblind_cmaps}
 plt.rcParams["axes.prop_cycle"] = colorblind_cyclers[cmap_main]
 
+
+
+def do_drone_dos():
+    with figure("ardrone_dos", figsize=fig_size(0.45)):
+        distances = np.array([0, 2, 8, 18, 23, 29, 34, 40,
+                              45, 51, 56, 62, 67, 72, 78, 80])
+        powers = np.array([90, 90, 86, 60, 50, 62, 35, 26,
+                           24, 12, 20, 22, 26, 22, 12, 5])
+
+        fig, ax1 = plt.subplots()
+        ax1.step(distances, powers, lw=0.5)
+        ax1.set_xlabel("distance (m)")
+        ax1.set_ylabel(r"Q (\%)")
+        ax1.set_ylim(0, 100)
+
+        x_range = np.arange(80)
+        best_fit = 10 * np.log10(6 / (1e5 * x_range**2.7))
+
+        ax2 = ax1.twinx()
+        ax2.plot(x_range, best_fit, c="C1", lw=0.5)
+        ax2.set_ylim(-100, -50)
+        ax2.set_ylabel(r"Q (dB\,m)")
+
+        plt.legend([ax.get_children()[0] for ax in (ax1, ax2)], ["data", "fit"])
 
 
 def do_paths():
@@ -277,7 +302,9 @@ def do_differences(recalculate=False):
 
 
 if __name__ == "__main__":
-    # latexify()
+    latexify()
+
+    # do_drone_dos()
 
     # results, analyses = analyze_data()
 
