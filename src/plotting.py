@@ -280,7 +280,6 @@ if __name__ == "__main__":
     # latexify()
 
     # results, analyses = analyze_data()
-    # print("Loaded files")
 
     # do_paths()
     # do_distributions()
@@ -289,7 +288,6 @@ if __name__ == "__main__":
     # do_errors()
 
     # users, tlx, surveys = load_surveys()
-    # print("Loaded surveys")
 
     # do_surveys()
 

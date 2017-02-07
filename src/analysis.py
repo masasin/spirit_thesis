@@ -318,15 +318,18 @@ def analyze_data():
     for col in ["arrived", "order"]:
         results[col] = results[col].astype(int)
 
+    print("Loaded files")
     return results, analyses
 
 
 def load_surveys():
+    print("Loading surveys...")
     with open("data.pickle", "rb") as fin:
         data = pickle.load(fin)
     users = _load_users(data)
     tlx = _load_tlx(data)
     surveys = _load_surveys(data, tlx)
+    print("Loaded surveys")
     return users, tlx, surveys
 
 
