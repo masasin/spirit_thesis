@@ -46,7 +46,7 @@ def change_color(color, saturation=0, value=0):
 
 def plot_overview(df, experiment_type, color="C0", title=None, target=TARGET,
                   alpha_path=0.2, zorder_path=0, 
-                  alpha_point=0.1, zorder_point=1,
+                  alpha_point=1, size_point=1, zorder_point=1,
                   xlabel="$x$ (m)", ylabel="$y$ (m)"):
     df_ex = df[df.experiment_type == experiment_type]
     df_arr = df_ex[df_ex.arrived == 1]
@@ -57,7 +57,7 @@ def plot_overview(df, experiment_type, color="C0", title=None, target=TARGET,
         plt.plot(df_run.xn, df_run.yn, alpha=alpha_path, color=color,
                  zorder=zorder_path)
     plt.scatter(df_arr.xn, df_arr.yn, alpha=alpha_point, color=color,
-                zorder=zorder_point, s=1, marker="+")
+                zorder=zorder_point, s=size_point)
     plot_targets(show_start=True, show_final=False, target_coords=[target])
     plt.axis("equal")
     plt.xlabel(xlabel)
@@ -82,7 +82,7 @@ def plot_by_distance(df, experiment_type, cmap="C0", target=TARGET,
 
 
 def plot_detailed(df, experiment_type, color="C0", title=None, target=TARGET,
-                  alpha_point=0.1, zorder_point=1, crosshair=False,
+                  alpha_point=1, size_point=1, zorder_point=1, crosshair=False,
                   xlabel="$x$ (m)", ylabel="$y$ (m)"):
     df_ex = df[df.experiment_type == experiment_type]
     df_arr = df_ex[df_ex.arrived == 1]
@@ -91,7 +91,7 @@ def plot_detailed(df, experiment_type, color="C0", title=None, target=TARGET,
     for order in np.arange(1, df.order.max()+1):
         df_run = df_arr[df_arr.order==order]
         plt.scatter(df_run.xn, df_run.yn,
-                    label=f"Run {order}",
+                    label=f"Run {order}", s=size_point,
                     color=change_color(color, value=-50+25*(order-1)))
     plot_targets(show_start=False, show_final=False, target_coords=[TARGET],
                  crosshair=crosshair)

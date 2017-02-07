@@ -31,18 +31,18 @@ plt.rcParams["axes.prop_cycle"] = colorblind_cyclers[cmap_main]
 def do_paths():
     with figure("paths_overview", figsize=fig_size(0.44, 1.2)):
         ax1 = plt.subplot("121")
-        plot_overview(results, ExperimentType.Onboard, color="C0")
+        plot_overview(results, ExperimentType.Onboard, color="C0", size_point=2)
         ax2 = plt.subplot("122", sharex=ax1, sharey=ax1)
-        plot_overview(results, ExperimentType.Spirit, color="C1", ylabel="")
+        plot_overview(results, ExperimentType.Spirit, color="C1", size_point=2, ylabel="")
         plt.setp(ax2.get_yticklabels(), visible=False)
 
     with figure("paths_detailed", figsize=fig_size(0.44, 1.2)):
         ax1 = plt.subplot("121")
         plot_detailed(results, ExperimentType.Onboard, color="C0",
-                      crosshair=True)
+                      size_point=2, crosshair=True)
         ax2 = plt.subplot("122", sharex=ax1, sharey=ax1)
         plot_detailed(results, ExperimentType.Spirit, color="C1",
-                      crosshair=True, ylabel="")
+                      size_point=2, crosshair=True, ylabel="")
         plt.setp(ax2.get_yticklabels(), visible=False)
 
 
@@ -277,7 +277,7 @@ def do_differences(recalculate=False):
 
 
 if __name__ == "__main__":
-    latexify()
+    # latexify()
 
     # results, analyses = analyze_data()
     # print("Loaded files")
