@@ -155,7 +155,6 @@
 	\sym{posz} \\
       \end{bmatrix}
     \end{equation}
-
     where \sym{posx}, \sym{posy}, and \sym{posz} are the $x$, $y$, and $z$ components.
 
     The orientation of the drone is represented by a quaternion, \sym{quat}, and defined as:
@@ -168,7 +167,6 @@
 	\sym{quatw} \\
       \end{bmatrix}
     \end{equation}
-
     such that the quaternion can also be represented as $\sym{quatw} + \sym{quatx}\mathbf{i} + \sym{quaty}\mathbf{j} + \sym{quatz}\mathbf{k}$.
     $\mathbf{i}$, $\mathbf{j}$, and $\mathbf{k}$ are the basis elements of the quaternion, and they are related by:
 
@@ -299,7 +297,6 @@
     \begin{equation}
       \sym{evalfn} = \sum_{\sym{elemidx}=1}^{\sym{nelems}}{\sym{coeff}_{\sym{elemidx}}\sym{elem}_{\sym{elemidx}}}
     \end{equation}
-    
     where $\sym{nelems}$ is the number of elements in the evaluation function, $\sym{elem}_{\sym{elemidx}}$ is an element, and $\sym{coeff}_{\sym{elemidx}}$ is its corresponding coefficient.
     After evaluation, the frame with the lowest score is selected, and its contents are streamed to the \texttt{/ardrone} namespace's \texttt{\detokenize{past_image}} and \texttt{\detokenize{past_pose}} nodes.
 
