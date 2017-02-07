@@ -19,12 +19,14 @@
   \textcite{kelly2011} extended the concept to an outdoor environment, and succeeded in making their system work in various low-throughput situations.
   However, most methods require many sensors, such as \glspl{lrf}, which add expense and weight to the vehicle.
 
-  \textcite{hing2009} succeeded in making a chase view for a fixed-wing \gls{uav} which showed the orientation of the drone with respect to the environment, overlaid onto a rotated onboard camera view.
+  \textcite{hing2009} succeeded in making a chase view for a fixed-wing \gls{uav}, as shown in \fref{fig:hing_chase_view}.
+  This showed the orientation of the drone with respect to the environment, overlaid onto a rotated onboard camera view.
   They were successful in improving flying, and even people who were not able to complete the course using the onboard view alone were able to complete it with the chase view.
 
 \section{Teleoperation System Using Past Image Records}
   \textcite{shiroma2004} introduced a \gls{spir}, a past-image view technique for mobile robots.
-  This technology enabled the operator to ascertain the position and orientation of the robot with respect to its environment from a third-person (bird's-eye view) perspective using only the camera and position and pose information.
+  This technology enabled the operator to ascertain the position and orientation of the robot with respect to its environment from a third-person (bird's-eye view) perspective using only camera and pose information.
+  A system overview is shown in \fref{fig:spir_system_overview}.
 
   \begin{figure}[h]
     \centering
@@ -35,7 +37,7 @@
     \begin{subfigure}[b]{0.45\textwidth}
       \includegraphics[width=\textwidth]{spir_birdseye}
     \end{subfigure}
-    \caption[\acrshort{spir} system overview]{System overview of Past-Image View.\cite{shiroma2004}}
+    \caption[\acrshort{spir} system overview]{System overview of \gls{spir}.\cite{shiroma2004}}
     \label{fig:spir_system_overview}
   \end{figure}
 
@@ -44,10 +46,12 @@
   Three evaluation functions were proposed to select an optimal image to use as the background:
 
   \begin{description}
-    \item [Fixed time delay:] uses images taken a certain period earlier.
-    \item [Fixed distance:] uses images taken at approximately the given distance.
-    \item [\Gls{fov} evaluation:] selects the closest image if the robot is in the field of view.
+    \item [Fixed time delay:] Use images taken a certain period earlier.
+    \item [Fixed distance:] Use images taken at approximately the given distance.
+    \item [\Gls{fov} evaluation:] Select the closest image if the robot is in the field of view.
   \end{description}
+
+  \fref{fig:spir_naive_algorithms} shows the algorithms for fixed time delay and fixed distance.
 
   \begin{figure}[h]
     \centering
@@ -67,6 +71,7 @@
   \end{figure}
 
   \Gls{fov} evaluation uses the fixed-distance algorithm as the base, but also calculates view and centreline distances, as well as the widths at the bottom and centre of the image.
+  The definition of the distances, as well as the algorithm, are shown in \fref{fig:spir_fov}.
 
   \begin{figure}[h]
     \centering
@@ -84,10 +89,10 @@
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
       \includegraphics[width=\textwidth]{spir_fov}
-      \caption{\Gls{fov} evaluation.}
+      \caption{\Gls{fov} evaluation algorithm.}
       \label{fig:spir_fov_flowchart}
     \end{subfigure}
-    \caption[\acrshort{spir} \gls{fov} evaluation algorithm]{\Gls{fov} evaluation algorithm.\cite{shiroma2004}}
+    \caption[\acrshort{spir} \gls{fov} evaluation algorithm]{\Gls{fov} evaluation.\cite{shiroma2004}}
     \label{fig:spir_fov}
   \end{figure}
 
@@ -99,7 +104,8 @@
   \subsection{Further development}
     \textcite{sugimoto2005} demonstrated the effectiveness of \gls{spir} with user experiments.
     \textcite{ito2008} decreased choppiness by proposing wider \glspl{fov}, and zooming into the background and model as the robot went further into the image plane.
-    They also experimented with adding trajectory forecasting with unmanned ground vehicles.
+    They also experimented with adding trajectory forecasting to unmanned ground vehicle interfaces.
+    Screenshot of \textcite{ito2008} are shown in \fref{fig:zoom_results}.
 
     \begin{figure}[h]
       \centering
@@ -116,6 +122,7 @@
 
     \textcite{murata2014} extended the concept to \gls{3d} when they applied it to mobile manipulators.
     They showed a significant decrease in operators' position error in the vertical direction with a similar error in the longitudinal direction.
+    This system is shown in \fref{fig:manip_results}.
 
     \begin{figure}[h]
       \centering
