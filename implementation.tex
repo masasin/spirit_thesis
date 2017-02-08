@@ -46,7 +46,11 @@
 
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\textwidth]{spirit_flowchart}
+    \ifdraft{}{
+      \begin{dot2tex}
+	\input{src/flowchart.dot}
+      \end{dot2tex}
+    }
     \caption[SPIRIT system overview]{\gls{spirit} system overview.}
     \label{fig:spirit_flowchart}
   \end{figure}
@@ -95,10 +99,11 @@
     % TODO: Has it been implemented yet?
 
     The \gls{ros} graph is shown in \fref{fig:rqt_graph}.
+
     % TODO: Add rqt_graph.
     \begin{figure}[h]
       \centering
-      \includegraphics[width=\textwidth]{rqt_graph}
+      \includegraphics[width=0.9\textheight, angle=90]{rqt_graph}
       \caption[ROS Graph]{The \gls{ros} graph for the system.}
       \label{fig:rqt_graph}
     \end{figure}
@@ -118,7 +123,7 @@
     Specifically, its frames are the ones stored in the buffer used in selecting past images, and the video was also displayed to the user for increased situational awareness.
 
   \section{Abstractions}
-    \gls{ros}'s \texttt{PoseStamped} messages are wrapped as a \texttt{Pose} object, which exposes the position and orientation of the message as numpy arrays.
+    \gls{ros}'s \texttt{PoseStamped} messages are wrapped as a \texttt{Pose} object, which exposes the position and orientation of the message as \textsf{numpy} arrays.
     This class also allows the calculation of relative Euler angles and distances with other \texttt{Pose}s.
 
     New \texttt{Image}s (from \textsf{\detokenize{sensor_msgs.msg}}) and the latest available \texttt{Pose} are stored in a \texttt{Frame} object.
@@ -343,7 +348,11 @@
 	      The smaller it is, the closer the two frames are and the smoother the transition.
       \end{itemize}
 
-      The values of the coefficients as used in the experiments are shown in Table \ref{tab:coeffs} below.
+      In order to find good coefficients, the video and data of several drone flights were recorded.
+      Then, regions of stability were found by brute forcing simulations with each coefficient ranging from 0 to 10.
+      The results were evaluated based on measures such as frequency of new frame selection.
+      The remaining combinations were checked manually, and potential candidates were flown.
+      The values of the coefficients as used in the experiments are shown in Table \ref{tab:coeffs}.
 
       \begin{table}[h]
 	\centering

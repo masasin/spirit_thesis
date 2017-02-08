@@ -302,3 +302,6 @@ sympy-plots-for-*.tex/
 
 # Dolphin
 .directory
+
+# dot2tex
+img/*dot2tex*

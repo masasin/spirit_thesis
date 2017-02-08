@@ -6,23 +6,45 @@
 %\epigraphhead{\epigraph{
 %Usability answers the question, ``Can the user accomplish their goal?''}{\textsc{Joyce Lee}}}
 \section{Results}
-  \subsection{Accuracy}
+  \subsection{Path length}
+  \fref{fig:paths} shows the paths flown by the operators, as well as the locations at which they arrived.
+
   \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
       \ifdraft{}{\input{img/plots/paths_overview.pgf}}
       \label{fig:paths_overview}
-      \caption{Overview of the paths}
+      \caption{Overview of the paths.}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
       \ifdraft{}{\input{img/plots/paths_detailed.pgf}}
       \label{fig:paths_detailed}
-      \caption{Detail of the paths}
+      \caption{Detail of the arrival points with respect to the target.}
     \end{subfigure}
     \label{fig:paths}
-    \caption{The paths}
+    \caption[Paths and arrivals]{The paths flown by the operators, and their arrival locations.}
   \end{figure}
+
+  The tendency of the drone to yaw to the right can clearly be seen in \fref{fig:paths_overview}, where users initially start out by moving to the right before correcting their path.
+  \gls{spirit} users tend to take a more consistent route to their destination, and stay in a more narrow zone.
+  This might indicate 
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/movement.pgf}}
+    \label{fig:movement}
+    \caption{Path length, including total movement in \sym{posx} and \sym{posy}}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \ifdraft{}{\input{img/plots/movement_runs.pgf}}
+    \label{fig:movement_runs}
+    \caption{Path length change across runs}
+  \end{figure}
+
+  \subsection{Paths}
+  \fref{fig:distribution} shows the distribution of the arrival points around the target.
 
   \begin{figure}[h]
     \centering
@@ -60,21 +82,6 @@
     \ifdraft{}{\input{img/plots/rms_runs.pgf}}
     \label{fig:rms_runs}
     \caption{RMSE change over various runs}
-  \end{figure}
-
-  \subsection{Path length}
-  \begin{figure}[h]
-    \centering
-    \ifdraft{}{\input{img/plots/movement.pgf}}
-    \label{fig:movement}
-    \caption{Path length, including total movement in \sym{posx} and \sym{posy}}
-  \end{figure}
-
-  \begin{figure}[h]
-    \centering
-    \ifdraft{}{\input{img/plots/movement_runs.pgf}}
-    \label{fig:movement_runs}
-    \caption{Path length change across runs}
   \end{figure}
 
   \subsection{Duration}
@@ -132,11 +139,21 @@
   \caption[Means and standard deviations]{Means and standard deviations}
   \begin{tabular}{lllll}
     \toprule
-    Component & $\mu$ - onboard & $\sigma$ - onboard & $\mu$ - \gls{spirit} & $\sigma$ - \gls{spirit} \\
+    & \multicolumn{2}{c}{Onboard} & \multicolumn{2}{c}{\gls{spirit}} \\
+    Component & $\mu$ & $\sigma$ & $\mu$ & $\sigma$ \\
     \midrule
-    Distance (m) & 0.666 (0.504, 0.852) & 0.284 (0.147, 0.448) & 0.401 (0.241, 0.557) & 0.238 (0.115, 0.388)\\
-    \sym{posx}-position (m) & 0.038 (-0.219, 0.304) & 0.43 (0.241, 0.66) & 0.136 (0.033, 0.237) & 0.171 (0.091, 0.264)\\
-    \sym{posy}-position (m) & 0.474 (-0.747, -0.209) & 0.447 (0.245, 0.681) & 0.067 (-0.287, 0.141) & 0.366 (0.197, 0.562)\\
+    % Distance (m) & 0.666 (0.504, 0.852) & 0.284 (0.147, 0.448) & 0.401 (0.241, 0.557) & 0.238 (0.115, 0.388)\\
+    % \sym{posx}-position (m) & 0.038 (-0.219, 0.304) & 0.43 (0.241, 0.66) & 0.136 (0.033, 0.237) & 0.171 (0.091, 0.264)\\
+    % \sym{posy}-position (m) & 0.474 (-0.747, -0.209) & 0.447 (0.245, 0.681) & 0.067 (-0.287, 0.141) & 0.366 (0.197, 0.562)\\
+    Distance (m) & 0.666 & 0.284 & 0.401 & 0.238\\
+    \sym{posx}-position (m) & 0.038 & 0.43 & 0.136 & 0.171\\
+    \sym{posy}-position (m) & 0.474 & 0.447 & 0.067 & 0.366\\
+    RMSE$_{\sym{posx}}$ (m) & 0.338 & 0.191 & 0.192 & 0.122\\
+    RMSE$_{\sym{posy}}$ (m) & 0.52& 0.293 & 0.338 & 0.222\\
+    Duration (s) & 39.041 & 18.817 & 44.081 & 15.02\\
+    Path length (m) & 10.859 & 2.703 & 11.913 & 2.683\\
+    Movement in $\sym{posx}$ (m) & 2.848 & 1.055 & 2.948 & 1.009\\
+    Movement in $\sym{posy}$ (m) & 1.051 & 0.579 & 1.273 & 0.698\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -146,7 +163,7 @@
   \caption[Difference of means]{Difference of means, 95\% creditibility interval, effect size.}
   \begin{tabular}{lll}
     \toprule
-    Component & Mean & Effect size \\
+    Component & Difference of means & Effect size \\
     \midrule
     Distance (m) & 0.266 (0.004, 0.486) & 1.053 (-0.029, 2.143)\\
     \sym{posx}-position (m) & -0.096 (-0.35, 0.206) & -0.323 (-1.266, 0.56)\\

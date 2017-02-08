@@ -14,8 +14,12 @@
 \nouppercaseheads
 
 \usepackage{siunitx}
-\usepackage[hidelinks]{hyperref}
+\usepackage[colorlinks, draft=false]{hyperref}
+% \usepackage[hidelinks, draft=false]{hyperref}
 \hypersetup{
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black},
   pdftitle={\mytitle},
   pdfsubject={Robotics Interfaces},
   pdfauthor={Jean Nassar},
@@ -32,6 +36,28 @@
 \usepackage{pgf}
 \usepackage{ifdraft}
 \usepackage{topcapt,booktabs,multirow}
+
+\usepackage[outputdir={img/}, autosize]{dot2texi}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning} 
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',
+    %Define style for boxes
+    point/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           text width=6.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,}
+}
 
 \usepackage{fontspec}
 \setmainfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Libertine O}

@@ -1,0 +1,44 @@
+digraph spirit {
+    graph [size = "4,4"]
+    node [fontsize=6];
+    node [shape = trapezium];
+        ardrone [label = "AR.Drone"];
+        mocap [label = "Mocap (200 Hz)"];
+    node [shape = oval];
+        frames [label = "Frame buffer"];
+    node [shape = rect];
+        camera [label = "Camera (30 Hz)"];
+        selected [label = "Best frame"];
+        img [label = "Image"];
+        pose [label = "Pose"];
+        frame [label = "Frame"];
+        slow [label = "Video (2 Hz)"];
+    node [shape = doublecircle];
+        user [label = "User"];
+    node [shape = point];
+        joint [];
+        
+    subgraph cluster0 {
+        style ="filled";
+        color = "white";
+        ardrone -> camera
+        camera -> slow [label = "Downsample"];
+    }
+
+    subgraph cluster1 {
+        style ="filled";
+        color = "white";
+        mocap -> pose;
+        img -> frame;
+        pose -> frame;
+        frame -> frames;
+    }
+  
+    slow -> img;
+    slow -> user [label = "Display"];
+    frames -> joint;
+    pose -> joint;
+    joint -> selected [label = "Evaluate"];
+    selected -> user [label = "Render"];
+    user -> ardrone [label = "Control"];
+}
