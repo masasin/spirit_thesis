@@ -59,10 +59,14 @@
            shorten >=2pt,}
 }
 
-\usepackage{fontspec}
+% \usepackage{unicode-math}
+\usepackage[no-math]{fontspec}
 \setmainfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Libertine O}
+% \setmathfont(Digits,Greek,Latin)[Numbers=OldStyle]{Linux Libertine O}
 \setsansfont[Ligatures=TeX, Numbers={OldStyle,Proportional}]{Linux Biolinum O}
 \setmonofont[Scale=MatchLowercase]{DejaVu Sans Code}
+\usepackage[italic]{mathastext}
+
 
 \usepackage{xeCJK}
 \setCJKmainfont[AutoFakeSlant=0.1]{IPAMincho}

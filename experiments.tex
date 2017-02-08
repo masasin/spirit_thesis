@@ -26,6 +26,7 @@ An information pamphlet was prepared, and written consent was obtained from each
 
 \section{Experiment setup}
 The participants were asked to fly a drone from a starting point to a target 6\,m away.
+The target itself was a raised box 52.5\,cm wide, 37\,cm deep, and 34\,cm high.
 When they believe that they have arrived, they would indicate as much by pressing a button on the controller, before landing safely.
 
 The drone itself was extremely unstable, and sometimes changed heights or rotated significantly upon takeoff.
@@ -105,13 +106,28 @@ After that, operation would proceed normally until landing.
   
   % http://www.indiana.edu/~kruschke/BEST/BEST.pdf
   John K. Kruschke's \gls{best} was used in order to evaluate the differences in the physical results obtained from each interface.
-  From the paper's abstract:
+  %From the paper's abstract:
+  %
+  %\begin{quote}
+    %Bayesian estimation for two groups provides complete distributions of credible values for the
+    %effect size, group means and their difference, standard deviations and their difference, and the
+    %normality of the data. The method handles outliers. The decision rule can accept the null value
+    %(unlike traditional $t$ tests) when certainty in the estimate is high (unlike Bayesian model comparison
+    %using Bayes factors). The method also yields precise estimates of statistical power for
+    %various research goals.
+  %\end{quote}
+  \gls{best} was implemented in \gls{python} using \gls{pymc3}.
+  The sampling algorithm was a Markov Chain Monte Carlo with Metropolis-Hastings.
+  2000 steps were calculated.
 
-  \begin{quote}
-    Bayesian estimation for two groups provides complete distributions of credible values for the
-    effect size, group means and their difference, standard deviations and their difference, and the
-    normality of the data. The method handles outliers. The decision rule can accept the null value
-    (unlike traditional $t$ tests) when certainty in the estimate is high (unlike Bayesian model comparison
-    using Bayes factors). The method also yields precise estimates of statistical power for
-    various research goals.
-  \end{quote}
+  The results of \gls{nasatlx} and the survey were analyzed using a paired $t$ test. Because the population size was small, the effect size was calculated using Hasting's \sym{effect}, such that:
+
+  \begin{equation}
+    \sym{effect} = \frac{\sym{mean}_1 - \sym{mean}_2}{\sym{std}^\star_\mathrm{pooled}} \times \left(\frac{\sym{popsize} - 3}{\sym{popsize}-2.25}\right) \times \sqrt{\frac{\sym{popsize}-2}{\sym{popsize}}}
+  \end{equation}
+
+  \noindent and $\sym{std}^\star_\mathrm{pooled}$, the weighted pooled standard deviation, is:
+
+  \begin{equation}
+    \sym{std}^\star_\mathrm{pooled} = \sqrt{\frac{\left(\sym{samplesize}_1-1\right) \sym{std}_1^2 + \left(\sym{samplesize}_2-2\right)\sym{std}_2^2}{\sym{popsize}-2}}
+  \end{equation}

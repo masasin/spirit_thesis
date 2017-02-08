@@ -46,11 +46,9 @@
 
   \begin{figure}[h]
     \centering
-    \ifdraft{}{
-      \begin{dot2tex}
-	\input{src/flowchart.dot}
-      \end{dot2tex}
-    }
+    \begin{dot2tex}
+      \input{img/flowchart.dot}
+    \end{dot2tex}
     \caption[SPIRIT system overview]{\gls{spirit} system overview.}
     \label{fig:spirit_flowchart}
   \end{figure}
@@ -74,18 +72,18 @@
 
     \begin{itemize}
       \item \gls{ros}
-      \item Python 2.7
+      \item \gls{python} 2.7
       \item Virtualenv
       \item \gls{opengl}
       \item Nvidia drivers
-      \item Necessary \gls{ros} and Python packages
+      \item Necessary \gls{ros} and \gls{python} packages
     \end{itemize}
 
     A separate Windows laptop has separate ethernet connections to the lab's motion capture system and to the operating station.
     The \gls{ardrone} connects to the operating station by acting as a Wifi access point.
     Communication with the drone is achieved using the \textsf{\detokenize{ardrone_autonomy}} package from Simon Fraser University's Autonomy Laboratory.
 
-    The research code was written entirely in Python.
+    The research code was written entirely in \gls{python}.
     Taking advantage of \gls{ros}'s modularity, each function is completely encapsulated in one or more nodes.
     As a result, implementing a new algorithm or introducing a new method to obtain data simply involves writing new code which publishes to the correct nodes.
     Any supported programming languages can be used.

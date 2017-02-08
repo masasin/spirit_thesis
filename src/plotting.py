@@ -54,32 +54,35 @@ def do_drone_dos():
 
 
 def do_paths():
-    with figure("paths_overview", figsize=fig_size(0.44, 1.2)):
+    with figure("paths_overview", figsize=fig_size(0.75, 0.8)):
         ax1 = plt.subplot("121")
-        plot_overview(results, ExperimentType.Onboard, color="C0", size_point=2)
+        plot_overview(results, ExperimentType.Onboard, color="C0", size_point=2,
+                      drone_width=0.5)
         ax2 = plt.subplot("122", sharex=ax1, sharey=ax1)
         plot_overview(results, ExperimentType.Spirit, color="C1", size_point=2,
-                      ylabel="")
+                      ylabel="", drone_width=0.5)
         plt.setp(ax2.get_yticklabels(), visible=False)
 
-    with figure("paths_detailed", figsize=fig_size(0.44, 1.2)):
+    with figure("paths_detailed", figsize=fig_size(0.75, 0.7)):
         ax1 = plt.subplot("121")
         plot_detailed(results, ExperimentType.Onboard, color="C0",
-                      size_point=2, crosshair=True)
+                      size_point=2, crosshair=True, drone_width=0.5)
+        ax1.legend_.remove()
         ax2 = plt.subplot("122", sharex=ax1, sharey=ax1)
-        plot_detailed(results, ExperimentType.Spirit, color="C1",
-                      size_point=2, crosshair=True, ylabel="")
+        plot_detailed(results, ExperimentType.Spirit, color="C1", ylabel="",
+                      size_point=2, crosshair=True, drone_width=0.5)
+        ax2.legend_.remove()
         plt.setp(ax2.get_yticklabels(), visible=False)
 
 
 def do_distributions():
     with figure("distribution_onboard", figsize=fig_size(0.44, 1)):
         plot_distribution(results, ExperimentType.Onboard, color="C0",
-                          crosshair=True)
+                          crosshair=True, drone_width=0.5)
 
     with figure("distribution_spirit", figsize=fig_size(0.44, 1)):
         plot_distribution(results, ExperimentType.Spirit, color="C1",
-                          crosshair=True)
+                          crosshair=True, drone_width=0.5)
 
 
 def do_durations():
@@ -238,9 +241,10 @@ def do_surveys():
         plt.ylabel("NASA-TLX weighted score")
 
     with figure("tlx_components", figsize=fig_size(0.44, 1)):
+        components = ["mental", "physical", "temporal", "performance",
+                      "effort", "frustration"]
         molten = pd.melt(tlx, id_vars=["user", "experiment", "order"],
-                         value_vars=["mental", "physical", "temporal",
-                                     "performance", "effort", "frustration"],
+                         value_vars=components,
                          var_name="component", value_name="score")
         g = sns.barplot(x=r"component", y="score", hue="experiment",
                         data=molten)
@@ -262,8 +266,8 @@ def do_surveys():
                          var_name="question", value_name="rating")
         g = sns.barplot(x=r"rating", y=r"question", hue="experiment",
                         data=molten)
-        sns.swarmplot(x="rating", y=r"question", data=molten, hue="experiment",
-                      split=True, palette=cmap_complement)
+        sns.stripplot(x="rating", y=r"question", data=molten, hue="experiment",
+                      split=True, palette=cmap_complement, jitter=0.6, size=3)
 
         plt.gca().set_yticklabels(
                 ["angle aware", "angle control",
@@ -310,7 +314,6 @@ if __name__ == "__main__":
     # do_drone_dos()
 
     # results, analyses = analyze_data()
-
     # do_paths()
     # do_distributions()
     # do_durations()
@@ -318,7 +321,6 @@ if __name__ == "__main__":
     # do_errors()
 
     # users, tlx, surveys = load_surveys()
-
     # do_surveys()
 
     # WARNING: Takes a long time with recalculate.

@@ -4,16 +4,28 @@
   description={A remote controlled flying quadcopter built by the French company Parrot.}
 }
 
+\newglossaryentry{python}{
+  name={Python},
+  text={Python},
+  description={A high level general purpose computing language.}
+}
+
 \newglossaryentry{pygame}{
   name={Pygame},
   text={Pygame},
-  description={A cross-platform set of Python modules designed for writing video games.}
+  description={A cross-platform set of \gls{python} modules designed for writing video games.}
 }
 
 \newglossaryentry{pyopengl}{
   name={PyOpenGL},
   text={PyOpenGL},
-  description={A Python wrapper for \gls{opengl}.}
+  description={A \gls{python} wrapper for \gls{opengl}.}
+}
+
+\newglossaryentry{pymc3}{
+  name={PyMC3},
+  text={PyMC3},
+  description={An open-source  probabilistic programming framework for Python.}
 }
 
 \newglossaryentry{opengl}{
@@ -43,7 +55,7 @@
 \newglossaryentry{pyqt5}{
   name={PyQt5},
   text={PyQt5},
-  description={A set of Python bindings for \gls{qt}.}
+  description={A set of \gls{python} bindings for \gls{qt}.}
 }
 
 \newglossaryentry{rviz}{
@@ -73,6 +85,13 @@
 
 \newdualentry[see={spir}]{spirit}{SPIRIT}{Subimposed Past Image Records Implemented for Teleoperation} {
   A method which enables operators to see a model of their robot with respect to its environment, in \gls{3d}.
+}
+\newdualentry{hpd}{HPD}{Highest Posterior Density interval} {
+  The narrowest interval among all of the Bayesian credible intervals.
+}
+
+\newdualentry{ci}{CI} {
+  Credible Interval}{An interval such that  the probability of a parameter lying in the interval is a certain value.
 }
 
 \newacronym{cg}{CG}{Computer Graphics model}
@@ -105,7 +124,14 @@
 \newacronym{nasa}{NASA}{National Aeronautics and Space Agency}
 \newacronym{nasatlx}{NASA-TLX}{NASA Task Load Index}
 \newacronym{tlx}{TLX}{Task Load Index}
-\newacronym{hpd}{HPD}{Highest Posterior Density region}
+
+\newacronym{mental}{MD}{Mental Demand}
+\newacronym{physical}{PD}{Physical Demand}
+\newacronym{temporal}{TD}{Temporal Demand}
+\newacronym{performance}{P}{Performance}
+\newacronym{effort}{E}{Effort}
+\newacronym{frustration}{F}{Frustration}
+\newacronym{tlxscore}{WS}{Weighted Score}
 
 \newglossaryentry{2d} {
   name={2\textsc{d}},
@@ -160,3 +186,10 @@
 
 \newsymbol{rotang}{\theta}{rotation angle}{The angle by which an axis in the axis-angle representation is rotated}
 \newsymbol{uvec}{\mathbf{e}}{rotation vector}{The vector around which the rotation happens in the axis-angle representation, in \gls{3d}}
+
+\newsymbol{popsize}{N}{population size}{The total population size.}
+\newsymbol{samplesize}{n}{sample size}{The size of the sample.}
+\newsymbol{mean}{\mu}{mean}{The value obtained by dividing the sum of several quantities by their number; an average.}
+\newsymbol{std}{\sigma}{standard deviation}{A quantity expressing by how much the members of a group differ from the mean value for the group.}
+\newsymbol{effect}{g}{effect size}{Hedge's $g$ is an effect size used to indicate the standardised difference between two means.}
+

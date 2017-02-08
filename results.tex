@@ -5,175 +5,214 @@
 \label{ch:results}
 %\epigraphhead{\epigraph{
 %Usability answers the question, ``Can the user accomplish their goal?''}{\textsc{Joyce Lee}}}
-\section{Results}
-  \subsection{Path length}
-  \fref{fig:paths} shows the paths flown by the operators, as well as the locations at which they arrived.
+The numerical results of the experiments are shown in \tref{tab:mean_sd}, and are separated into their own experiment types.
+Their \glspl{hpd} are not shown in the table, but they are mentioned when needed.
+
+The difference of means and the effect sizes (Hasting's \sym{effect}) are shown in \tref{tab:diff_means}, along with the 95\% \gls{ci} of each, in parentheses.
+As a general rule of thumb, an effect can be considered statistically significant at a desired level if the \gls{ci} does not contain zero.
+Values of 0.2, 0.5, and 0.8 can be considered small, medium, and large effects respectively.
+
+  \section{Path length}
+  \fref{fig:paths_overview} shows the paths flown by the operators, as well as the locations at which they arrived.
+  The target is the coloured rectangle, while the dashed line represents the area within which one part of the drone would be over the target.
 
   \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/paths_overview.pgf}}
-      \label{fig:paths_overview}
-      \caption{Overview of the paths.}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/paths_detailed.pgf}}
-      \label{fig:paths_detailed}
-      \caption{Detail of the arrival points with respect to the target.}
-    \end{subfigure}
-    \label{fig:paths}
-    \caption[Paths and arrivals]{The paths flown by the operators, and their arrival locations.}
+    \input{img/plots/paths_overview.pgf}
+    \caption[Paths overview]{Overview of the paths flown by the operators and their arrival locations.}
+    \label{fig:paths_overview}
   \end{figure}
 
-  The tendency of the drone to yaw to the right can clearly be seen in \fref{fig:paths_overview}, where users initially start out by moving to the right before correcting their path.
-  \gls{spirit} users tend to take a more consistent route to their destination, and stay in a more narrow zone.
-  This might indicate 
+  All \gls{spirit} subjects confirmed that they were able to see the target, as well as their relative position in \sym{posx}, but many had difficulty estimating their position in \sym{posy}.
+  This can be seen by the amount of paths which overfly the target area completely compared to the onboard view.
+  It seems notable that onboard pilots erred on the side of caution and undershot their approach.
+  This may be due to the fact that the target disappears earlier when using the onboard view, and, with no depth perception, the user cannot rely on environmental cues.
+
+  The tendency of the drone to yaw to the right can clearly be seen, where users initially start out by moving to the right before correcting their path.
+  In addition, \gls{spirit} users tend to take a more consistent route to their destination, and stay in a more narrow zone.
+  This might indicate that they are more comfortable with the interface.
+
+  The path length is shown in \fref{fig:movement}.
+  An ideal run with zero wasted motion would have a total path length of 6.0\,m.
+  However, the mean path length for runs using the onboard view was $10.859 \pm 2.703$\,m, while that for \gls{spirit} runs was $11.913 \pm 2.683$\,m.
+  That is, \gls{spirit} users flew 1.03\,m longer than their onboard counterparts.
+  It appears that there is a small effect size ($\sym{effect} = -0.391$), but the \gls{ci} is only 86.1\%.
+
+
   \begin{figure}[h]
     \centering
-    \ifdraft{}{\input{img/plots/movement.pgf}}
+    \input{img/plots/movement.pgf}
+    \caption[Path lengths]{Path length, including total movement in \sym{posx} and \sym{posy}.}
     \label{fig:movement}
-    \caption{Path length, including total movement in \sym{posx} and \sym{posy}}
   \end{figure}
+
+  There was almost no difference ($-0.105$\,m) in total motion in the \sym{posx} direction, but there was a small, nonsignificant correlation in \sym{posy} ($\Delta\sym{mean}=-0.223\mathrm{\,m}, \sym{effect}=0.359, \mathrm{\gls{ci}}=83.6\%$).
+
+  From \fref{fig:movement_runs}, it appears that the first and third \gls{spirit} flights produced longer path lengths.
+  In both these cases, the operator was using the system for the first time.
+  Towards the end of that first flight, and continuing into their next attempt, the path lengths are comparable to those flown with the onboard view.
+  This may be a statistical aberration, or it could be the effect of familiarity with the system.
 
   \begin{figure}[h]
     \centering
-    \ifdraft{}{\input{img/plots/movement_runs.pgf}}
+    \input{img/plots/movement_runs.pgf}
+    \caption[Path lengths across runs]{The change in path length across runs. The movement in \sym{posx} and \sym{posy} was larger with \gls{spirit} on the first and third runs, but is similar in subsequent runs.}
     \label{fig:movement_runs}
-    \caption{Path length change across runs}
   \end{figure}
 
-  \subsection{Paths}
-  \fref{fig:distribution} shows the distribution of the arrival points around the target.
+  \section{Accuracy}
+  \fref{fig:paths_detailed} shows the location of all the arrival points in each of the groups with respect to the target.
 
   \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/distribution_onboard.pgf}}
-      \label{fig:distribution_onboard}
-      \caption{Arrival distribution for onboard view}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/distribution_spirit.pgf}}
-      \label{fig:distribution_spirit}
-      \caption{Arrival distribution for SPIRIT view}
-    \end{subfigure}
-    \label{fig:distribution}
-    \caption{Arrival distribution}
+    \input{img/plots/paths_detailed.pgf}
+    \caption[Arrival overview]{Detail of the arrival points with respect to the target. Lighter points represent later runs.}
+    \label{fig:paths_detailed}
   \end{figure}
+
+  Out of the eighteen arrivals, none of the onboard ones are directly above the target, and only seven had a portion of the drone above the target.
+  The distribution is very wide and not precise, and was slightly semicircular.
+  Some students have commented that they were using a motion capture camera pole as a marker, and orienting themselves around that.
+
+  By contrast, \gls{spirit} operators obtained a much more consistent result, with both higher accuracy and precision.
+  Four out of eighteen were directly above the target, and a further eight had a portion of the drone above the target.
+  This distribution is much more concentrated.
+
+  \fref{fig:distance} shows the distance from the target at the time of arrival.
+  As with the paths, people using the onboard view had a strong backward bias, with a mean of $-0.474$\,m.
+  The 95\% \gls{hpd} was between $-0.747$ and $-0.209$\,m, which is completely outside of the target region.
+  They also had a large standard deviation in \sym{posx} despite having a mean close to the centre ($\sym{mean}=0.038\mathrm{\,m}, \sym{std}=0.43\textrm{\,m}$).
+
 
   \begin{figure}[h]
     \centering
-    \ifdraft{}{\input{img/plots/distance.pgf}}
+    \input{img/plots/distance.pgf}
+    \caption[Arrival distance]{Distance from target, including in \sym{posx} and \sym{posy}, at the time of arrival.}
     \label{fig:distance}
-    \caption{Distance from target, including in \sym{posx} and \sym{posy}}
   \end{figure}
+
+  Meanwhile, the \gls{spirit} view had a strong rightward bias, with a mean of 0.136\,m, and a 95\% \gls{hpd} of 0.033 to 0.237\,m.
+  Nevertheless, the 95\% \gls{hpd} is completely above the target.
+  On the other hand, while the mean of the \sym{posy} error ($-0.067$\,m) is above the target, its large standard deviation 0.366\,m means that the users can be off-target by up to about one target length (95\% \gls{hpd}: -0.287 to 0.141\,m).
+
+  \glspl{rmse} for \sym{posx} and \sym{posy}, as well as the total distance to the target at the time of arrival, are shown in \fref{fig:rmse}.
+  The total \gls{rmse} was almost identical to the total distance shown in \fref{fig:distance}.
 
   \begin{figure}[h]
     \centering
-    \ifdraft{}{\input{img/plots/rms.pgf}}
-    \label{fig:rms}
-    \caption{RMSE in distance from target, including in \sym{posx} and \sym{posy}}
+    \input{img/plots/rms.pgf}
+    \caption[Arrival RMS Error]{\gls{rmse} in distance from target, including in \sym{posx} and \sym{posy} at the time of arrival.}
+    \label{fig:rmse}
   \end{figure}
+
+  While the onboard view had an error of $0.666\pm0.284$\,m, \gls{spirit} had an error of only $0.401\pm0.238$\,m.
+  Broken down, the \sym{posx}- and \sym{posy}-\glspl{rmse} for the onboard view were $0.338\pm0.191$\,m and $0.52\pm0.293$\,m respectively.
+  This compares to just $0.192\pm0.122$\,m and $0.338\pm0.222$\,m for \gls{spirit}, respectively.
+  
+  The difference is significant and the effect is large for the total distance ($\Delta\sym{mean}=0.266\mathrm{\,m}, \sym{effect}=1.053, \mathrm{\gls{ci}}=98.1\%$) and \gls{rmse}$_{\sym{posx}}$ ($\Delta\sym{mean}=0.143\mathrm{\,m}, \sym{effect}=0.924, \mathrm{\gls{ci}}=97.8\%$).
+  They are nonsignifanct and medium, respectively, for \gls{rmse}$_{\sym{posy}}$ ($\Delta\sym{mean}=0.182\mathrm{\,m}, \sym{effect}=0.731, \mathrm{\gls{ci}}=95.0\%$).
+
+  \fref{fig:rms_runs} shows the change in the \glspl{rmse} across runs.
+  It is consistently lower with \gls{spirit}, apart for the second run, which is slightly higher than the onboard view.
+  This may be an aberration.
 
   \begin{figure}[h]
     \centering
-    \ifdraft{}{\input{img/plots/rms_runs.pgf}}
+    \input{img/plots/rms_runs.pgf}
+    \caption[Arrival RMS Error across runs]{Arrival \gls{rmse} change across runs.}
     \label{fig:rms_runs}
-    \caption{RMSE change over various runs}
   \end{figure}
 
-  \subsection{Duration}
+  \section{Duration}
+  \fref{fig:duration_result} shows the duration of each type of experiment.
+  \gls{spirit} seemed to have a longer duration, but with less spread.
+  In fact, the onboard view has a mean duration of 39.041\,s, and a standard deviation of 18.817\,s, while \gls{spirit} has $44.081\pm15.02$\,s.
+
+  This difference, though, is not signficant, and the effect size is small. For duration, $\Delta\sym{mean}=-5.041\mathrm{\,s}, \sym{effect}=0.304, \mathrm{\gls{ci}}=81.5\%$.
+  
   \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/duration.pgf}}
+      \input{img/plots/duration.pgf}
+      \caption{Duration of each type of experiment.}
       \label{fig:duration_result}
-      \caption{Duration of experiment}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/duration_runs.pgf}}
+      \input{img/plots/duration_runs.pgf}
+      \caption{Change in duration across runs.}
       \label{fig:duration_runs}
-      \caption{Change in duration across runs}
     \end{subfigure}
+    \caption[Duration]{The duration of the flight, from takeoff until the arrival button was pressed.}
     \label{fig:duration}
-    \caption{Duration}
   \end{figure}
 
-  \subsection{Workload}
+  Looking at \fref{fig:duration_runs}, the difference between the durations decreased in each run, and \gls{spirit} was faster by the fourth run.
+  This could be indicative of ease of learning, since the improvements were being made faster than with the onboard version.
+  Further experimentation is needed to verify this hypothesis.
+
+  \section{Workload}
+  \fref{fig:tlx} shows the result of the \gls{nasatlx} survey, both in aggregate and by component.
+  Because the \gls{tlx} responses are subjective, and the scale itself is an ordinal rather than interval scale, no actionable information can be gleaned from this small a sample size.\cite{hart2006}
+  Instead, general trends may be observed.
+
+  The six components in \fref{fig:tlx_components} are, in order:
+
+  \begin{itemize}
+    \item \textbf{\acrshort{mental}:} \acrlong{mental}
+    \item \textbf{\acrshort{physical}:} \acrlong{physical}
+    \item \textbf{\acrshort{temporal}:} \acrlong{temporal}
+    \item \textbf{\acrshort{performance}:} \acrlong{performance}
+    \item \textbf{\acrshort{effort}:} \acrlong{effort}
+    \item \textbf{\acrshort{frustration}:} \acrlong{frustration}
+  \end{itemize}
+
+  \noindent and the weighted score is \acrshort{tlxscore}.
+  Most onboard pilots who had a high score for physical demand mentioned that it was due to the fact that they needed to move in short burts to keep from hitting their surroundings.
+  Since the frame rate was so low, the drone would move a significant distance by the time a frame updated.
+  This raised stress and caused some frustration.
+
+  Inherent issues in the system, such as with the drone's tendency to drift right, or the lack of depth perception, also contributed to frustration and mental demand, but it had a similar effect when using either system.
+
   \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/tlx_results.pgf}}
+      \input{img/plots/tlx_results.pgf}
+      \caption{\gls{nasatlx} aggregate results.}
       \label{fig:results}
-      \caption{NASA-TLX results}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
-      \ifdraft{}{\input{img/plots/tlx_components.pgf}}
+      \input{img/plots/tlx_components.pgf}
+      \caption{\gls{nasatlx} component analysis.}
       \label{fig:tlx_components}
-      \caption{NASA-TLX component analysis}
     \end{subfigure}
+    \caption[NASA-TLX results]{Results for the \gls{nasatlx} survey.}
     \label{fig:tlx}
-    \caption{NASA-TLX}
   \end{figure}
 
-  % Show TLX by person?
+  The collated data is in \tref{tab:mean_sd_tlx}, and analyzed in \tref{tab:diff_means_tlx}.
+  A large, significant reduction of 35.74\% in the weighted \gls{tlx} score was seen.
+  Analysis of the components show that the scores decreased across the board.
+  There was a medium to high effect for physical ($\sym{effect}=-0.626$), temporal ($\sym{effect}=-0.666$), performance ($\sym{effect}=-0.699$) effort ($\sym{effect} = -0.718$), and overall score ($\sym{effect}=-0.978$)
 
-  \subsection{Survey}
+  \section{Survey}
+  \fref{fig:survey} shows the result of the exit survey.
+  Again, scores increased for each category.
+
   \begin{figure}[h]
     \centering
-    \ifdraft{}{\input{img/plots/survey_overview.pgf}}
+    \input{img/plots/survey_overview.pgf}
+    \caption[Survey results]{Results for the exit survey.}
     \label{fig:survey}
-    \caption{Survey results}
   \end{figure}
 
-  % Jerky motion in onboard
+  The collated data is in \tref{tab:mean_sd_survey}, and analyzed in \tref{tab:diff_means_survey}.
+  \gls{spirit} did not affect orientation awareness or control.
+  However, it significantly increased awareness and control for both absolute and relative positioning.
+  The aggregate score also significantly increased.
 
-\chapter{Analysis}
+  The largest effect was on the abillity to stay above the target ($\sym{effect} = 2.511, p=0.00126$.
+  One strategy that \gls{spirit} users utilized was slewing to the side in order to get a perspective view of the location of the drone with respect to the target.
+  By extrapolating the vertical edges of the target, they were able to increase their understanding of the situation.
 
-\begin{table}[h]
-  \centering
-  \caption[Means and standard deviations]{Means and standard deviations}
-  \begin{tabular}{lllll}
-    \toprule
-    & \multicolumn{2}{c}{Onboard} & \multicolumn{2}{c}{\gls{spirit}} \\
-    Component & $\mu$ & $\sigma$ & $\mu$ & $\sigma$ \\
-    \midrule
-    % Distance (m) & 0.666 (0.504, 0.852) & 0.284 (0.147, 0.448) & 0.401 (0.241, 0.557) & 0.238 (0.115, 0.388)\\
-    % \sym{posx}-position (m) & 0.038 (-0.219, 0.304) & 0.43 (0.241, 0.66) & 0.136 (0.033, 0.237) & 0.171 (0.091, 0.264)\\
-    % \sym{posy}-position (m) & 0.474 (-0.747, -0.209) & 0.447 (0.245, 0.681) & 0.067 (-0.287, 0.141) & 0.366 (0.197, 0.562)\\
-    Distance (m) & 0.666 & 0.284 & 0.401 & 0.238\\
-    \sym{posx}-position (m) & 0.038 & 0.43 & 0.136 & 0.171\\
-    \sym{posy}-position (m) & 0.474 & 0.447 & 0.067 & 0.366\\
-    RMSE$_{\sym{posx}}$ (m) & 0.338 & 0.191 & 0.192 & 0.122\\
-    RMSE$_{\sym{posy}}$ (m) & 0.52& 0.293 & 0.338 & 0.222\\
-    Duration (s) & 39.041 & 18.817 & 44.081 & 15.02\\
-    Path length (m) & 10.859 & 2.703 & 11.913 & 2.683\\
-    Movement in $\sym{posx}$ (m) & 2.848 & 1.055 & 2.948 & 1.009\\
-    Movement in $\sym{posy}$ (m) & 1.051 & 0.579 & 1.273 & 0.698\\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\begin{table}[h]
-  \centering
-  \caption[Difference of means]{Difference of means, 95\% creditibility interval, effect size.}
-  \begin{tabular}{lll}
-    \toprule
-    Component & Difference of means & Effect size \\
-    \midrule
-    Distance (m) & 0.266 (0.004, 0.486) & 1.053 (-0.029, 2.143)\\
-    \sym{posx}-position (m) & -0.096 (-0.35, 0.206) & -0.323 (-1.266, 0.56)\\
-    \sym{posy}-position (m) & -0.41 (-0.749, -0.054) & -1.026 (-1.937, -0.072)\\
-    RMSE$_{\sym{posx}}$ (m) & 0.143 (0.018, 0.287) & 0.924 (-0.029, 1.845)\\
-    RMSE$_{\sym{posy}}$ (m) & 0.182 (-0.038, 0.41) & 0.731 (-0.252, 1.638)\\
-    Duration (s) & -5.041 (-16.303, 6.742) & -0.304 (-1.005, 0.384) \\
-    Path length (m) & -1.03, (-2.923, 0.0837) & -0.391 (-1.114, 0.299)\\
-    Movement in $\sym{posx}$ (m) & -0.105 (-0.856, 0.699) & -0.102 (-0.822, 0.707)\\
-    Movement in $\sym{posy}$ (m) & -0.223 (-0.67, 0.23) & -0.359 (-1.125, 0.313)\\
-    \bottomrule
-  \end{tabular}
-\end{table}

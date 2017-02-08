@@ -46,8 +46,8 @@ def change_color(color, saturation=0, value=0):
 
 def plot_overview(df, experiment_type, color="C0", title=None, target=TARGET,
                   alpha_path=0.2, width_path=0.5, zorder_path=0,
-                  alpha_point=1, size_point=1, zorder_point=1,
-                  xlabel="$x$ (m)", ylabel="$y$ (m)"):
+                  alpha_point=1, size_point=1, zorder_point=1, crosshair=False,
+                  drone_width=None, xlabel="$x$ (m)", ylabel="$y$ (m)"):
     df_ex = df[df.experiment_type == experiment_type]
     df_arr = df_ex[df_ex.arrived == 1]
     if title is None:
@@ -58,7 +58,8 @@ def plot_overview(df, experiment_type, color="C0", title=None, target=TARGET,
                  zorder=zorder_path)
     plt.scatter(df_arr.xn, df_arr.yn, alpha=alpha_point, color=color,
                 zorder=zorder_point, s=size_point)
-    plot_targets(show_start=True, show_final=False, target_coords=[target])
+    plot_targets(show_start=True, show_final=False, target_coords=[target],
+                 drone_width=drone_width, crosshair=crosshair)
     plt.axis("equal")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -83,7 +84,7 @@ def plot_by_distance(df, experiment_type, cmap="C0", target=TARGET,
 
 def plot_detailed(df, experiment_type, color="C0", title=None, target=TARGET,
                   alpha_point=1, size_point=1, zorder_point=1, crosshair=False,
-                  xlabel="$x$ (m)", ylabel="$y$ (m)"):
+                  drone_width=None, xlabel="$x$ (m)", ylabel="$y$ (m)"):
     df_ex = df[df.experiment_type == experiment_type]
     df_arr = df_ex[df_ex.arrived == 1]
     if title is None:
@@ -94,7 +95,7 @@ def plot_detailed(df, experiment_type, color="C0", title=None, target=TARGET,
                     label=f"Run {order}", s=size_point,
                     color=change_color(color, value=-50+25*(order-1)))
     plot_targets(show_start=False, show_final=False, target_coords=[TARGET],
-                 crosshair=crosshair)
+                 crosshair=crosshair, drone_width=drone_width)
     plt.title(title)
     plt.axis("equal")
     plt.xlabel(xlabel)
@@ -103,7 +104,8 @@ def plot_detailed(df, experiment_type, color="C0", title=None, target=TARGET,
 
 
 def plot_distribution(df, experiment_type, color="C0", title=None,
-                      target_color="C2", background_shade=-50, crosshair=False):
+                      target_color="C2", background_shade=-50,
+                      crosshair=False, drone_width=None):
     df_ex = df[df.experiment_type == experiment_type]
     df_arr = df_ex[df_ex.arrived == 1]
     if title is None:
@@ -116,7 +118,8 @@ def plot_distribution(df, experiment_type, color="C0", title=None,
             child.set_alpha(0.8)
     plt.sca(g.ax_joint)
     plot_targets(show_start=False, show_final=False, target_coords=[TARGET],
-                 target_color=target_color, zorder=0, crosshair=crosshair)
+                 target_color=target_color, zorder=0, crosshair=crosshair,
+                 drone_width=drone_width)
     g.set_axis_labels("$x$", "$y$")
     plt.axis("equal")
 
@@ -148,7 +151,8 @@ def plot_targets(p_init=Coords(0, 0), p_final=Coords(0, 0),
                  target_coords=None, target_coord_offsets=None,
                  target_color="C2", target_size=Coords(0.525, 0.37),
                  show_start=True, show_final=True,
-                 scale=100, zorder=0, crosshair=False, background_shade=-50):
+                 scale=100, zorder=0, crosshair=False, drone_width=None,
+                 background_shade=-50):
     if target_coords is not None and target_coord_offsets is not None:
         raise ValueError("Use either target_coords or target_coord_offsets")
     
@@ -172,6 +176,16 @@ def plot_targets(p_init=Coords(0, 0), p_final=Coords(0, 0),
                         color=change_color(target_color,
                                            value=background_shade/2),
                         zorder=zorder, lw=0.5)
+        if drone_width is not None:
+            ax.add_patch(mpl.patches.Rectangle(
+                (coord.x * (-1 if invert_x else 1) - target_size.x / 2 - drone_width / 2,
+                 coord.y * (-1 if invert_y else 1) - target_size.y / 2 - drone_width / 2),
+                target_size.x + drone_width,
+                target_size.y + drone_width,
+                fill=False, lw=0.5, linestyle="dotted",
+                edgecolor=change_color(target_color, value=background_shade/2),
+                zorder=zorder))
+
         ax.add_patch(mpl.patches.Rectangle(
             (coord.x * (-1 if invert_x else 1) - target_size.x / 2,
              coord.y * (-1 if invert_y else 1) - target_size.y / 2),
