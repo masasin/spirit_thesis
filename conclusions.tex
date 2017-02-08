@@ -4,20 +4,25 @@
 
 \chapter{Conclusions}
 \label{ch:conclusion}
-\gls{spirit}, a novel robotics teleoperation system which overlays the current position and orientation of a vehicle onto previously captured images.
-It works even in a low-throughput environment where video data might suffer.
+\gls{spirit} is a novel robotics teleoperation system which overlays the current position and orientation of a vehicle onto previously acquired images.
+This research focuses on developing a \gls{spirit}-based user interface for aerial robots.
+The proposed method combines \gls{fov} information with state estimation, and selects a suitable image to use as a background.
+It works even in a low-throughput environment where video data might suffer, and only requires one camera.
 
 Experiments were conducted to study the efficacy at increasing accuracy while decreasing time and wasted movements.
 Participants were tasked with flying a drone to a location above a known target while using the proposed system, and comparing the results with those obtained by flying with a slowed-down onboard camera.
 
-\gls{spirit} improved accuracy and reduced error, but users took a slightly longer time and took a slightly longer path.
-There are indicators, however, that convergence with the onboard group does occur for both these factors, and this may merit further study.
+\gls{spirit} significantly improved accuracy from 0.666\,m to 0.284\,m ($\Delta\sym{mean}=0.266\mathrm{\,m}, \sym{effect}=1.053, \mathrm{\gls{ci}}=98.1\%$), and reduced the overall workload by 37.5\% ($p=0.02408, \sym{effect}=-0.978$), especially in the physical, temporal, and performance metrics.
+It also significantly improved the users' control and awareness of absolute and relative positioning.
+Their self-assessed ability to stay above the target increased by 86.9\% from an average rating of $2.556/7$ to $4.778/7$ ($p=0.00126,\sym{effect}=2.511$).
 
-Users had a reduced cognit
+There were non-significant increases in time and path lengths, but improvements over subsequent runs indicate that these are simply an issue of familiarity with the system.
+Further testing is needed to verify the effect of \gls{spirit} on completion time and path length, and its efficacy in various environments.
+
+Overall, the tests were successful, and all participants gave praise for the system, as well as valuable feedback.
 
 
 \chapter{Future work}
-% TODO: Discuss different groups?
 Several suggestions for improving the functionality of \gls{spirit} are presented here.
 They have been drawn from personal experience as well as user suggestions.
 
@@ -27,18 +32,17 @@ This was present in the version of \gls{spir} shown in \cite{ito2008}.
 
 Similarly, it might be useful to always keep the horizon horizontal and tilt the image by the amount the drone was tilted when the frame was captured, as was implemented by Hing et al.\cite{hing2009}
 Extending it to all three Eulerian axes would allow, for instance, the pitch to be used more effectively.
-This would be useful with modern drones, which often use gimbals.
+This would be useful with modern drones, which often use gimballed cameras.
 
-It was discovered that depth perception was difficult when using \gls{spirit}.
+It was discovered that depth perception was difficult when using \gls{spirit}, and is problematic when moving around obstacles.
 It might be possible to improve this by showing a shadow where the ground should be.
 If distance estimation is used, it could be used in a wide variety of environments.
 Another potential solution is to use binocular cameras and have the user wear a head-mounted display.
-In this case, movement around fixed obstacles should also be feasible.
-% TODO: LSD-SLAM. See Michael's email.
 
 Many users mentioned that the motion capture pole near the target was used as a marker to help orient the drone when flying using the onboard view.
 They felt that it provided an unfair advantage, and that other methods of placing the motion capture camera might make the task much more difficult.
-Removing the pole might give a fairer comparison with \gls{spirit}
+Removing the pole might give a fairer comparison with \gls{spirit}.
+Alternatively, use other methods of localization to allow the drone to be used in various locations.
 
 Performance can be improved by replacing \gls{pygame} with \gls{pyqt5}.
 This might also solve the problem with the sound system not being able to initialize, which had previously necessitated restarts.
@@ -47,6 +51,3 @@ Finally, using an $n$-tree (an octree, or, its extension, a hextree), to prune t
 A hextree would be implemented using \sym{posx}, \sym{posy}, and \sym{posz} positions, as well as yaw.
 Higher dimensions for gimballed platforms would also include pitch and roll.
 Instead of evaluating the entire buffer, only the frames in which the drone would have been visible in the first place can be checked, thereby significantly reducing processing time.
-
-% TODO: What about rotation? Camera disappears.
-% TODO: Free the drone! Don't use mocap.

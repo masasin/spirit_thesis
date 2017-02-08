@@ -24,14 +24,44 @@ No participants had any other flying experience, including flight simulators.
 
 An information pamphlet was prepared, and written consent was obtained from each in order to comply with ethical obligations.
 
+\begin{wrapfigure}{r}{0.47\textwidth}
+  \centering
+  \includegraphics[width=0.45\textwidth]{target}
+  \caption[Target]{
+    The target which users aim towards.
+  }
+  \label{fig:target}
+\end{wrapfigure}
+
 \section{Experiment setup}
 The participants were asked to fly a drone from a starting point to a target 6\,m away.
-The target itself was a raised box 52.5\,cm wide, 37\,cm deep, and 34\,cm high.
+The target itself (\fref{fig:target}) was a raised box 52.5\,cm wide, 37\,cm deep, and 34\,cm high.
 When they believe that they have arrived, they would indicate as much by pressing a button on the controller, before landing safely.
+The setup of the flying area can be seen in \fref{fig:flying_area}.
 
-The drone itself was extremely unstable, and sometimes changed heights or rotated significantly upon takeoff.
+The drone itself was not always stable, and sometimes changed heights or rotated significantly upon takeoff.
 As a result, the takeoff pad was visible to the operators to minimize the potential for damage to equipment or injury to others.
 The drone would no longer be visible after moving a short distance towards the target.
+A closeup of the drone on the launchpad is shown in \fref{fig:drone_long_target}.
+
+\begin{figure}
+\centering
+\hfill
+\begin{minipage}{0.45\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{spirit_flying_area}
+  \caption[Flying area]{The flying area which the experiment was set in.}
+  \label{fig:flying_area}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{drone_long_target}
+  \caption[Drone on pad]{The drone on the launchpad, looking towards the target.}
+  \label{fig:drone_long_target}
+\end{minipage}
+\hfill
+\end{figure}
 
 \subsection{Timeline}
 In order to reduce the effect of learning on performance, the order of the trials was changed based on the participant number.
@@ -55,14 +85,21 @@ These failures were not considered.
 \subsection{Trials}
 At the start of each trial, a bird's-eye view and both interface outputs were recorded, and a custom program recorded relevant data to \gls{ros} Bag files.
 During any given experiment, the participant was only able to see the relevant interface, while the other was hidden.
-% TODO screenshot of OBS?
+A still from one of the recorded videos is shown in \ref{fig:obs}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{spirit_recording}
+  \caption[Recording sample]{A still from a recorded video.}
+  \label{fig:obs}
+\end{figure}
 
 Some changes were made to the onboard view to reduce external influences on the results.  
 First, while the drone provides video at 30\,Hz, the experiment simulates an area with a bad connection.
 The transfer rate was artificially reduced to 2\,Hz, which is the same frequency used by \gls{spirit} to capture frames.
 In addition, a loud warning sound used to notify the operator of loss of position tracking was supressed during trials using the onboard view in order to reduce distractions to the operator.
 
-On the other hand for \gls{spirit} trials, no \gls{cg} was displayed at takeoff because no images had yet been captured of the position.
+On the other hand for \gls{spirit} trials, no \gls{cg} model was displayed at takeoff because no images had yet been captured of the position.
 Upon launch, then, the user would instead move the drone about one body length forward in order to cause the \gls{cg} model to show.
 After that, operation would proceed normally until landing.
 
@@ -80,7 +117,7 @@ After that, operation would proceed normally until landing.
     \item[Duration:]
       Since the amount of time taken from initalization until takeoff varied, the duration of the task was calculated from takeoff to the time of the first arrival button.
     \item[Workload:]
-      The self-reported cognitive workload of the operator is measured by using the \gls{nasatlx}, developed by \gls{nasa}. %TODO: Reference
+      The self-reported cognitive workload of the operator is measured by using the \gls{nasatlx}, developed by \gls{nasa}.
       Six components are each rated from 0 to 20, inclusive, and then weighted according to their contributions, with a maximum possible score of 100.
       The higher the score, the higher the perceived workload.
     \item[Survey:]
@@ -104,18 +141,16 @@ After that, operation would proceed normally until landing.
 \section{Data analysis}
   Since the same people were performing a similar task multiple times, and two repetitions were used for each interface, a repeated measurement design was used.
   
-  % http://www.indiana.edu/~kruschke/BEST/BEST.pdf
-  John K. Kruschke's \gls{best} was used in order to evaluate the differences in the physical results obtained from each interface.
-  %From the paper's abstract:
-  %
-  %\begin{quote}
-    %Bayesian estimation for two groups provides complete distributions of credible values for the
-    %effect size, group means and their difference, standard deviations and their difference, and the
-    %normality of the data. The method handles outliers. The decision rule can accept the null value
-    %(unlike traditional $t$ tests) when certainty in the estimate is high (unlike Bayesian model comparison
-    %using Bayes factors). The method also yields precise estimates of statistical power for
-    %various research goals.
-  %\end{quote}
+  John K. Kruschke's \gls{best}\cite{kruschke2013} was used in order to evaluate the differences in the physical results obtained from each interface.
+  From the paper's abstract:
+  
+  \begin{quote}
+    Bayesian estimation for two groups provides complete distributions of credible values for the effect size, group means and their difference, standard deviations and their difference, and the normality of the data.
+    The method handles outliers.
+    The decision rule can accept the null value (unlike traditional $t$ tests) when certainty in the estimate is high (unlike Bayesian model comparison using Bayes factors).
+    The method also yields precise estimates of statistical power for various research goals.
+  \end{quote}
+
   \gls{best} was implemented in \gls{python} using \gls{pymc3}.
   The sampling algorithm was a Markov Chain Monte Carlo with Metropolis-Hastings.
   2000 steps were calculated.

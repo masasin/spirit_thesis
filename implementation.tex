@@ -22,7 +22,7 @@
 
   % TODO: 既存の過去画像と、UAV用の過去画像で何が違うのか明記すること。
 
-  The system was built in \gls{ros} for interoperability and future expansion, as well as its ease of modularization.
+  The system was built in \gls{ros} for interoperability and future expansion, as well as its ease of modularization. An example of the difference between first person view and third person view is shown in \fref{fig:fpv_vs_chase}.
 
   \begin{figure}[h]
     \centering
@@ -46,7 +46,7 @@
 
   \begin{figure}[h]
     \centering
-    \begin{dot2tex}
+    \begin{dot2tex}[dot, tikz]
       \input{img/flowchart.dot}
     \end{dot2tex}
     \caption[SPIRIT system overview]{\gls{spirit} system overview.}
@@ -59,7 +59,7 @@
     \item An operator-controlled gamepad sends commands to the \gls{ardrone}.
     \item The pose, consisting of the position and orientation of the drone, is calculated by a commercial motion capture system and relayed to the operating station.
     \item The drone streams video at 30\,Hz, which is downsampled to 2\,Hz to simulate \gls{los} conditions.
-    \item The 2\,Hz video feed is shown to the operator without modification.
+    \item The 2\,Hz video feed is shown to the operator without modification if the option is selected.
     \item All received images are also stored in a chronological array.
 	  When a new pose is received, it is checked against all frames using an evaluation function.
     \item The frame with the lowest score is selected, and has the current pose rendered onto it to show to the operator.
@@ -79,7 +79,7 @@
       \item Necessary \gls{ros} and \gls{python} packages
     \end{itemize}
 
-    A separate Windows laptop has separate ethernet connections to the lab's motion capture system and to the operating station.
+    A separate Windows laptop was connected to the lab's motion capture system and to the operating station via ethernet.
     The \gls{ardrone} connects to the operating station by acting as a Wifi access point.
     Communication with the drone is achieved using the \textsf{\detokenize{ardrone_autonomy}} package from Simon Fraser University's Autonomy Laboratory.
 
@@ -98,7 +98,6 @@
 
     The \gls{ros} graph is shown in \fref{fig:rqt_graph}.
 
-    % TODO: Add rqt_graph.
     \begin{figure}[h]
       \centering
       \includegraphics[width=0.9\textheight, angle=90]{rqt_graph}
@@ -234,8 +233,14 @@
     Optitrack's \emph{Motive} software is used to collect \gls{mocap} data on the position and orientation of the drone.
     Four infrared markers are set onto the top of the drone, and the Optitrack infrared cameras are connected to the \gls{mocap} computer.
     The markers forming the drone are defined as a rigid body, allowing the pose information to be calculated for the entire drone at once.
+    The interface is shown in \fref{fig:mocap_interface}
 
-    % TODO: Mocap screenshots.
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=0.9\textwidth]{mocap_screenshot}
+      \caption[Motion capture interface]{The motion capture interface.}
+      \label{fig:mocap_interface}
+    \end{figure}
 
     The \gls{mocap} system then streams the data, including the rigid body information, via multicast.
     The data is received by the operating station, interpreted by \gls{ros}'s \textsf{\detokenize{mocap_optitrack}} package, and republished to \texttt{/ardrone}'s \texttt{\detokenize{pose}} and \texttt{\detokenize{ground_pose}} nodes.
@@ -246,14 +251,22 @@
 
     If the \gls{mocap} system is unable to determine the pose of the drone, whether by marker occlusion or lack of information, \emph{Motive} sends the last known position instead of raising an error.
     In that case, the visualization system would be using out-of-date pose data, which could cause problems.
-    As a result, the pose is tracked over time, and the boolean status is published to \texttt{\detokenize{/ardrone/tracked}} and can be used by other nodes.
+    As a result, the pose is tracked over time, and tracking is considered lost if two poses are identical except for the timestamp.
+    The boolean status is published to \texttt{\detokenize{/ardrone/tracked}} and can be used by other nodes.
     For instance, if tracking is lost, an audible horn sounds, accompanied by a visual warning for the operator, as shown in \fref{fig:spirit_interface_lost}.
 
-    % TODO: Use actual final interface.
     \begin{figure}[h]
       \centering
-      \includegraphics[width=\textwidth]{spirit_interface_lost}
-      \caption[Interface with tracking lost]{A screenshot of the \gls{spirit} interface when tracking has been lost. Notice the red text in the upper-right corner. The operator can still see the 2\,Hz live feed.}
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{onboard_interface_lost}
+	\caption{The onboard interface.}
+      \end{subfigure}
+      \hfill
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{spirit_interface_lost}
+	\caption{The \gls{spirit} interface.}
+      \end{subfigure}
+      \caption[Interface with tracking lost]{Screenshot of the onboard and \gls{spirit} interfaces when tracking has been lost.}
       \label{fig:spirit_interface_lost}
     \end{figure}
 
@@ -265,7 +278,7 @@
 
 \chapter{Selection of past images}
     Each new image that arrives while the pose is being tracked is automatically packaged into a \texttt{Frame} object containing the time it was taken, as well as the position and orientation of the drone at that time.
-    These \texttt{Frame}s are then stored in a chronological list, which is implemented as a deque.
+    These \texttt{Frame}s are then stored in a chronological list, which is implemented as a double ended queue.
 
     When a new valid pose arrives, it is checked against the frames using an evaluation function.
     The \texttt{Frame} with the lowest score is published for use by the visualization system.
@@ -281,6 +294,7 @@
   \section{Evaluation functions}
     In this section, all $\Delta$ differences are from the drone with respect to the frame being processed, unless otherwise specified.
     In addition, $_{ref}$ indicates a reference, or ideal value, which can be set by the operator.
+    So, for instance, $\|\Delta\sym{pos}_ref\|$ is the reference distance at which to keep the drone.
     \fref{fig:drones_view} shows the relative positions. For more information on the notation, please see Section \ref{sec:poses}.
 
     \begin{figure}[h]
@@ -298,7 +312,7 @@
       \label{fig:drones_view}
     \end{figure}
 
-    Evaluation functions are defined as:
+    An evaluation function is defined as:
 
     \begin{equation}
       \sym{evalfn} = \sum_{\sym{elemidx}=1}^{\sym{nelems}}{\sym{coeff}_{\sym{elemidx}}\sym{elem}_{\sym{elemidx}}}
@@ -455,15 +469,19 @@
 
     The final interface is shown in \fref{fig:spirit_interface_tracked}.
 
-    % TODO: Show actual final interface.
     \begin{figure}[h]
       \centering
-      \includegraphics[width=\textwidth]{spirit_interface_tracked}
-      \caption[SPIRIT final interface]{Final interface for \gls{spirit}, with the \gls{ardrone} tracked. Here, the operator is attempting to land it on a chair.}
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{onboard_interface_tracked}
+	\caption{The onboard interface.}
+      \end{subfigure}
+      \hfill
+      \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{spirit_interface_tracked}
+	\caption{The \gls{spirit} interface.}
+      \end{subfigure}
+      \caption[SPIRIT final interface]{Final interfaces for the onboard and \gls{spirit} interfaces, with the \gls{ardrone} tracked. Note that the target appears only in the \gls{spirit} view.}
       \label{fig:spirit_interface_tracked}
     \end{figure}
-    
-    An offline testing mode, with an optional web camera feed, was added to the past-image visualizer for debugging purposes.
 
-    % TODO: Full screnshot of UI.
-    % TODO: Camera scenes.
+    An offline testing mode, with an optional web camera feed, was added to the past-image visualizer for debugging purposes.
