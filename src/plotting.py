@@ -255,7 +255,13 @@ def do_surveys():
         plt.xlabel("NASA-TLX component")
         plt.ylabel("score")
 
-    with figure("survey_overview", figsize=fig_size(0.9, 0.5)):
+    with figure("survey_results", fig_size(0.44, 1)):
+        sns.factorplot(x="experiment", y="total", data=surveys, kind="box")
+        sns.swarmplot(x="experiment", y=r"total", data=surveys, palette=cmap_complement, split=True)
+        plt.ylim(0, plt.ylim()[1])
+        plt.ylabel("survey score")
+
+    with figure("survey_components", figsize=fig_size(0.9, 0.5)):
         molten = pd.melt(surveys, id_vars=["user", "experiment", "order"],
                          value_vars=[r"orientation_understanding",
                                      r"orientation_control",
@@ -309,7 +315,7 @@ def do_differences(recalculate=False):
 
 
 if __name__ == "__main__":
-    latexify()
+    # latexify()
 
     # do_drone_dos()
 
@@ -325,4 +331,3 @@ if __name__ == "__main__":
 
     # WARNING: Takes a long time with recalculate.
     # do_differences()
-
