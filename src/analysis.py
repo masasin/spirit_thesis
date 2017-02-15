@@ -368,6 +368,7 @@ def _load_tlx(data):
             for component in experiment.tlx.components.values():
                 parsed = _parse_tlx_component(component)
                 d[parsed.code] = parsed.score
+                d[f"{parsed.code}_raw"] = parsed.raw
             tlx_data.append(d)
     tlx = pd.DataFrame(tlx_data)
     tlx["group"] = tlx.user % 2
@@ -393,6 +394,7 @@ def _load_surveys(data, tlx):
     surveys["order"] = [1, 2]*(len(surveys)//2)
     surveys["experiment"] = [e.name for e in surveys.experiment_type]
     surveys["experiment_int"] = [e.value for e in surveys.experiment_type]
+    surveys["total"] = surveys.orientation_understanding + surveys.orientation_control + surveys.position_understanding + surveys.position_control + surveys.spacial_understanding + surveys.spacial_control
     surveys.experiment.replace("Spirit", "SPIRIT", inplace=True)
     return surveys
 
