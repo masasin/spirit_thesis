@@ -96,23 +96,24 @@ def fig_size(fig_width_tw=None, fig_ratio=None, fig_height=None, n_columns=1,
     return fig_width, fig_height
 
 
-def savefig(filename, folder="../img", from_context=False):
+def savefig(filename, folder="../img", from_context=False, exts=("pgf", "pdf")):
     if not from_context:
         print(f"Saving {filename}...  ")
     plt.tight_layout(0)
-    for ext in ("pgf", "pdf"):
+    for ext in exts:
         if from_context:
             print(f"  Saving {ext}...")
         plt.savefig(str(Path(folder).joinpath(f"{filename}.{ext}")))
 
 
 @contextmanager
-def figure(filename, folder="../img/plots", figsize=fig_size()):
+def figure(filename, folder="../img/plots", figsize=fig_size(),
+           exts=("pgf", "pdf")):
     print(f"{filename}:")
     print("  Plotting...")
     yield
     plt.gcf().set_size_inches(*figsize)
-    savefig(filename, folder=folder, from_context=True)
+    savefig(filename, folder=folder, from_context=True, exts=exts)
     plt.close()
 
 
